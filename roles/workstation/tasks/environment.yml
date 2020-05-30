@@ -1,0 +1,6 @@
+---
+# Setup environment
+
+- name: setup dotfiles
+
+- name: set environment variables

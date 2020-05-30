@@ -1,0 +1,8 @@
+---
+# install workstation applications
+
+- name: install applications
+  include: applications.yml
+
+- name: setup environment
+  include: environment.yml

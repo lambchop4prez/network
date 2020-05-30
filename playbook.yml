@@ -1,0 +1,9 @@
+- host: mac-mini
+  roles: 
+    workstation
+- host: macbook
+  roles:
+    workstation
+- host: server
+  roles:
+    server
