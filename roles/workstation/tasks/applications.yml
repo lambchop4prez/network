@@ -1,2 +1,14 @@
 ---
 # install applications
+
+- name: homebrew applications
+  homebrew:
+    state: latest
+    name: "{{ item }}"
+  loop: "{{ applications }}"
+
+- name: homebrew cask applications
+  homebrew_cask:
+    state: latest
+    name: "{{ item }}"
+  loop: "{{ casks }}"

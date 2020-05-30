@@ -1,5 +1,0 @@
----
-# Homebrew macos package manager
-- name: Install homebrew
-  shell: ''
-  

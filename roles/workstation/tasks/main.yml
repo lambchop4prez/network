@@ -2,7 +2,7 @@
 # install workstation applications
 
 - name: install applications
-  include: applications.yml
+  include_tasks: applications.yml
 
 - name: setup environment
-  include: environment.yml
+  include_tasks: environment.yml

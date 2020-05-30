@@ -1,0 +1,27 @@
+applications:
+  - git
+  - tree
+  - tmux
+  - zsh
+  - python
+  - pip
+  - node
+  - npm
+  - curl
+  - wget
+  - httpie
+  - docker
+  - ctags
+  - minikube
+  - kubectl
+  - kubectl-helm
+  - terraform
+  - packer
+  - vagrant
+  - dotnet
+  - dotnet-sdk
+
+casks:
+ - vscode
+ - visual-studio
+ - google-chrome

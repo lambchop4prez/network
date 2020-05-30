@@ -1,6 +1,8 @@
 ---
 # Setup environment
 
-- name: setup dotfiles
+# - name: setup dotfiles
 
-- name: set environment variables
+# - name: set environment variables
+
+# - name: install vscode extensions
