@@ -9,6 +9,17 @@
 
 - name: homebrew cask applications
   homebrew_cask:
-    state: latest
+    state: present
     name: "{{ item }}"
   loop: "{{ casks }}"
+
+- name: install npm packages
+  npm:
+    state: latest
+    name: "{{ item }}"
+  loop: "{{ npm-packages }}"
+
+- name: install pip packages
+  pip:
+    name: "{{ item }}"
+  loop: "{{ pip-packages }}"

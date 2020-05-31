@@ -1,5 +1,10 @@
 ---
 # Main common
 
-- name: install homebrew
+- name: enable homebrew
   include_tasks: brew.yml
+  when: ansible_facts['os_family'] == 'Darwin'
+
+- name: enable chocolatey
+  include_tasks: choco.yml
+  when: ansible_facts['os_family'] == "Windows"

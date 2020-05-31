@@ -1,16 +1,16 @@
 ---
 # Homebrew macos package manager
 - name: install homebrew
-  shell: 'yes | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"'
+  shell: 'yes | /bin/bash -c "$(curl -fsSL {{ brew_installer }})"'
   args:
     creates: /usr/local/bin/brew
 
 - name: update homebrew
   homebrew:
-    - state: latest
-      update_homebrew: yes
+    state: latest
+    update_homebrew: yes
 
 - name: brew tap cask
   homebrew_tap:
-    - tap: 'homebrew/cask'
+    tap: 'homebrew/cask'
   

@@ -1,5 +1,15 @@
 # Home Network
 
+## Workstation
+
+### Development environment
+
+#### vscode plugins
+* C#
+* docker
+* kubernetes
+* git
+
 ## VM Templates
 
 * Router
