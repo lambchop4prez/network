@@ -31,6 +31,8 @@ casks:
  - reaper
  - transmission
  - spotify
+ - geektool
+ - iterm2
 
 npm-packages:
  - angular
