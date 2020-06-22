@@ -19,6 +19,7 @@ applications:
   - kubectl-helm
   - terraform
   - packer
+  - consul
   - vagrant
   - dotnet
   - dotnet-sdk
@@ -31,6 +32,9 @@ casks:
  - reaper
  - transmission
  - spotify
+ - virtualbox
+ - cubicsdr
+ - balenaetcher
 
 npm-packages:
  - angular
@@ -39,6 +43,9 @@ npm-packages:
 pip-packages:
  - click
  - docker
+
+gems:
+ - jekyll 
 
 vscode-extensions:
  - vscoss.vscode-ansible

@@ -23,3 +23,8 @@
   pip:
     name: "{{ item }}"
   loop: "{{ pip-packages }}"
+
+- name: install gems
+  gem:
+    name: "{{ item }}"
+  loop: "{{ gems }}"
