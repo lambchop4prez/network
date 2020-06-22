@@ -35,6 +35,8 @@ casks:
  - virtualbox
  - cubicsdr
  - balenaetcher
+ - geektool
+ - iterm2
 
 npm-packages:
  - angular
@@ -45,7 +47,7 @@ pip-packages:
  - docker
 
 gems:
- - jekyll 
+ - jekyll
 
 vscode-extensions:
  - vscoss.vscode-ansible
