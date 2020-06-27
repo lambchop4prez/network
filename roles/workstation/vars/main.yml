@@ -47,6 +47,7 @@ pip-packages:
  - docker
 
 gems:
+ - bundler
  - jekyll
 
 vscode-extensions:
@@ -57,3 +58,4 @@ vscode-extensions:
  - redhat.vscode-yaml
  - ms-dotnettools.csharp
  - ms-kubernetes-tools.vscode-kubernetes-tools
+ 
