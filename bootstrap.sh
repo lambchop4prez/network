@@ -8,7 +8,7 @@ function write {
 }
 
 function install_ansible {
-    if [ ! -x "$(command -v ansible)"]; then
+    if [ ! -x "$(command -v ansible)" ]; then
         write "Installing ansible"
         sudo easy_install pip
         sudo pip install ansible
@@ -20,7 +20,7 @@ function run_playbook {
     if [ -x "$(command -v ansible-playbook)" ]
     then
         write "running playbook"
-        ansible-playbook -i ./mac.hosts playbook.yml --verbose
+        ansible-playbook -i ./mac.hosts playbook.yml --verbose --check
     else
         write "ansible-playbook command not found"
     fi

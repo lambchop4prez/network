@@ -9,3 +9,5 @@
 
 - name: install oh-my-zsh
   shell: 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/lambchop4prez/oh-my-zsh/master/tools/install.sh)"'
+  args:
+    creates: 

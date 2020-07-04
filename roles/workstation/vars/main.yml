@@ -6,7 +6,6 @@ applications:
   - autojump
   - vim
   - python
-  - pip
   - node
   - npm
   - curl
