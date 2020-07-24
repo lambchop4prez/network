@@ -7,6 +7,7 @@ applications:
   - vim
   - python
   - pip
+  - pipenv
   - node
   - npm
   - curl
@@ -48,3 +49,28 @@ vscode-extensions:
  - redhat.vscode-yaml
  - ms-dotnettools.csharp
  - ms-kubernetes-tools.vscode-kubernetes-tools
+ - ms-vscode.powershell
+
+macos-defaults:
+  - domain: com.apple.dock
+    values:
+      - key: autohide
+        value: 1
+      - key: orientation
+        value: left
+      - key: wvous-bl-corner
+        value: 2
+      - key: wvous-bl-modifier
+        value: 0
+      - key: wvous-br-corner
+        value: 4
+      - key: wvous-br-modifier
+        value: 0
+      - key: wvous-tl-corner
+        value: 3
+      - key: wvous-tl-modifier
+        value: 0
+      - key: wvous-tr-corner
+        value: 12
+      - key: wvous-tr-modifier
+        value: 0
