@@ -16,19 +16,8 @@ function install_ansible {
     write "Ansible installed"
 }
 
-function run_playbook {
-    if [ -x "$(command -v ansible-playbook)" ]
-    then
-        write "running playbook"
-        ansible-playbook -i ./mac.hosts playbook.yml --verbose --check
-    else
-        write "ansible-playbook command not found"
-    fi
-}
-
 write "Bootstrapping"
 
 install_ansible
-run_playbook
 
-write "Done"
+write "Ready to go"

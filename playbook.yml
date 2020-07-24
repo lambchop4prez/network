@@ -1,4 +1,4 @@
-- hosts: mac
+- hosts: local
   roles: 
     - common
     - workstation

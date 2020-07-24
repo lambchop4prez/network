@@ -38,6 +38,9 @@ casks:
   - discord
   - vagrant
   - dotnet-sdk
+  - qlmarkdown
+  - quicklook-json
+  - vlc
 
 npm:
   - angular
@@ -60,6 +63,7 @@ vscode-extensions:
  - ms-dotnettools.csharp
  - ms-kubernetes-tools.vscode-kubernetes-tools
  - ms-vscode.powershell
+ - foxundermoon.shell-format
 
 dock:
   - key: autohide
