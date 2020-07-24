@@ -1,20 +1,21 @@
 ---
 # install applications
 
-- name: homebrew applications
-  homebrew:
-    state: latest
-    name: "{{ item }}"
-  loop: "{{ applications }}"
+# - name: homebrew applications
+#   homebrew:
+#     state: latest
+#     name: "{{ item }}"
+#   loop: "{{ applications }}"
 
-- name: homebrew cask applications
-  homebrew_cask:
-    state: present
-    name: "{{ item }}"
-  loop: "{{ casks }}"
+# - name: homebrew cask applications
+#   homebrew_cask:
+#     state: present
+#     name: "{{ item }}"
+#   loop: "{{ casks }}"
 
 - name: install npm packages
   npm:
+    executable: /usr/local/bin/npm
     state: latest
     name: "{{ item }}"
   loop: "{{ npm-packages }}"
@@ -23,3 +24,8 @@
   pip:
     name: "{{ item }}"
   loop: "{{ pip-packages }}"
+
+- name: install gems
+  gem:
+    name: "{{ item }}"
+  loop: "{{ gems }}"

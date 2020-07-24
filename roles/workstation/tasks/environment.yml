@@ -9,3 +9,7 @@
 
 - name: install oh-my-zsh
   shell: 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/lambchop4prez/oh-my-zsh/master/tools/install.sh)"'
+
+- name: set macos defaults
+  shell: 'echo "defaults write {domain} {key} {value}"'
+  loop: macos-defaults

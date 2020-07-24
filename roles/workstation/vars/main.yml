@@ -6,8 +6,11 @@ applications:
   - autojump
   - vim
   - python
+<<<<<<< HEAD
   - pip
   - pipenv
+=======
+>>>>>>> a0ac5a6d5699eb1cde09370b8ca934a3f249f6a6
   - node
   - npm
   - curl
@@ -20,6 +23,7 @@ applications:
   - kubectl-helm
   - terraform
   - packer
+  - consul
   - vagrant
   - dotnet
   - dotnet-sdk
@@ -32,6 +36,11 @@ casks:
  - reaper
  - transmission
  - spotify
+ - virtualbox
+ - cubicsdr
+ - balenaetcher
+ - geektool
+ - iterm2
 
 npm-packages:
  - angular
@@ -40,6 +49,10 @@ npm-packages:
 pip-packages:
  - click
  - docker
+
+gems:
+ - bundler
+ - jekyll
 
 vscode-extensions:
  - vscoss.vscode-ansible
@@ -74,3 +87,4 @@ macos-defaults:
         value: 12
       - key: wvous-tr-modifier
         value: 0
+ 
