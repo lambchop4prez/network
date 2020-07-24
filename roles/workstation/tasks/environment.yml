@@ -1,13 +1,16 @@
 ---
-# Setup environment
-
-# - name: setup dotfiles
-
-# - name: set environment variables
-
-# - name: install vscode extensions
+- name: stat oh-my-zsh
+  stat:
+    path: ~/.oh-my-zsh
+  register: stat_omz_result
 
 - name: install oh-my-zsh
-  shell: 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/lambchop4prez/oh-my-zsh/master/tools/install.sh)"'
-  args:
-    creates: 
+  git:
+    repo: https://github.com/lambchop4prez/ohmyzsh
+    dest: ~/.oh-my-zsh
+  when: not stat_omz_result.stat.exists
+
+- name: create new ~/.zshrc
+  template:
+    src: files/.zshrc.j2
+    dest: ~/.zshrc

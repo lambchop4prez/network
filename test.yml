@@ -1,0 +1,5 @@
+- hosts: mac
+  tasks:
+    - name: pip test
+      pip:
+        name: click
