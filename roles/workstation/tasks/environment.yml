@@ -14,3 +14,10 @@
   template:
     src: files/.zshrc.j2
     dest: ~/.zshrc
+
+- name: set dock and hot corners
+  shell: defaults write com.apple.dock {{ item.key }} -{{ item.type }} {{ item.value }}
+  loop: "{{ dock }}"
+
+- name: restart dock
+  shell: killall Dock
