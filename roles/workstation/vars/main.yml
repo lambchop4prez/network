@@ -41,6 +41,7 @@ casks:
   - qlmarkdown
   - quicklook-json
   - vlc
+  - the-unarchiver
 
 npm:
   - angular
