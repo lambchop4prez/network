@@ -16,6 +16,7 @@ applications:
   - ctags
   - minikube
   - kubectl
+  - helm
   - terraform
   - packer
   - consul
