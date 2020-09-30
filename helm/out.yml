@@ -1,0 +1,68 @@
+---
+# Source: usenet/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: usenet
+  labels:
+    helm.sh/chart: usenet-0.1.0
+    app.kubernetes.io/name: usenet
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: usenet/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: usenet-ingress
+  labels:
+    helm.sh/chart: usenet-0.1.0
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: "nzbget.local"
+      http:
+        paths:
+          - path: "/"
+            backend:
+              serviceName: nzbget
+              servicePort: 6789
+    - host: "sonarr.local"
+      http:
+        paths:
+          - path: "/"
+            backend:
+              serviceName: sonarr
+              servicePort: 8989
+    - host: "radarr.local"
+      http:
+        paths:
+          - path: "/"
+            backend:
+              serviceName: radarr
+              servicePort: 7878
+---
+# Source: usenet/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "test-connection"
+  labels:
+    helm.sh/chart: usenet-0.1.0
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: RELEASE-NAME-nzbget
+    app.kubernetes.io/instance: RELEASE-NAME
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['localhost:']
+  restartPolicy: Never

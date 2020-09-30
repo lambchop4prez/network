@@ -43,6 +43,7 @@ casks:
   - quicklook-json
   - vlc
   - the-unarchiver
+  - wireshark
 
 npm:
   - angular
