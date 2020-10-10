@@ -1,0 +1,17 @@
+# volume that contains main media library
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "web-services.fullname" . }}-library
+  labels:
+    {{- include "web-services.labels" . | nindent 4 }}
+  spec:
+    storageClassName: {{ include "web-services.fullname" . }}-library
+    capacity:
+      storage: {{ .Values.data.library.capacity }}
+    {{- with .Values.data.library.accessModes }}
+    accessModes:
+      {{- toYaml . | nindent 6 }}
+    {{- end -}}
+    hostPath:
+      path: {{ .Values.data.library.path}}

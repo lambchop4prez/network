@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "nzbget.fullname" . }}-config
+  labels:
+    {{- include "nzbget.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.persistence.accessMode | quote }}
+  resources:
+    request:
+      storage: {{ .Values.persistence.config.size | quote}}
