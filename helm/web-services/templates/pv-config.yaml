@@ -5,7 +5,7 @@ metadata:
     labels:
         type: config
 spec:
-  storageClassName: standard
+  storageClassName: 
   capacity:
     storage: 1Gi
   accessModes:
