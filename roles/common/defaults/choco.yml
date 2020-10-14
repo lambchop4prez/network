@@ -1,5 +1,0 @@
----
-# Chocolatey default values
-choco_path: c:/ProgramData/chocolatey
-choco_installer: https://chocolatey.org/install.ps1
-choco_win_compression: "false"
