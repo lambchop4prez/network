@@ -1,11 +1,11 @@
 {
     "variables": {
         
-    }
+    },
     "builders": [
         {
             "type": "virtualbox-iso",
-            "guest_os_type": "RedHat_64"
+            "guest_os_type": "RedHat_64",
             "iso_url": ""
         }
     ]
