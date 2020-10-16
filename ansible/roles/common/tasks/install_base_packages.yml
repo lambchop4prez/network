@@ -1,0 +1,7 @@
+---
+
+- name: install base packages
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ base_packages }}"

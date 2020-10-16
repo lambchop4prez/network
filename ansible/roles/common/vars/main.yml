@@ -1,0 +1,15 @@
+---
+
+# Common applications
+base_packages:
+ - dnsutils
+ - git
+ - htop
+ - nmap
+ - net-tools
+ - screen
+ - tree
+ - vim
+ - wget
+ - httpie
+ - zsh
