@@ -1,6 +1,9 @@
 # Default values for radarr.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+timezone: America/Detroit
+puid: 1001
+pgid: 1001
 
 replicaCount: 1
 
@@ -47,7 +50,8 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: radarr.lan
-      paths: []
+      paths: 
+        - /
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -77,3 +81,15 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+persistence:
+  enabled: false
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
+  config:
+    size: 1Mi
+  download:
+    size: 15Gi
+  movies:
+    size: 100Gi

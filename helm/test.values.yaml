@@ -1,0 +1,32 @@
+timezone: America/Detroit
+nzbget:
+  persistence:
+    enabled: true
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - host: nzbget.lan
+        paths:
+          - /
+
+radarr:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - host: nzbget.lan
+        paths:
+          - /
+
+sonarr:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - host: nzbget.lan
+        paths:
+          - /

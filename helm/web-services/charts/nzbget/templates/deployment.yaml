@@ -43,13 +43,13 @@ spec:
           readinessProbe:
             tcpSocket:
               port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: config
               mountPath: /config
             - name: downloads
               mountPath: /downloads
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
           envFrom:
             - configMapRef:
                 name: {{ include "nzbget.fullname" . }}
@@ -57,7 +57,7 @@ spec:
         - name: downloads
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ include "nzbget.fullname" . }}-data
+            claimName: {{ include "nzbget.fullname" . }}-download
         {{- else }}
           emptyDir: {}
         {{- end }}

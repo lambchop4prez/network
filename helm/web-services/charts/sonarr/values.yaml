@@ -2,6 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+timezone: America/Detroit
+puid: 1001
+pgid: 1001
+
 replicaCount: 1
 
 image:
@@ -47,7 +51,8 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: sonarr.lan
-      paths: []
+      paths:
+        - /
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -77,3 +82,15 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+persistence:
+  enabled: false
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
+  config:
+    size: 1Mi
+  download:
+    size: 15Gi
+  tv:
+    size: 100Gi
