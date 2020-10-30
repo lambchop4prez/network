@@ -50,21 +50,24 @@ spec:
               mountPath: /downloads
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "nzbget.fullname" . }}
       volumes:
-        - name: data
+        - name: downloads
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{- include "nzbget.fullname" . -}}-data
+            claimName: {{ include "nzbget.fullname" . }}-data
         {{- else }}
           emptyDir: {}
-        {{- end -}}
+        {{- end }}
         - name: config
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{- include "nzbget.fullname" . -}}-config
+            claimName: {{ include "nzbget.fullname" . }}-config
         {{- else }}
           emptyDir: {}
-        {{- end -}}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

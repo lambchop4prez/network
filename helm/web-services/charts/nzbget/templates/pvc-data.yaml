@@ -1,12 +1,22 @@
+{{- if .Values.persistence.enabled -}}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "nzbget.fullname" . }}-data
   labels:
     {{- include "nzbget.labels" . | nindent 4 }}
+  {{- with .Values.persistence.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   accessModes:
-    - {{ .Values.persistence.accessMode | quote }}
+    {{- range .Values.persistence.accessModes }}
+    - {{ . | quote }}
+    {{- end }}
+  volumeMode: Filesystem
+  storageClassName: {{ .Values.persistence.storageClassName }}
   resources:
-    request:
-      storage: {{ .Values.persistence.data.size | quote}}
+    requests:
+      storage: {{ .Values.persistence.config.size | quote}}
+{{- end }}
