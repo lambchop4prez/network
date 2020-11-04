@@ -52,6 +52,22 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Config PV labels
+*/}}
+{{- define "web-services.configLabels" -}}
+bucket: {{ .Values.persistence.config.bucket }}
+{{ include "web-services.selectorLabels" . }}
+{{- end }}
+
+{{/*
+Library PV labels
+*/}}
+{{- define "web-services.libraryLabels" -}}
+bucket: {{ .Values.persistence.library.bucket }}
+{{ include "web-services.selectorLabels" . }}
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "web-services.serviceAccountName" -}}
@@ -59,13 +75,5 @@ Create the name of the service account to use
 {{- default (include "web-services.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
-
-{{- define "web-services.configPvcName" -}}
-{{- if .Values.persistence.config.claimName }}
-{{ .Values.persistence.config.claimName | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name "config" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 {{- end }}

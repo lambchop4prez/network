@@ -6,10 +6,12 @@ persistence:
     hostPath: /stor/config
     capacity: 1Gi
     className: microk8s-hostpath
+    bucket: config
   library:
     hostPath: /stor/Library
     capacity: 1Ti
     className: microk8s-hostpath
+    bucket: library
 
 nzbget:
   persistence:
@@ -17,9 +19,11 @@ nzbget:
     config:
       className: microk8s-hostpath
       size: 1Gi
+      bucket: config
     download:
       className: microk8s-hostpath
       size: 1Ti
+      bucket: library
   ingress:
     enabled: true
     annotations:
@@ -35,12 +39,15 @@ radarr:
     config:
       className: microk8s-hostpath
       size: 1Gi
+      bucket: config
     download:
       className: microk8s-hostpath
       size: 1Ti
+      bucket: library
     movies:
       className: microk8s-hostpaths
       size: 1Ti
+      bucket: library
   ingress:
     enabled: true
     annotations:
@@ -56,12 +63,15 @@ sonarr:
     config:
       className: microk8s-hostpath
       size: 1Gi
+      bucket: config
     download:
       className: microk8s-hostpath
       size: 1Ti
+      bucket: library
     tv:
       className: microk8s-hostpath
       size: 1Ti
+      bucket: library
   ingress:
     enabled: true
     annotations:

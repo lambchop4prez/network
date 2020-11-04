@@ -91,9 +91,12 @@ persistence:
   config:
     className: config
     size: 1Mi
+    bucket: config
   download:
     className: download
     size: 15Gi
+    bucket: download
   tv:
     className: tv
     size: 100Gi
+    bucket: tv

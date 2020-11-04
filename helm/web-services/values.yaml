@@ -56,10 +56,12 @@ ingress:
 persistence:
   enabled: false
   config:
+    bucket: config
     className: Manual
     capacity: 1Gi
     hostPath: "/data/config"
   library:
+    bucket: library
     className: Manual
     capacity: 500Gi
     hostPath: "/data/Library"

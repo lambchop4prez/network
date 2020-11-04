@@ -90,6 +90,8 @@ persistence:
   config:
     className: config
     size: 1Mi
-  data:
+    bucket: config
+  download:
     className: download
     size: 15Gi
+    bucket: download

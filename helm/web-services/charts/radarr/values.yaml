@@ -89,9 +89,12 @@ persistence:
   config:
     className: config
     size: 1Mi
+    bucket: config
   download:
     className: download
     size: 15Gi
+    bucket: download
   movies:
     className: movies
     size: 100Gi
+    bucket: movies
