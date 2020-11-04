@@ -1,0 +1,72 @@
+timezone: America/Detroit
+
+persistence:
+  enabled: true
+  config:
+    hostPath: /stor/config
+    capacity: 1Gi
+    className: microk8s-hostpath
+  library:
+    hostPath: /stor/Library
+    capacity: 1Ti
+    className: microk8s-hostpath
+
+nzbget:
+  persistence:
+    enabled: true
+    config:
+      className: microk8s-hostpath
+      size: 1Gi
+    download:
+      className: microk8s-hostpath
+      size: 1Ti
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - host: nzbget.timcosgriff.com
+        paths:
+          - /
+
+radarr:
+  persistence:
+    enabled: true
+    config:
+      className: microk8s-hostpath
+      size: 1Gi
+    download:
+      className: microk8s-hostpath
+      size: 1Ti
+    movies:
+      className: microk8s-hostpaths
+      size: 1Ti
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - host: radarr.timcosgriff.com
+        paths:
+          - /
+
+sonarr:
+  persistence:
+    enabled: true
+    config:
+      className: microk8s-hostpath
+      size: 1Gi
+    download:
+      className: microk8s-hostpath
+      size: 1Ti
+    tv:
+      className: microk8s-hostpath
+      size: 1Ti
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - host: sonarr.timcosgriff.com
+        paths:
+          - /

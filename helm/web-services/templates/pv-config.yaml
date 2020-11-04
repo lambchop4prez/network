@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: kube-volume-config
+    labels:
+        {{- include "web-services.selectorLabels" . | nindent 8}}
+spec:
+  storageClassName: {{ .Values.persistence.config.className }}
+  capacity:
+    storage: {{ .Values.persistence.config.capacity }}
+  accessModes:
+  - ReadWriteMany
+  hostPath:
+    path: {{ .Values.persistence.config.hostPath }}
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Retain

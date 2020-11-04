@@ -1,0 +1,16 @@
+# volume that contains main media library
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kube-volume-library
+  labels:
+    {{- include "web-services.labels" . | nindent 4 }}
+spec:
+  storageClassName: {{ .Values.persistence.library.className }}
+  capacity:
+    storage: {{ .Values.persistence.library.capacity }}
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: {{ .Values.persistence.library.hostPath }}
+  persistentVolumeReclaimPolicy: Retain

@@ -71,20 +71,6 @@ services:
             - LETSENCRYPT_EMAIL=timothy.cosgriff@gmail.com
         restart: always
 
-    ombi:
-        image: linuxserver/ombi
-        container_name: ombi
-        volumes:
-            - /stor/docker/usenet/config/ombi:/config
-        ports:
-            - 3579:3579
-        env_file: uidgid.env
-        environment:
-            - VIRTUAL_HOST=ombi.timcosgriff.com, ombi.larry
-            - VIRTUAL_PORT=3579
-            - LETSENCRYPT_HOST=ombi.timcosgriff.com
-            - LETSENCRYPT_EMAIL=timothy.cosgriff@gmail.com
-        restart: always
 
     nzbget:
         image: linuxserver/nzbget

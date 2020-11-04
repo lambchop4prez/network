@@ -1,0 +1,22 @@
+{{- if .Values.persistence.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "radarr.fullname" . }}-download
+  labels:
+    {{- include "radarr.labels" . | nindent 4 }}
+  {{- with .Values.persistence.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    {{- range .Values.persistence.accessModes }}
+    - {{ . | quote }}
+    {{- end }}
+  volumeMode: Filesystem
+  storageClassName: {{ .Values.persistence.download.className }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.download.size | quote}}
+{{- end }}
