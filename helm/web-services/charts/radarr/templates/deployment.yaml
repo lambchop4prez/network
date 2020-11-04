@@ -50,10 +50,13 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+              subPath: radarr
             - name: downloads
               mountPath: /downloads
+              subPath: downloads
             - name: movies
               mountPath: /movies
+              subPath: movies
           envFrom:
             - configMapRef:
                 name: {{ include "radarr.fullname" . }}

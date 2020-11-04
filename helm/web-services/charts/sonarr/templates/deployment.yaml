@@ -50,10 +50,13 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+              subPath: sonarr
             - name: downloads
               mountPath: /downloads
+              subPath: downloads
             - name: tv
               mountPath: /tv
+              subPath: tv
           envFrom:
             - configMapRef:
                 name: {{ include "sonarr.fullname" . }}

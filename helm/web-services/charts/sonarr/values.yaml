@@ -89,8 +89,11 @@ persistence:
     - ReadWriteOnce
   storageClassName: ""
   config:
+    className: config
     size: 1Mi
   download:
+    className: download
     size: 15Gi
   tv:
+    className: tv
     size: 100Gi

@@ -2,16 +2,15 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ include "web-services.fullname" . }}-library
+  name: kube-volume-library
   labels:
     {{- include "web-services.labels" . | nindent 4 }}
-  spec:
-    storageClassName: {{ include "web-services.fullname" . }}-library
-    capacity:
-      storage: {{ .Values.data.library.capacity }}
-    {{- with .Values.data.library.accessModes }}
-    accessModes:
-      {{- toYaml . | nindent 6 }}
-    {{- end -}}
-    hostPath:
-      path: {{ .Values.data.library.path}}
+spec:
+  storageClassName: {{ .Values.persistence.library.className }}
+  capacity:
+    storage: {{ .Values.persistence.library.capacity }}
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: {{ .Values.persistence.library.hostPath }}
+  persistentVolumeReclaimPolicy: Retain

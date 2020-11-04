@@ -86,10 +86,12 @@ persistence:
   enabled: false
   accessModes:
     - ReadWriteOnce
-  storageClassName: ""
   config:
+    className: config
     size: 1Mi
   download:
+    className: download
     size: 15Gi
   movies:
+    className: movies
     size: 100Gi

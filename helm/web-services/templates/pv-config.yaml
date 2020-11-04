@@ -1,14 +1,16 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-    name: pv-config
+    name: kube-volume-config
     labels:
-        type: config
+        {{- include "web-services.selectorLabels" . | nindent 8}}
 spec:
-  storageClassName: 
+  storageClassName: {{ .Values.persistence.config.className }}
   capacity:
-    storage: 1Gi
+    storage: {{ .Values.persistence.config.capacity }}
   accessModes:
-   - ReadWriteMany
+  - ReadWriteMany
   hostPath:
-    path: "/Users/tcosgriff/Source/network/config"
+    path: {{ .Values.persistence.config.hostPath }}
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Retain

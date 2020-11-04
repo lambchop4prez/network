@@ -15,7 +15,7 @@ spec:
     - {{ . | quote }}
     {{- end }}
   volumeMode: Filesystem
-  storageClassName: {{ .Values.persistence.storageClassName }}
+  storageClassName: {{ .Values.persistence.download.className }}
   resources:
     requests:
       storage: {{ .Values.persistence.download.size | quote}}

@@ -87,8 +87,9 @@ persistence:
   enabled: false
   accessModes:
     - ReadWriteOnce
-  storageClassName: ""
   config:
+    className: config
     size: 1Mi
   data:
+    className: download
     size: 15Gi

@@ -48,8 +48,10 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+              subPath: nzbget
             - name: downloads
               mountPath: /downloads
+              subPath: downloads
           envFrom:
             - configMapRef:
                 name: {{ include "nzbget.fullname" . }}
