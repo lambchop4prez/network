@@ -3,25 +3,33 @@ timezone: America/Detroit
 persistence:
   enabled: true
   config:
-    hostPath: /stor/config
+    provisioner: microk8s.io/hostpath
+    parameters:
+      path: /stor/config
     capacity: 1Gi
-    className: microk8s-hostpath
+    className: larry-config
     bucket: config
+    reclaimPolicy: Retain
   library:
-    hostPath: /stor/Library
+    provisioner: microk8s.io/hostpath
+    parameters:
+      path: /stor/Library
     capacity: 1Ti
-    className: microk8s-hostpath
+    className: larry-library
     bucket: library
+    reclaimPolicy: Retain
 
 nzbget:
   persistence:
     enabled: true
+    accessModes:
+    - ReadWriteMany
     config:
-      className: microk8s-hostpath
+      className: larry-config
       size: 1Gi
       bucket: config
     download:
-      className: microk8s-hostpath
+      className: larry-library
       size: 1Ti
       bucket: library
   ingress:
@@ -36,16 +44,18 @@ nzbget:
 radarr:
   persistence:
     enabled: true
+    accessModes:
+    - ReadWriteMany
     config:
-      className: microk8s-hostpath
+      className: larry-config
       size: 1Gi
       bucket: config
     download:
-      className: microk8s-hostpath
+      className: larry-library
       size: 1Ti
       bucket: library
     movies:
-      className: microk8s-hostpaths
+      className: larry-library
       size: 1Ti
       bucket: library
   ingress:
@@ -60,16 +70,18 @@ radarr:
 sonarr:
   persistence:
     enabled: true
+    accessModes:
+    - ReadWriteMany
     config:
-      className: microk8s-hostpath
+      className: larry-config
       size: 1Gi
       bucket: config
     download:
-      className: microk8s-hostpath
+      className: larry-library
       size: 1Ti
       bucket: library
     tv:
-      className: microk8s-hostpath
+      className: larry-library
       size: 1Ti
       bucket: library
   ingress:

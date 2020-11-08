@@ -57,14 +57,18 @@ persistence:
   enabled: false
   config:
     bucket: config
-    className: Manual
+    className: config
+    provisioner: Default
     capacity: 1Gi
     hostPath: "/data/config"
+    reclaimPolicy: Delete
   library:
     bucket: library
-    className: Manual
+    className: library
+    provisioner: Default
     capacity: 500Gi
     hostPath: "/data/Library"
+    reclaimPolicy: Delete
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
