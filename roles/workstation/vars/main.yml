@@ -14,11 +14,13 @@ applications:
   - httpie
   - docker
   - ctags
+  - cmake
   - minikube
   - kubectl
   - terraform
   - packer
   - consul
+  - rtl-sdr
 
 casks:
   - bitwarden
