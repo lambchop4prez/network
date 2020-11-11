@@ -1,0 +1,12 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ .Values.persistence.library.className}}
+  labels:
+    {{- include "web-services.libraryLabels" . | nindent 4}}
+provisioner: {{.Values.persistence.library.provisioner}}
+{{- with .Values.persistence.library.parameters }}
+parameters:
+  {{- toYaml . | nindent 2 -}}
+{{- end }}
+reclaimPolicy: {{ .Values.persistence.library.reclaimPolicy }}

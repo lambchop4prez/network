@@ -8,3 +8,6 @@
 - name: enable chocolatey
   include_tasks: choco.yml
   when: ansible_facts['os_family'] == "Windows"
+
+- name: install base packages
+  include_tasks: install_base_packages.yml

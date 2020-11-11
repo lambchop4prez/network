@@ -1,0 +1,25 @@
+{{- if .Values.persistence.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "sonarr.fullname" . }}-tv
+  labels:
+    {{- include "sonarr.labels" . | nindent 4 }}
+  {{- with .Values.persistence.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    {{- range .Values.persistence.accessModes }}
+    - {{ . | quote }}
+    {{- end }}
+  volumeMode: Filesystem
+  storageClassName: {{ .Values.persistence.tv.className }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.tv.size | quote}}
+  selector:
+    matchLabels:
+      bucket: {{ .Values.persistence.tv.bucket }}
+{{- end }}

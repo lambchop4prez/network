@@ -17,6 +17,7 @@ applications:
   - cmake
   - minikube
   - kubectl
+  - helm
   - terraform
   - packer
   - consul
@@ -42,8 +43,10 @@ casks:
   - dotnet-sdk
   - qlmarkdown
   - quicklook-json
+  - qlstephen
   - vlc
   - the-unarchiver
+  - wireshark
 
 npm:
   - angular
