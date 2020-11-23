@@ -18,6 +18,17 @@ persistence:
     className: larry-library
     bucket: library
     reclaimPolicy: Retain
+serviceClass:
+  name: nfs-client
+  parameters:
+    server: larry
+
+nfs-client-provisioner:
+  nfs:
+    server: larry
+    path: /stor
+  storageClass:
+    name: nfs-client
 
 nzbget:
   persistence:
