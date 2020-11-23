@@ -1,0 +1,19 @@
+# Main tasks for VM Host systems
+---
+- name: verify virtualization
+
+
+- name: verify packer
+  stat:
+    path: packer
+  register: stat_packer
+
+- name: get boxcutter repos
+  git:
+    repo: git@github.com:boxcutter/ubuntu.git
+
+
+- name: packer build ubuntu desktop
+  shell: packer build -var-file=ubuntu2004.json ubuntu.json
+  
+  
