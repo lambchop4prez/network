@@ -59,14 +59,14 @@ spec:
         - name: downloads
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ include "nzbget.fullname" . }}-download
+            claimName: {{ include "nzbget.claims.downloads" . }}
         {{- else }}
           emptyDir: {}
         {{- end }}
         - name: config
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ include "nabget.configVolumeName" . }}
+            claimName: {{ include "nzbget.claims.config" . }}
         {{- else }}
           emptyDir: {}
         {{- end }}

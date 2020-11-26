@@ -64,21 +64,21 @@ spec:
         - name: config
           {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ include "radarr.fullname" . }}-config
+            claimName: {{ include "radarr.claims.config" . }}
           {{- else }}
           emptyDir: {}
           {{- end }}
         - name: downloads
           {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ include "radarr.fullname" . }}-download
+            claimName: {{ include "radarr.claims.download" . }}
           {{- else }}
           emptyDir: {}
           {{- end }}
         - name: movies
           {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ include "radarr.fullname" . }}-movies
+            claimName: {{ include "radarr.claims.movies" . }}
           {{- else }}
           emptyDir: {}
           {{- end }}

@@ -5,10 +5,11 @@ base_packages:
  - git
  - htop
  - nmap
+ - net-tools
  - screen
  - tree
  - vim
  - wget
  - httpie
  - zsh
- 
+

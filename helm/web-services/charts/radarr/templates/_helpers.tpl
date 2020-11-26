@@ -24,6 +24,33 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
+{{- define "radarr.claims.config" -}}
+{{- if .Values.persistence.useExistingClaim }}
+{{- .Values.persistence.config.claimName | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $fullname := include "radarr.fullname" . -}}
+{{- printf "%s-%s" $fullname "config" | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+{{- end }}
+
+{{- define "radarr.claims.download" -}}
+{{- if .Values.persistence.useExistingClaim }}
+{{- .Values.persistence.download.claimName | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $fullname := include "radarr.fullname" . -}}
+{{- printf "%s-%s" $fullname "downloads" | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+{{- end }}
+
+{{- define "radarr.claims.movies" -}}
+{{- if .Values.persistence.useExistingClaim }}
+{{- .Values.persistence.movies.claimName | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $fullname := include "radarr.fullname" . -}}
+{{- printf "%s-%s" $fullname "movies" | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+{{- end }}
+
 {{/*
 Create chart name and version as used by the chart label.
 */}}

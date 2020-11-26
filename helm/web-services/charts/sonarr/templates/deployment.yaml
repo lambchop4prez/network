@@ -64,21 +64,21 @@ spec:
         - name: config
           {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ include "sonarr.fullname" . }}-config
+            claimName: {{ include "sonarr.claims.config" . }}
           {{- else }}
           emptyDir: {}
           {{- end }}
         - name: downloads
           {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ include "sonarr.fullname" . }}-download
+            claimName: {{ include "sonarr.claims.download" . }}
           {{- else }}
           emptyDir: {}
           {{- end }}
         - name: tv
           {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ include "sonarr.fullname" . }}-tv
+            claimName: {{ include "sonarr.claims.tv" . }}
           {{- else }}
           emptyDir: {}
           {{- end }}

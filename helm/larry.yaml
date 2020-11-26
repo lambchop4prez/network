@@ -2,45 +2,47 @@ timezone: America/Detroit
 
 persistence:
   enabled: true
+  accessModes:
+    - ReadWriteMany
   config:
-    provisioner: microk8s.io/hostpath
+    name: larry-config
+    provisioner: cluster.local/larry-nfs-client-provisioner
     parameters:
       path: /stor/config
-    capacity: 1Gi
+    size: 1Gi
     className: larry-config
     bucket: config
-    reclaimPolicy: Retain
   library:
-    provisioner: microk8s.io/hostpath
+    name: larry-library
+    provisioner: cluster.local/larry-nfs-client-provisioner
     parameters:
       path: /stor/Library
-    capacity: 1Ti
+    size: 1Ti
     className: larry-library
     bucket: library
-    reclaimPolicy: Retain
-serviceClass:
+storageClass:
   name: nfs-client
-  parameters:
-    server: larry
+  provisioner: cluster.local/larry-nfs-client-provisioner
+  reclaimPolicy: Retain
 
 nfs-client-provisioner:
   nfs:
     server: larry
     path: /stor
   storageClass:
+    provisionerName: cluster.local/larry-nfs-client-provisioner
     name: nfs-client
 
 nzbget:
   persistence:
     enabled: true
-    accessModes:
-    - ReadWriteMany
+    useExistingClaim: true
     config:
-      className: larry-config
+      claimName: larry-config
       size: 1Gi
       bucket: config
     download:
-      className: larry-library
+      claimName: larry-library
       size: 1Ti
       bucket: library
   ingress:
@@ -55,18 +57,19 @@ nzbget:
 radarr:
   persistence:
     enabled: true
+    useExistingClaim: true
     accessModes:
     - ReadWriteMany
     config:
-      className: larry-config
+      claimName: larry-config
       size: 1Gi
       bucket: config
     download:
-      className: larry-library
+      claimName: larry-library
       size: 1Ti
       bucket: library
     movies:
-      className: larry-library
+      claimName: larry-library
       size: 1Ti
       bucket: library
   ingress:
@@ -81,18 +84,19 @@ radarr:
 sonarr:
   persistence:
     enabled: true
+    useExistingClaim: true
     accessModes:
     - ReadWriteMany
     config:
-      className: larry-config
+      claimName: larry-config
       size: 1Gi
       bucket: config
     download:
-      className: larry-library
+      claimName: larry-library
       size: 1Ti
       bucket: library
     tv:
-      className: larry-library
+      claimName: larry-library
       size: 1Ti
       bucket: library
   ingress:
