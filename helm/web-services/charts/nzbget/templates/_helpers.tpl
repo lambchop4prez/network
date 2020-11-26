@@ -24,14 +24,22 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
-{{- define "nabget.configVolumeName" -}}
-{{- $name := "" }}
-{{- if .Values.persistence.config }}
-  {{- if .Values.persistence.config.claimName }}
-  {{- $name := .Values.persistence.config.claimName | trunc 63 | trimSuffix "-" }}
-  {{- end }}
+{{- define "nzbget.claims.downloads" -}}
+{{- if .Values.persistence.useExistingClaim }}
+{{- .Values.persistence.download.claimName | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $fullname := include "nzbget.fullname" . -}}
+{{- printf "%s-%s" $fullname "downloads" | trunc 63 | trimSuffix "-" -}}
 {{- end }}
-{{-  $name | default printf "%s-%s" include "nzbget.fullname" . "config" -}}
+{{- end }}
+
+{{- define "nzbget.claims.config" -}}
+{{- if .Values.persistence.useExistingClaim }}
+{{- .Values.persistence.config.claimName | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $fullname := include "nzbget.fullname" . -}}
+{{- printf "%s-%s" $fullname "config" | trunc 63 | trimSuffix "-" -}}
+{{- end }}
 {{- end }}
 
 {{/*

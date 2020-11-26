@@ -84,6 +84,7 @@ affinity: {}
 
 persistence:
   enabled: false
+  useExistingClaim: false
   accessModes:
     - ReadWriteOnce
   config:

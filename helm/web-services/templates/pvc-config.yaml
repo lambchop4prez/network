@@ -20,3 +20,4 @@ spec:
   resources:
     requests:
       storage: {{ .Values.persistence.config.size | quote}}
+{{- end }}
