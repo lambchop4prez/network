@@ -6,32 +6,31 @@ persistence:
     - ReadWriteMany
   config:
     name: larry-config
-    provisioner: cluster.local/larry-nfs-client-provisioner
     parameters:
       path: /stor/config
     size: 1Gi
-    className: larry-config
     bucket: config
   library:
     name: larry-library
-    provisioner: cluster.local/larry-nfs-client-provisioner
     parameters:
       path: /stor/Library
     size: 1Ti
-    className: larry-library
     bucket: library
 storageClass:
   name: nfs-client
-  provisioner: cluster.local/larry-nfs-client-provisioner
   reclaimPolicy: Retain
 
 nfs-client-provisioner:
   nfs:
+    mountOptions:
+      - "rw"
     server: larry
     path: /stor
   storageClass:
-    provisionerName: cluster.local/larry-nfs-client-provisioner
+    create: true
     name: nfs-client
+  rbac:
+    create: false
 
 nzbget:
   persistence:
