@@ -28,3 +28,12 @@
 - name: vscode extensions
   shell: code --install-extension {{ item }}
   loop: "{{ vscode }}"
+
+- name: stat id_ecdsa
+  stat:
+    path: ~/.ssh/id_ecdsa
+  register: id_ecdsa
+
+- name: generate ssh key
+  shell: ssh-keygen -t ecdsa
+  when: not id_ecdsa.stat.exists

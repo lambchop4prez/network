@@ -29,8 +29,12 @@ nfs-client-provisioner:
   storageClass:
     create: true
     name: nfs-client
+<<<<<<< HEAD
   rbac:
     create: false
+=======
+    reclaimPolicy: Retain
+>>>>>>> e2d3b67c3bc4a17ed5af5c5665878985a8baf66c
 
 nzbget:
   persistence:

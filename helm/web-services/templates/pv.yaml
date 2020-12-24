@@ -1,0 +1,43 @@
+{{- if .Values.persistence.enabled -}}
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: {{ .Values.persistence.config.name }}
+  labels: 
+    {{- include "web-services.configLabels" . | nindent 4}}
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ .Values.storageClass.name }}
+  mountOptions:
+   - hard
+  nfs:
+    path: {{ .Values.nfs.path}}/config
+    server: {{ .Values.nfs.server }}
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.persistence.library.name }}
+  labels:
+    {{- include "web-services.libraryLabels" . | nindent 4}}
+spec:
+  capacity:
+    storage: 1Ti
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ .Values.storageClass.name }}
+  mountOptions:
+   - hard
+  nfs:
+    path: {{ .Values.nfs.path}}/Library
+    server: {{ .Values.nfs.server }}
+{{- end }}

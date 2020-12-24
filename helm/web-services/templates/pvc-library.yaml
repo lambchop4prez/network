@@ -20,4 +20,7 @@ spec:
   resources:
     requests:
       storage: {{ .Values.persistence.library.size | quote}}
+  selector:
+    matchLabels:
+      {{- include "web-services.libraryLabels" . | nindent 6 }}
 {{- end }}

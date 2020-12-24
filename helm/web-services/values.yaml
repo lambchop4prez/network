@@ -68,6 +68,10 @@ persistence:
     hostPath: "/data/Library"
     reclaimPolicy: Delete
 
+nfs:
+  server: localhost
+  path: /
+
 storageClass:
   name: storage
   reclaimPolicy: Delete
