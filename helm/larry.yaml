@@ -32,6 +32,7 @@ nfs-client-provisioner:
   storageClass:
     provisionerName: cluster.local/larry-nfs-client-provisioner
     name: nfs-client
+    reclaimPolicy: Retain
 
 nzbget:
   persistence:

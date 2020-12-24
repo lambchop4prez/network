@@ -1,7 +1,35 @@
 timezone: America/Detroit
+
+persistence:
+  enabled: true
+  accessModes:
+   - ReadWriteMany
+  config:
+    name: larry-config
+    size: 1Gi
+  library:
+    name: larry-library
+    size: 1 Ti
+storageClass:
+  name: larry-nfs-client
+
+nfs-client-provisioner:
+  nfs:
+    server: 10.4.20.108
+    path: /stor
+  storageClass:
+    create: true
+    name: larry-nfs-client
+    archiveOnDelete: false
+
 nzbget:
   persistence:
     enabled: true
+    useExistingClaim: true
+    download:
+      claimName: larry-library
+    config:
+      claimName: larry-config
   ingress:
     enabled: true
     annotations:
