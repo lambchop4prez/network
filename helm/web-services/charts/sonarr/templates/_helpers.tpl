@@ -33,12 +33,12 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
-{{- define "sonarr.claims.download" -}}
+{{- define "sonarr.claims.downloads" -}}
 {{- if .Values.persistence.useExistingClaim }}
-{{- .Values.persistence.download.claimName | trunc 63 | trimSuffix "-" }}
+{{- .Values.persistence.downloads.claimName | trunc 63 | trimSuffix "-" }}
 {{- else }}
 {{- $fullname := include "sonarr.fullname" . -}}
-{{- printf "%s-%s" $fullname "download" | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" $fullname "downloads" | trunc 63 | trimSuffix "-" -}}
 {{- end }}
 {{- end }}
 

@@ -2,8 +2,8 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 timezone: America/Detroit
-puid: 1001
-pgid: 1001
+puid: 1000
+pgid: 1000
 
 replicaCount: 1
 

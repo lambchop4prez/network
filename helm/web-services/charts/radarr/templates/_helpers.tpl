@@ -33,9 +33,18 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
-{{- define "radarr.claims.download" -}}
+{{- define "radarr.claims.library" -}}
 {{- if .Values.persistence.useExistingClaim }}
-{{- .Values.persistence.download.claimName | trunc 63 | trimSuffix "-" }}
+{{- .Values.persistence.library.claimName | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $fullname := include "radarr.fullname" . -}}
+{{- printf "%s-%s" $fullname "library" | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+{{- end }}
+
+{{- define "radarr.claims.downloads" -}}
+{{- if .Values.persistence.useExistingClaim }}
+{{- .Values.persistence.downloads.claimName | trunc 63 | trimSuffix "-" }}
 {{- else }}
 {{- $fullname := include "radarr.fullname" . -}}
 {{- printf "%s-%s" $fullname "downloads" | trunc 63 | trimSuffix "-" -}}

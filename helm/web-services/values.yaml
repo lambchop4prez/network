@@ -61,6 +61,15 @@ persistence:
     capacity: 1Gi
     hostPath: "/data/config"
     reclaimPolicy: Delete
+  downloads:
+    name: downloads
+    size: 500Gi
+  tv:
+    name: tv
+    size: 1Ti
+  movies:
+    name: movies
+    size: 1Ti
   library:
     name: library
     bucket: library

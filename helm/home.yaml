@@ -1,4 +1,6 @@
 timezone: America/Detroit
+uid: 1000
+gid: 1000
 
 persistence:
   enabled: true
@@ -7,18 +9,21 @@ persistence:
   config:
     name: larry-config
     size: 1Gi
-  library:
-    name: larry-library
-    size: 1Ti
+  downloads:
+    name: larry-downloads
+  tv:
+    name: larry-tv
+  movies:
+    name: larry-movies
 storageClass:
   name: larry-nfs-client
 nfs:
-  server: 10.4.20.108
+  server: "10.4.20.108"
   path: /stor
 
 nfs-client-provisioner:
   nfs:
-    server: 10.4.20.108
+    server: "10.4.20.108"
     path: /stor
   storageClass:
     create: true
@@ -26,42 +31,65 @@ nfs-client-provisioner:
     archiveOnDelete: false
 
 nzbget:
+  uid: 1000
+  gid: 1000
   persistence:
     enabled: true
     useExistingClaim: true
     download:
-      claimName: larry-library
+      claimName: larry-downloads
     config:
       claimName: larry-config
   ingress:
     enabled: true
     annotations:
       kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /
     hosts:
       - host: nzbget.lan
         paths:
           - /
 
 radarr:
+  uid: 1000
+  gid: 1000
   persistence:
     enabled: true
+    useExistingClaim: true
+    downloads:
+      claimName: larry-downloads
+    movies:
+      claimName: larry-movies
+    config:
+      claimName: larry-config
   ingress:
     enabled: true
     annotations:
       kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /
     hosts:
-      - host: nzbget.lan
+      - host: radarr.lan
         paths:
           - /
 
 sonarr:
+  uid: 1000
+  gid: 1000
   persistence:
     enabled: true
+    useExistingClaim: true
+    downloads:
+      claimName: larry-downloads
+    tv:
+      claimName: larry-tv
+    config:
+      claimName: larry-config
   ingress:
     enabled: true
     annotations:
       kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /
     hosts:
-      - host: nzbget.lan
+      - host: sonarr.lan
         paths:
           - /

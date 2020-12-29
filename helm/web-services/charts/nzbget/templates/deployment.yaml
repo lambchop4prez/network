@@ -20,6 +20,10 @@ spec:
       labels:
         {{- include "nzbget.selectorLabels" . | nindent 8 }}
     spec:
+      securityContext:
+        runAsUser: {{ .Values.puid }}
+        runAsGroup: {{ .Values.pgid }}
+        fsGroup: {{ .Values.pgid }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -51,7 +55,6 @@ spec:
               subPath: nzbget
             - name: downloads
               mountPath: /downloads
-              subPath: downloads
           envFrom:
             - configMapRef:
                 name: {{ include "nzbget.fullname" . }}

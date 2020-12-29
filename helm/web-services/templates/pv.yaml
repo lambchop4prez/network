@@ -16,6 +16,8 @@ spec:
   storageClassName: {{ .Values.storageClass.name }}
   mountOptions:
    - hard
+   - rw
+   - nfsvers=4.1
   nfs:
     path: {{ .Values.nfs.path}}/config
     server: {{ .Values.nfs.server }}
@@ -24,9 +26,9 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ .Values.persistence.library.name }}
+  name: {{ .Values.persistence.downloads.name }}
   labels:
-    {{- include "web-services.libraryLabels" . | nindent 4}}
+    {{- include "web-services.downloadsLabels" . | nindent 4}}
 spec:
   capacity:
     storage: 1Ti
@@ -37,7 +39,53 @@ spec:
   storageClassName: {{ .Values.storageClass.name }}
   mountOptions:
    - hard
+   - rw
+   - nfsvers=4.1
   nfs:
-    path: {{ .Values.nfs.path}}/Library
+    path: {{ .Values.nfs.path}}/Library/downloads
+    server: {{ .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.persistence.tv.name }}
+  labels:
+    {{- include "web-services.tvLabels" . | nindent 4}}
+spec:
+  capacity:
+    storage: 1Ti
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ .Values.storageClass.name }}
+  mountOptions:
+   - hard
+   - rw
+   - nfsvers=4.1
+  nfs:
+    path: {{ .Values.nfs.path}}/Library/tv
+    server: {{ .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.persistence.movies.name }}
+  labels:
+    {{- include "web-services.moviesLabels" . | nindent 4}}
+spec:
+  capacity:
+    storage: 1Ti
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ .Values.storageClass.name }}
+  mountOptions:
+   - hard
+   - rw
+   - nfsvers=4.1
+  nfs:
+    path: {{ .Values.nfs.path}}/Library/movies
     server: {{ .Values.nfs.server }}
 {{- end }}

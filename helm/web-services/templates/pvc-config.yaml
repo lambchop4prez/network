@@ -15,7 +15,6 @@ spec:
     - {{ . | quote }}
     {{- end }}
   volumeMode: Filesystem
-  volumeName: config
   storageClassName: {{ .Values.storageClass.name }}
   resources:
     requests:

@@ -55,7 +55,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Config PV labels
 */}}
 {{- define "web-services.configLabels" -}}
-bucket: {{ .Values.persistence.config.bucket }}
+bucket: {{ .Values.persistence.config.name }}
 {{ include "web-services.selectorLabels" . }}
 {{- end }}
 
@@ -63,7 +63,31 @@ bucket: {{ .Values.persistence.config.bucket }}
 Library PV labels
 */}}
 {{- define "web-services.libraryLabels" -}}
-bucket: {{ .Values.persistence.library.bucket }}
+bucket: {{ .Values.persistence.library.name }}
+{{ include "web-services.selectorLabels" . }}
+{{- end }}
+
+{{/*
+Library PV labels
+*/}}
+{{- define "web-services.downloadsLabels" -}}
+bucket: {{ .Values.persistence.downloads.name }}
+{{ include "web-services.selectorLabels" . }}
+{{- end }}
+
+{{/*
+Library PV labels
+*/}}
+{{- define "web-services.tvLabels" -}}
+bucket: {{ .Values.persistence.tv.name }}
+{{ include "web-services.selectorLabels" . }}
+{{- end }}
+
+{{/*
+Library PV labels
+*/}}
+{{- define "web-services.moviesLabels" -}}
+bucket: {{ .Values.persistence.movies.name }}
 {{ include "web-services.selectorLabels" . }}
 {{- end }}
 
