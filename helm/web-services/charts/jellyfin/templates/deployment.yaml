@@ -38,11 +38,13 @@ spec:
               containerPort: 8096
               protocol: TCP
           livenessProbe:
-            tcpSocket:
+            httpGet:
               port: http
+              path: /health
           readinessProbe:
             tcpSocket:
               port: http
+              path: /health
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

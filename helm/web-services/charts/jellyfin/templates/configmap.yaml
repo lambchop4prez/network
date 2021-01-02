@@ -1,9 +1,9 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: {{ include "nzbget.fullname" .}}
+  name: {{ include "jellyfin.fullname" .}}
   labels:
-    {{- include "nzbget.labels" . | nindent 4 }}
+    {{- include "jellyfin.labels" . | nindent 4 }}
 data:
   PUID: {{ .Values.puid | quote }}
   PGID: {{ .Values.pgid | quote }}

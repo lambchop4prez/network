@@ -22,6 +22,9 @@ nfs:
   path: /stor
 
 jellyfin:
+  uid: 1000
+  gid: 1000
+  timezone: America/Detroit
   persistence:
     enabled: true
     config:
@@ -52,6 +55,7 @@ nfs-client-provisioner:
 nzbget:
   uid: 1000
   gid: 1000
+  timezone: America/Detroit
   persistence:
     enabled: true
     useExistingClaim: true
@@ -72,6 +76,7 @@ nzbget:
 radarr:
   uid: 1000
   gid: 1000
+  timezone: America/Detroit
   persistence:
     enabled: true
     useExistingClaim: true
@@ -94,6 +99,7 @@ radarr:
 sonarr:
   uid: 1000
   gid: 1000
+  timezone: America/Detroit
   persistence:
     enabled: true
     useExistingClaim: true
