@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "jellyfin.fullname" . }}
+  name: {{ include "home-assistant.fullname" . }}
   labels:
-    {{- include "jellyfin.labels" . | nindent 4 }}
+    {{- include "home-assistant.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "jellyfin.selectorLabels" . | nindent 6 }}
+      {{- include "home-assistant.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "jellyfin.selectorLabels" . | nindent 8 }}
+        {{- include "home-assistant.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "jellyfin.serviceAccountName" . }}
+      serviceAccountName: {{ include "home-assistant.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -35,48 +35,27 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 8096
+              containerPort: 8123
               protocol: TCP
           livenessProbe:
-            tcpSocket:
+            httpGet:
+              path: /
               port: http
           readinessProbe:
-            tcpSocket:
+            httpGet:
+              path: /
               port: http
-            initialDelaySeconds: 15
-            periodSeconds: 20
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: config
               mountPath: /config
-              subPath: jellyfin
-            - name: tv
-              mountPath: /media/tv
-            - name: movies
-              mountPath: /media/movies
-          envFrom:
-            - configMapRef:
-                name: {{ include "jellyfin.fullname" . }}
+              subPath: hass
       volumes:
         - name: config
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ include "jellyfin.claims.config" . }}
-        {{- else }}
-          emptyDir: {}
-        {{- end }}
-        - name: tv
-        {{- if .Values.persistence.enabled }}
-          persistentVolumeClaim:
-            claimName: {{ include "jellyfin.claims.tv" . }}
-        {{- else }}
-          emptyDir: {}
-        {{- end }}
-        - name: movies
-        {{- if .Values.persistence.enabled }}
-          persistentVolumeClaim:
-            claimName: {{ include "jellyfin.claims.movies" . }}
+            claimName: {{ include "home-assistant.claims.config" . }}
         {{- else }}
           emptyDir: {}
         {{- end }}

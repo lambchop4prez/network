@@ -21,6 +21,23 @@ nfs:
   server: "10.4.20.108"
   path: /stor
 
+home-assistant:
+  uid: 1000
+  gid: 1000
+  timezone: America/Detroit
+  persistence:
+    enabled: true
+    claimName: larry-config
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    hosts:
+      - host: hass.lan
+        paths:
+          - /
+
 jellyfin:
   uid: 1000
   gid: 1000
