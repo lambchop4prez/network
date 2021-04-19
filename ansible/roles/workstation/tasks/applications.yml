@@ -7,11 +7,11 @@
     name: "{{ item }}"
   loop: "{{ applications }}"
 
-- name: homebrew cask applications
-  homebrew_cask:
-    state: present
-    name: "{{ item }}"
-  loop: "{{ casks }}"
+#- name: homebrew cask applications
+#  homebrew_cask:
+#    state: present
+#    name: "{{ item }}"
+#  loop: "{{ casks }}"
 
 - name: install npm packages
   npm:

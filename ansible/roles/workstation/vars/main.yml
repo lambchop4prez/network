@@ -22,11 +22,7 @@ applications:
   - packer
   - consul
   - rtl-sdr
-
-casks:
   - bitwarden
-  - visual-studio-code
-  - visual-studio
   - google-chrome
   - firefox
   - reaper
@@ -37,7 +33,6 @@ casks:
   - balenaetcher
   - geektool
   - iterm2
-  - zoomus
   - discord
   - vagrant
   - dotnet-sdk
@@ -47,7 +42,8 @@ casks:
   - vlc
   - the-unarchiver
   - wireshark
-  - alfred
+  - atom
+  - guitar-pro
 
 npm:
   - angular

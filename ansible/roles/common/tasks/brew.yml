@@ -1,7 +1,9 @@
 ---
 # Homebrew macos package manager
 - name: install homebrew
-  shell: 'yes | /bin/bash -c "$(curl -fsSL {{ brew_installer }})"'
+  script: install-brew.sh
+  # become: true
+  # shell: 'yes | /bin/bash -c "$(curl -fsSL {{ brew_installer }})"'
   args:
     creates: /usr/local/bin/brew
 
