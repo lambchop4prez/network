@@ -1,74 +1,35 @@
-version: '2'
+version: '3.9'
 services:
-    nginx-proxy:
-        image: jwilder/nginx-proxy:latest
-        container_name: nginx-proxy
-        volumes:
-            - /var/run/docker.sock:/tmp/docker.sock:ro
-            - /stor/docker/nginx/certs:/etc/nginx/certs
-            - /stor/docker/nginx/vhost.d:/etc/nginx/vhost.d
-            - /stor/docker/nginx/html:/usr/share/nginx/html
-        ports:
-            - 80:80
-            - 443:443
-        restart: always
-
-    # letsencrypt-companion:
-    #     image: jrcs/letsencrypt-nginx-proxy-companion
-    #     container_name: letsencrypt-companion
-    #     volumes:
-    #         - /var/run/docker.sock:/var/run/docker.sock:ro
-    #         - /stor/nginx/docker/nginx/certs:/etc/nginx/certs:rw
-    #     volumes_from: 
-    #         - nginx-proxy
-
     sonarr:
         image: linuxserver/sonarr
         container_name: sonarr
         volumes:
-            - /stor/docker/usenet/config/sonarr:/config
-            - /stor/TV:/tv
-            - /stor/docker/usenet/Downloads:/downloads
+            - /mnt/media/config/sonarr:/config
+            - /mnt/media/tv:/tv
+            - /mnt/media/downloads:/downloads
             - /etc/localtime:/etc/localtime:ro
         ports:
             - 8989:8989
-        env_file: uidgid.env
         environment:
-            - VIRTUAL_HOST=sonarr.timcosgriff.com, sonarr.larry
-            - VIRTUAL_PORT=8989
-            - LETSENCRYPT_HOST=sonarr.timcosgriff.com
-            - LETSENCRYPT_EMAIL=timothy.cosgriff@gmail.com
-        restart: always
-
-    muximux:
-        image: linuxserver/muximux
-        container_name: muximux
-        volumes:
-            - /stor/docker/usenet/config/muximux:/config
-            - /etc/localtime:/etc/localtime:ro
-        env_file: uidgid.env
-        environment:
-            - VIRTUAL_HOST=muximux.timcosgriff.com, muximux.larry
-            - LETSENCRYPT_HOST=muximux.timcosgriff.com
-            - LETSENCRYPT_EMAIL=timothy.cosgriff@gmail.com
+          - PUID=1000
+          - PGID=1000
+          - TZ=America/Detroit
         restart: always
 
     radarr:
         image: linuxserver/radarr
         container_name: radarr
         volumes:
-            - /stor/docker/usenet/config/radarr:/config
-            - /stor/Movies:/movies
-            - /stor/docker/usenet/Downloads:/downloads
+            - /mnt/media/config/radarr:/config
+            - /mnt/media/movies:/movies
+            - /mnt/media/downloads:/downloads
             - /etc/localtime:/etc/localtime:ro
         ports:
             - 7878:7878
-        env_file: uidgid.env
         environment:
-            - VIRTUAL_HOST=radarr.timcosgriff.com, radarr.larry
-            - VIRTUAL_PORT=7878
-            - LETSENCRYPT_HOST=radarr.timcosgriff.com
-            - LETSENCRYPT_EMAIL=timothy.cosgriff@gmail.com
+          - PUID=1000
+          - PGID=1000
+          - TZ=America/Detroit
         restart: always
 
 
@@ -76,46 +37,13 @@ services:
         image: linuxserver/nzbget
         container_name: nzbget
         volumes:
-            - /stor/docker/usenet/config/nzbget:/config
-            - /stor/docker/usenet/Downloads/completed:/complete
-            - /stor/docker/usenet/Downloads:/downloads
+            - /mnt/media/config/nzbget:/config
+            - /mnt/media/downloads/completed:/complete
+            - /mnt/media/downloads:/downloads
         ports:
             - 6789:6789
-        env_file: uidgid.env
         environment:
-            - VIRTUAL_HOST=nzbget.timcosgriff.com, nzbget.larry
-            - VIRTUAL_PORT=6789
-            - LETSENCRYPT_HOST=nzbget.timcosgriff.com
-            - LETSENCRYPT_EMAIL=timothy.cosgriff@gmail.com
+          - PUID=1000
+          - PGID=1000
+          - TZ=America/Detroit
         restart: always
-    
-    nextcloud:
-        image: linuxserver/nextcloud
-        container_name: nextcloud
-        volumes:
-            - /stor/docker/nextcloud/config:/config
-            - /stor/docker/nextcloud/data:/data
-        ports:
-            - 8443:443
-        env_file: uidgid.env
-        environment:
-            - VIRTUAL_HOST=cloud.timcosgriff.com, cloud.larry
-            - VIRTUAL_PROTO=https
-            - VIRTUAL_PORT=8443
-            - LETSENCRYPT_HOST=cloud.timcosgriff.com
-            - LETSENCRYPT_EMAIL=timothy.cosgriff@gmail.com
-
-#    ttrss:
-#        image: linuxserver/tt-rss
-#        container_name: ttrss
-#        volumes:
-#            - /stor/docker/ttrss/config:/config
-#        ports:
-#            - 8080:80
-#        env_file: uidgid.env
-#        environment:
-#            - VIRTUAL_HOST:rss.timcosgriff.com, rss.larry
-#            - VIRTUAL_PORT=8080
-#            - LETSENCRYPT_HOST=rss.timcosgriff.com
-#            - LETSENCRYPT_EMAIL=timothy.cosgriff@gmail.com
-
