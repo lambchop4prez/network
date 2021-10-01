@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
  - monitoring
  - metallb-system
- - nginx-ingress
+ - ingress-nginx
