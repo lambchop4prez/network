@@ -1,6 +1,6 @@
 ---
 # Homebrew variables
-brew_installer: https://raw.githubusercontent.com/Homebrew/install/master/install.sh
+brew_installer: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
 # Chocolatey default values
 choco_path: c:/ProgramData/chocolatey
 choco_installer: https://chocolatey.org/install.ps1

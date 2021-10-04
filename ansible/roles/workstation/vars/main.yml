@@ -23,8 +23,6 @@ applications:
   - consul
   - rtl-sdr
   - bitwarden
-  - visual-studio-code
-  - visual-studio
   - google-chrome
   - firefox
   - reaper
@@ -35,7 +33,6 @@ applications:
   - balenaetcher
   - geektool
   - iterm2
-  - zoomus
   - discord
   - vagrant
   - dotnet-sdk
@@ -45,7 +42,8 @@ applications:
   - vlc
   - the-unarchiver
   - wireshark
-  - alfred
+  - atom
+  - guitar-pro
 
 npm:
   - angular
