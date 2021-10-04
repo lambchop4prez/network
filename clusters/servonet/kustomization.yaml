@@ -4,3 +4,5 @@ resources:
  - monitoring
  - metallb-system
  - ingress-nginx
+ - home
+ 
