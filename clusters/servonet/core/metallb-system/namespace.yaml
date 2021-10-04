@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    app.kubernetes.io/instance: metallb-system
+    app.kubernetes.io/part-of: metallb
+    app.kubernetes.io/version: v0.10.2
+  name: metallb-system

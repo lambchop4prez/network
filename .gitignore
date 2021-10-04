@@ -1,3 +1,7 @@
 .DS_Store
+<<<<<<< HEAD
 bin/**
 lib/**
+=======
+.terraform
+>>>>>>> 4060778fe23aac3545b78b8ab37b1a8385e91a70
