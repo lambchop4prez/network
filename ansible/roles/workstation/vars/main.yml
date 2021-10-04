@@ -22,8 +22,6 @@ applications:
   - packer
   - consul
   - rtl-sdr
-
-casks:
   - bitwarden
   - visual-studio-code
   - visual-studio
