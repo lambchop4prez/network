@@ -10,5 +10,5 @@ spec:
       chart: nzbget
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home
+        name: k8sathome
   interval: 10m0s
