@@ -8,6 +8,7 @@ spec:
   interval: 10m0s
   dependsOn:
   - name: core
+  - name: flux-system
   path: ./clusters/servonet/home
   prune: false
   sourceRef:
