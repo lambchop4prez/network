@@ -12,3 +12,6 @@ spec:
         kind: HelmRepository
         name: k8sathome
   interval: 10m0s
+  values:
+    env:
+      TZ="America/Detroit"
