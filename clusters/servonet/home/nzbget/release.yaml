@@ -16,3 +16,7 @@ spec:
   values:
     env:
       TZ: "America/Detroit"
+    service:
+      main:
+        type: LoadBalancer
+        loadBalancerIP: 10.4.99.66
