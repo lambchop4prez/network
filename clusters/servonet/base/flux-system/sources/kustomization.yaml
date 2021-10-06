@@ -3,3 +3,5 @@ kind: Kustomization
 resources:
  - k8sathome.yaml
  - nfs-subdir-external-provisioner.yaml
+ - prometheus-community-charts.yaml
+ - traefik-charts.yaml
