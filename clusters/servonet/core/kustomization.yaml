@@ -3,4 +3,3 @@ kind: Kustomization
 resources:
  - kube-system
  - metallb-system
- - monitoring
