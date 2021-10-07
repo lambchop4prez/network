@@ -20,3 +20,12 @@ spec:
       main:
         type: LoadBalancer
         loadBalancerIP: 10.4.99.66
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "web"
+        hosts:
+         - nzbget.servo.lan
+           
