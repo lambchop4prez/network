@@ -1,19 +1,22 @@
 # Home Network
 
-## Ansible Roles
+## Provisioning
 
-* Common
-* Server
-* Workstation
-  * Mac
+### Ansible
 
-## Helm Charts
+Automations to manage the environment
 
-* web-services
-  * nzbget
-  * sonarr
-  * radarr
+### Packer
 
-## Deployments
+Virtual Environment Templates
 
-* larry - Legacy server
+### Terraform
+
+Network state management
+
+
+## Scripts
+
+Scripts to ...script things.
+
+
