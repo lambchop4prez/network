@@ -2,18 +2,9 @@
 ---
 - name: verify virtualization
 
+- name: download ubuntu cloud image
+  shell: wget https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img
 
-- name: verify packer
-  stat:
-    path: packer
-  register: stat_packer
+- name: create VM
+  shell: qm 
 
-- name: get boxcutter repos
-  git:
-    repo: git@github.com:boxcutter/ubuntu.git
-
-
-- name: packer build ubuntu desktop
-  shell: packer build -var-file=ubuntu2004.json ubuntu.json
-  
-  
