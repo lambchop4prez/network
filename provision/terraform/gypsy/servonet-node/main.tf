@@ -36,7 +36,7 @@ resource "proxmox_vm_qemu" "servonet-node" {
 
   cores = var.cores
   sockets = 1
-  memory = 2048
+  memory = 4096
 
   disk {
     type = "scsi"
