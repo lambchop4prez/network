@@ -13,23 +13,23 @@ provider "proxmox" {
   pm_api_url = "https://gypsy:8006/api2/json"
 }
 
+locals {
+  macaddrs = [
+    "66:49:31:02:77:d6",
+    "1a:83:b1:6e:ca:26",
+    "7a:9e:b7:26:20:ce",
+    "66:65:33:7a:3c:c4"
+  ]
+}
+
 module "servonet-cluster" {
   source = "./servonet-node"
+  
+  count = length(local.macaddrs)
 
-  for_each = {
-    "tom-3" = "10.4.88.123"
-    "tom-4" = "10.4.88.124"
-    "tom-5" = "10.4.88.125"
-    "tom-6" = "10.4.88.126"
-  }
-
-  name = each.key
-  ip = each.value
-
-  sshkeys = <<EOF
-  ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLXLbp5bWpHIQkEf/5yhLftPbp93DGMLW+8lsG+hcC5imyprs/xQ7hq7Oiok+51XZKcpom2p7zZ7uXXAdkPLz6s= tcosgriff@Rudy.local
-  ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLhQjJ5dDqq1bU26WDhy+GiyaiJ7TJR0+jHrgoG9gX37FTn+cE4hsaA9vDk0G1V9YgSM4xR1Aq9b1555TUudAbM= tmc@Tims-Mac-mini.lan
-  EOF
+  name = "tom-${count.index + 3}"
+  ip = "10.4.88.12${count.index + 3}"
+  macaddr = local.macaddrs[count.index]
 
   gateway = "10.4.20.1"
   bridge = "vmbr0"
@@ -39,6 +39,8 @@ module "servonet-cluster" {
   pve_host = var.pve_host
   pve_user = var.pve_user
   pve_password = var.pve_password
+  ciuser = "tom"
+  cipassword_hashed = var.cipassword_hashed
 }
 
 variable "pve_host" {
@@ -51,5 +53,10 @@ variable "pve_user" {
 
 variable "pve_password" {
   type = string
-  sensitive = true  
+  sensitive = true
+}
+
+variable "cipassword_hashed" {
+  type = string
+  sensitive = true
 }

@@ -17,7 +17,7 @@ resource "null_resource" "cloud_init_config_file" {
   }
 
   provisioner "file" {
-    content = "${templatefile("${path.module}/files/user-data.tpl", {hostname = "${var.name}", username = "tom", passwd = "$1$BWIRY.Mm$/WlHfoaOnobjEfKoVgPKI."})}"
+    content = "${templatefile("${path.module}/files/user-data.tpl", {hostname = "${var.name}", username = "${var.ciuser}", passwd = "${var.cipassword_hashed}"})}"
     destination = "/var/lib/vz/snippets/${var.name}.yml"
   }
 }
@@ -30,7 +30,7 @@ resource "proxmox_vm_qemu" "servonet-node" {
 
   name = "${var.name}"
   desc = "servonet node"
-  target_node = "gypsy"
+  target_node = var.target_node
 
   clone = var.template_name
 
@@ -47,15 +47,12 @@ resource "proxmox_vm_qemu" "servonet-node" {
   network {
     model = "virtio"
     bridge = var.bridge
+    macaddr =  var.macaddr
   }
 
   cicustom = "user=local:snippets/${var.name}.yml"
-  cloudinit_cdrom_storage = var.storage_pool
-  
-  ssh_user = var.ssh_user
+  cloudinit_cdrom_storage = "iso"
 
   os_type = "cloud-init"
   ipconfig0 = "ip=${var.ip}/16,gw=${var.gateway}"
-
-  sshkeys = var.sshkeys
 }

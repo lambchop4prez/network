@@ -21,17 +21,6 @@ variable "memory" {
   default = 2048
 }
 
-variable "sshkeys" {
-  description = "ssh keys to drop on VM"
-  type = string
-}
-
-variable "ssh_user" {
-  description = "user to put ssh keys under"
-  type = string
-  default = "ubuntu"
-}
-
 variable "gateway" {
   description = "gateway for cluster"
   type = string
@@ -82,3 +71,15 @@ variable "pve_password" {
   sensitive = true
 }
 
+variable "ciuser" {
+  type = string
+}
+
+variable "cipassword_hashed" {
+  type = string
+  sensitive = true
+}
+
+variable "macaddr" {
+  type = string
+}
