@@ -1,22 +1,10 @@
 # Home Network
 
+Infrastructure as code for my network.
+
 ## Provisioning
-
-### Ansible
-
-Automations to manage the environment
-
-### Packer
-
-Virtual Environment Templates
 
 ### Terraform
 
-Network state management
-
-
-## Scripts
-
-Scripts to ...script things.
-
+**Gypsy** Intel Xeon LGA1155 running Proxmox
 

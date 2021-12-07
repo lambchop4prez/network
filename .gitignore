@@ -38,3 +38,9 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# vscode-sops
+.decrypted~*.yaml
+.config.env
+
+key.txt

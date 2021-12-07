@@ -44,6 +44,7 @@ applications:
   - wireshark
   - atom
   - guitar-pro
+  - sops
 
 npm:
   - angular

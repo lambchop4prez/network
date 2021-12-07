@@ -13,19 +13,19 @@
 #    name: "{{ item }}"
 #  loop: "{{ casks }}"
 
-- name: install npm packages
-  npm:
-    state: latest
-    name: "{{ item }}"
-    global: yes
-  loop: "{{ npm }}"
+# - name: install npm packages
+#   npm:
+#     state: latest
+#     name: "{{ item }}"
+#     global: yes
+#   loop: "{{ npm }}"
 
-- name: pip test
-  pip:
-    name: "{{ pip }}"
+# - name: pip test
+#   pip:
+#     name: "{{ pip }}"
 
 
-- name: install gems
-  gem:
-    name: "{{ item }}"
-  loop: "{{ gems }}"
+# - name: install gems
+#   gem:
+#     name: "{{ item }}"
+#   loop: "{{ gems }}"

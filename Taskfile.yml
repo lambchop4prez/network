@@ -1,0 +1,15 @@
+---
+version: "3"
+
+vars:
+  PROJECT_DIR:
+    sh: "git rev-parse --show-toplevel"
+  INVENTORY_DIR: "{{.PROJECT_DIR}}/provision/ansible/inventory"
+
+tasks:
+  hello:
+    cmds:
+      - echo "hello {{.PROJECT_DIR}}"
+  ping:
+    cmds:
+      - "ansible servonet -i {{.INVENTORY_DIR}}/hosts.yml --one-line -m 'ping'"
