@@ -13,3 +13,7 @@ tasks:
   ping:
     cmds:
       - "ansible servonet -i {{.INVENTORY_DIR}}/hosts.yml --one-line -m 'ping'"
+  deps:
+    dir: provision/ansible
+    cmds:
+      - "ansible-galaxy install -r requirements.yaml --force"
