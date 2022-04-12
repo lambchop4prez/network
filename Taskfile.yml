@@ -5,15 +5,23 @@ vars:
   PROJECT_DIR:
     sh: "git rev-parse --show-toplevel"
   INVENTORY_DIR: "{{.PROJECT_DIR}}/provision/ansible/inventory"
+  INVENTORY: "{{.INVENTORY_DIR}}/hosts.yml"
+  PLAYBOOK_DIR: "{{.PROJECT_DIR}}/provision/ansible/playbooks"
 
 tasks:
   hello:
     cmds:
       - echo "hello {{.PROJECT_DIR}}"
+  
   ping:
     cmds:
-      - "ansible servonet -i {{.INVENTORY_DIR}}/hosts.yml --one-line -m 'ping'"
+      - "ansible workstations -i {{.INVENTORY}} --one-line -m 'ping'"
+  
   deps:
     dir: provision/ansible
     cmds:
       - "ansible-galaxy install -r requirements.yaml --force"
+  
+  playbook:workstation:
+    cmds:
+      - "ansible-playbook -i {{.INVENTORY}} {{.PLAYBOOK_DIR}}/workstation.yml"
