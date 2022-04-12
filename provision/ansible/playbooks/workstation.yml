@@ -1,4 +1,17 @@
 - hosts: workstations
-  roles: 
-    - common
-    - workstation
+  become: true
+  gather_facts: true
+
+  pre_tasks:
+    - name: Pausing for 5 seconds...
+      pause:
+        seconds: 5
+  
+  roles:
+    - role: elliotweiser.osx-command-line-tools
+    # - role: geerlingguy.mac.homebrew
+    #   tags: ['homebrew']
+    # - role: geerlingguy.dotfiles
+    #   when: configure_dotfiles
+    #   tags: ['dotfiles']
+  

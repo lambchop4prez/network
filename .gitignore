@@ -44,3 +44,9 @@ terraform.rc
 .config.env
 
 key.txt
+
+# ansible dependencies
+
+xanmanning.k3s*
+elliotweiser.osx-command-line-tools*
+geerlingguy.dotfiles*
