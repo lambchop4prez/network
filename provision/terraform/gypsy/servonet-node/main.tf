@@ -43,6 +43,12 @@ resource "proxmox_vm_qemu" "servonet-node" {
     storage = var.storage_pool
     size = var.storage_size
   }
+  // secondary disk for block storage
+  disk {
+    type = "scsi"
+    storage = "vmstoragelimited"
+    size = "100G"
+  }
 
   network {
     model = "virtio"
@@ -55,4 +61,5 @@ resource "proxmox_vm_qemu" "servonet-node" {
 
   os_type = "cloud-init"
   ipconfig0 = "ip=${var.ip}/16,gw=${var.gateway}"
+
 }
