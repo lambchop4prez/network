@@ -1,0 +1,91 @@
+---
+downloads: ~/.ansible-downloads/
+
+configure_dotfiles: false
+configure_terminal: true
+configure_osx: true
+
+configure_dock: false
+dockitems_remove: []
+
+# dotfiles_repo: ''
+# dotfiles_repo_accept_hostkey: true
+# dotfiles_repo_local_distination: ~/Source/dotfiles
+# dotfiles_files: []
+homebrew_prefix: "{{ (ansible_machine == 'arm64') | ternary('/opt/homebrew', '/usr/local') }}"
+homebrew_install_path: "{{ homebrew_prefix }}/Homebrew"
+homebrew_installed_packages:
+  - age
+  - autoconf
+  - autojump
+  - cask
+  - cmake
+  - coreutils
+  - ctags
+  - curl
+  - direnv
+  - fluxcd/tap/flux
+  - git
+  - gnupg
+  - go
+  - go-task
+  - gifsicle
+  - hackrf
+  - helm
+  - httpie
+  - influxdb-cli
+  - ipcalc
+  - iperf
+  - jpeg
+  - jq
+  - kubernetes-cli
+  - make
+  - nmap
+  - packer
+  - pre-commit
+  - pyenv
+  - sops
+  - telegraf
+  - terraform
+  - tree
+  - vim
+  - wget
+  - zsh
+
+  
+
+homebrew_taps:
+  - homebrew/core
+  - homebrew/cask
+  - fluxcd/tap
+
+homebrew_cask_appdir: /Applications
+
+homebrew_cask_apps:
+  - arduino
+  #- balendaetcher
+  - dbeaver-community
+  - discord
+  - dotnet-sdk
+  - firefox
+  - gb-studio
+  - hex-fiend
+  - iterm2
+  - keepassx
+  - krita
+  - mgba
+  - pock
+  - qlmarkdown
+  - quicklook-json
+  - reaper
+  - sameboy
+  - spotify
+  - the-unarchiver
+  - tinymediamanager
+  - transmission
+  - vagrant
+  - visual-studio-code
+  - vlc
+  - wireshark
+  - zoomus
+
