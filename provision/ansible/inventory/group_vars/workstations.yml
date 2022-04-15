@@ -63,7 +63,7 @@ homebrew_cask_appdir: /Applications
 
 homebrew_cask_apps:
   - arduino
-  #- balendaetcher
+  - balendaetcher
   - dbeaver-community
   - discord
   - dotnet-sdk
@@ -76,6 +76,7 @@ homebrew_cask_apps:
   - mgba
   - pock
   - qlmarkdown
+  - qlstephen
   - quicklook-json
   - reaper
   - sameboy
