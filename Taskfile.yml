@@ -24,4 +24,4 @@ tasks:
   
   playbook:workstation:
     cmds:
-      - "ansible-playbook -i {{.INVENTORY}} {{.PLAYBOOK_DIR}}/workstation.yml --ask-become-pass"
+      - "ansible-playbook -i {{.INVENTORY}} {{.PLAYBOOK_DIR}}/workstation.yml --ask-become-pass -vvv"
