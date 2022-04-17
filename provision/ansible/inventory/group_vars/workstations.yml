@@ -58,12 +58,13 @@ homebrew_taps:
   - homebrew/core
   - homebrew/cask
   - fluxcd/tap
+  - go-task/tap
 
 homebrew_cask_appdir: /Applications
 
 homebrew_cask_apps:
   - arduino
-  - balendaetcher
+  - balenaetcher
   - dbeaver-community
   - discord
   - dotnet-sdk
@@ -82,11 +83,11 @@ homebrew_cask_apps:
   - sameboy
   - spotify
   - the-unarchiver
-  - tinymediamanager
+  #- tinymediamanager
   - transmission
-  - vagrant
+  #- vagrant
   - visual-studio-code
   - vlc
   - wireshark
-  - zoomus
+  #- zoomus
 
