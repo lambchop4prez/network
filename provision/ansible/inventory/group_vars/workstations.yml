@@ -91,3 +91,5 @@ homebrew_cask_apps:
   - wireshark
   #- zoomus
 
+mas_installed_apps:
+  - 1352778147  # Bitwarden
