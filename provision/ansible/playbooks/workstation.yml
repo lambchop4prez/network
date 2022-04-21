@@ -13,6 +13,8 @@
       tags: ['homebrew']
     - role: geerlingguy.mac.mas
       tags: ['mas']
+    - role: workstation
+      tags: ['workstation']
     # - role: geerlingguy.dotfiles
     #   when: configure_dotfiles
     #   tags: ['dotfiles']

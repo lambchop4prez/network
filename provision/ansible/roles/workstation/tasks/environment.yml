@@ -1,7 +1,4 @@
 ---
-- name: set up venv
-  shell: pyenv global {{ python }}
-
 - name: stat oh-my-zsh
   stat:
     path: ~/.oh-my-zsh
@@ -9,14 +6,19 @@
 
 - name: install oh-my-zsh
   git:
-    repo: https://github.com/lambchop4prez/ohmyzsh
-    dest: ~/.oh-my-zsh
+    repo: https://github.com/ohmyzsh/ohmyzsh
+    dest: ~/Source/ohmyzsh
+  when: not stat_omz_result.stat.exists
+
+- name: run install script
+  ansible.builtin.script: ~/Source/ohmyzsh/tools/install.sh
   when: not stat_omz_result.stat.exists
 
 - name: create new ~/.zshrc
   template:
     src: files/.zshrc.j2
     dest: ~/.zshrc
+  when: not stat_omz_result.stat.exists
 
 - name: set dock and hot corners
   shell: defaults write com.apple.dock {{ item.key }} -{{ item.type }} {{ item.value }}

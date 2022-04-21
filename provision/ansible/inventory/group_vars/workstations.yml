@@ -92,4 +92,5 @@ homebrew_cask_apps:
   #- zoomus
 
 mas_installed_apps:
-  - 1352778147  # Bitwarden
+  - 1352778147 # Bitwarden
+  - 1320666476 # Wipr
