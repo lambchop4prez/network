@@ -15,10 +15,8 @@ provider "proxmox" {
 
 locals {
   macaddrs = [
-    "66:49:31:02:77:d6",
     "1a:83:b1:6e:ca:26",
-    "7a:9e:b7:26:20:ce",
-    "66:65:33:7a:3c:c4"
+    "7a:9e:b7:26:20:ce"
   ]
 }
 
@@ -27,8 +25,8 @@ module "servonet-cluster" {
   
   count = length(local.macaddrs)
 
-  name = "tom-${count.index + 3}"
-  ip = "10.4.88.12${count.index + 3}"
+  name = "tom-${count.index + 4}"
+  ip = "10.4.88.12${count.index + 4}"
   macaddr = local.macaddrs[count.index]
 
   gateway = "10.4.20.1"
