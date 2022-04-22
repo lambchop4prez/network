@@ -14,7 +14,11 @@
     name: geerlingguy.mac.mas
     public: true
 
-
+- name: Configure dock
+  include_role:
+    name: geerlingguy.mac.dock
+    public: true
+  when: configure_dock
 
 - name: setup environment
   include_tasks: environment.yml

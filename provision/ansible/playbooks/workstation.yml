@@ -8,14 +8,6 @@
         seconds: 5
   
   roles:
-    # - role: elliotweiser.osx-command-line-tools
-    # - role: geerlingguy.mac.homebrew
-    #   tags: ['homebrew']
-    # - role: geerlingguy.mac.mas
-    #   tags: ['mas']
     - role: workstation.macos
       tags: ['workstation']
-    # - role: geerlingguy.dotfiles
-    #   when: configure_dotfiles
-    #   tags: ['dotfiles']
   

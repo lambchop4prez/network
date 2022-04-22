@@ -6,7 +6,16 @@ configure_terminal: true
 configure_osx: true
 
 configure_dock: false
-dockitems_remove: []
+dockitems_remove:
+  - Launchpad
+  - Maps
+  - FaceTime
+  - TV
+  - Music
+  - Podcasts
+  - News
+  - 'App Store'
+
 
 # dotfiles_repo: ''
 # dotfiles_repo_accept_hostkey: true
@@ -149,5 +158,6 @@ dock:
   - key: wvous-tr-modifier
     type: int
     value: 0
+
 
 python: 3.8.5
