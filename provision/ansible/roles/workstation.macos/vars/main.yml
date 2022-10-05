@@ -33,6 +33,7 @@ homebrew_installed_packages:
   - ctags
   - curl
   - direnv
+  - esphome
   - fluxcd/tap/flux
   - git
   - gnupg
