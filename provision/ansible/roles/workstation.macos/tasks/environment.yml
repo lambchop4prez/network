@@ -37,5 +37,5 @@
   register: id_ecdsa
 
 - name: generate ssh key
-  shell: ssh-keygen -t ecdsa
+  shell: ssh-keygen -t ecdsa -b 521 -f ~/.ssh/id_ecdsa
   when: not id_ecdsa.stat.exists
