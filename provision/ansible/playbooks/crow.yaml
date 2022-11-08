@@ -1,0 +1,4 @@
+---
+- hosts: crow
+  become: true
+  gather_facts: false

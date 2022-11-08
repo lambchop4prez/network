@@ -1,0 +1,33 @@
+---
+- name: Create CoreDNS Directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  loop:
+    - /usr/local/etc/cron.d
+    - /usr/local/etc/coredns
+    - /var/log/coredns
+
+- name: Check current CoreDNS version
+  ansible.builtin.command: "/usr/local/sbin/coredns --version"
+  failed_when: false
+  changed_when: false
+  register: coredns_version_check
+
+- block:
+    - name: Download CoreDNS
+      ansible.builtin.get_url:
+        url: "{{ coredns_download_url }}"
+        dest: "/tmp/k8s_gateway_{{ coredns_version }}_freebsd_amd64.tar.gz"
+    - name: Extract CoreDNS
+      ansible.builtin.shell:
+        cmd: >-
+          mkdir -p /tmp/k8s_gateway_{{ coredns_version }}_freebsd_amd64;
+          tar xvf /tmp/k8s_gateway_{{ coredns_version }}_freebsd_amd64.tar.gz -C /tmp/k8s_gateway_{{ coredns_version }}_freebsd_amd64
+    - name: Move CoreDNS binary
+      ansible.builtin.copy:
+        src:  /tmp/k8s_gateway_{{ coredns_version }}_freebsd_amd64/coredns
+        dest: /usr/local/sbin/coredns
+        mode: 0755
+        remote_src: true
