@@ -1,0 +1,8 @@
+---
+# (string) Timezone for the servers
+timezone: "America/New_York"
+
+# (list) Additional ssh public keys to add to the nodes
+ssh_authorized_keys:
+  - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLXLbp5bWpHIQkEf/5yhLftPbp93DGMLW+8lsG+hcC5imyprs/xQ7hq7Oiok+51XZKcpom2p7zZ7uXXAdkPLz6s= tcosgriff@Rudy.local
+  - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBAPXLI0p7jcdJ/x1JUbOBPpYpCLPZvu/G7cT8EO9nZ5Xm76g2Qy9p8RIHDKyu3wRsu1ZwaAFxeVbIVOiBgM/x64= tmc@Jocelyn.lan
