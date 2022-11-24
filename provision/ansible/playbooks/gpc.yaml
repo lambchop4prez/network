@@ -1,0 +1,12 @@
+---
+- hosts: gpc
+  become: true
+  gather_facts: true
+  any_errors_fatal: true
+  pre_tasks:
+    - name: Pause for 3 seconds...
+      pause:
+        seconds: 3
+  roles:
+    - storage.fusionio
+    - hypervisor.proxmox

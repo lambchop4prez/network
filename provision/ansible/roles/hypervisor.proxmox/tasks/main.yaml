@@ -1,0 +1,6 @@
+---
+- name: Enable IOMMU
+  include_tasks: iommu.yaml
+
+- name: setup users
+  include_tasks: users.yaml

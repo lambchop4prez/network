@@ -1,0 +1,8 @@
+---
+- name: Refresh boot
+  ansible.builting.shell:
+    cmd: proxmox-boot-tool refresh
+
+- name: Update kernel modules
+  ansible.builtin.shell:
+    cmd: update-initramfs -u -k all
