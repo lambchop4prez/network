@@ -1,4 +1,5 @@
 ---
+# https://pve.proxmox.com/wiki/Pci_passthrough
 - name: Update grub template
   ansible.builtin.copy:
     src: "files/grub"
