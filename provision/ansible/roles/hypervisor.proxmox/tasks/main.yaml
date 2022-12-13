@@ -4,3 +4,6 @@
 
 - name: setup users
   include_tasks: users.yaml
+
+- name: download isos
+  include_tasks: isos.yaml

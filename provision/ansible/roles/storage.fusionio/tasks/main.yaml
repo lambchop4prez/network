@@ -1,8 +1,8 @@
 ---
-- name: Detect fusion io storage.fusionio
+# - name: Detect fusion io storage.fusionio
 
-- name: Detect kernel module
-  register: fio_kernel_module
+# - name: Detect kernel module
+#   register: fio_kernel_module
 
 - name: Install prerequisites
   ansible.builtin.apt:
@@ -10,7 +10,7 @@
       - git
       - gcc
       - pve-headers
-      - pve-headers-$(uname -r)
+      - pve-headers-{{ ansible_kernel }}
       - zip
       - unzip
       - fakeroot
@@ -27,7 +27,14 @@
   retries: 5
   until: apt_install_common is success
 
-- block:
-  - name: Clone driver repo
+# - block:
+#   - name: Clone driver repo
+#     ansible.builtin.git:
+#       repo: 
 
-  - name: 
+#   # - name: Make DKMS module
+#   #   ansible.builtin.shell:
+#   #     cmd: make dkms
+      
+
+#   when: fio_kernel_modul is set
