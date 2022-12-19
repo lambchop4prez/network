@@ -4,5 +4,3 @@ creation_rules:
     unencrypted_regex: "^(kind)$"
     age: >-
       age13a30av7z5dzumzzrpc5pqmmyjmqdmamh8jzxsdz2zgschr9k2p8qz6v5uw
-    # pgp: >-
-    #   68A86A952C39741BA73F23318E6EE8B38327DF74
