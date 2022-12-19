@@ -1,0 +1,28 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+api:
+
+homeassistant:
+  name: Home
+  latitude: !env_var HASS_LATITUDE
+  longitude: !env_var HASS_LONGITUDE
+  unit_system: imperial
+  currency: USD
+  time_zone: "America/Detroit"
+  temperature_unit: F
+
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - !env_var HASS_TRUSTED_PROXIES_1
+    - !env_var HASS_TRUSTED_PROXIES_2
+    - !env_var HASS_TRUSTED_PROXIES_3
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+# automation: !include automations.yaml
+# script: !include scripts.yaml
+# scene: !include scenes.yaml
