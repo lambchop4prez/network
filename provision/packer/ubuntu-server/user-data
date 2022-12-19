@@ -1,0 +1,33 @@
+autoinstall:
+  version: 1
+  locale: en_US
+  keyboard:
+    layout: en
+  ssh:
+    install-server: true
+    allow-pw: true
+  packages:
+    - qemu-guest-agent
+  storage:
+    layout:
+      name: direct
+    swap:
+      size: 0
+  user-data:
+    package_upgrade: true
+    timezone: America/Detroit
+    users:
+      - name: tmc
+        passwd: $1$CY5hUVJ0$5YLB2o0J0MPO1iQegKOpE1
+        groups: [adm, cdrom, dip, plugdev, lxd, sudo]
+        lock-passwd: false
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        shell: /bin/bash
+        ssh_authorized_keys:
+          - ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1MjEAAACFBAFG6y3qeUdWbXiyTOEwxKAyd7srtOntd37BzEmNNAlyya5sn6zUfDsBY6Poc+reS7n4gaMLAjuCjoVNdSd8gnwttQENETn5Ej0057tsXFZW1sRh0ABpwhT32FaLe89qek8PjXp/IbEE7i45I69rlMXaf34ivRjFywBeQ10hcNp2tnjqrQ== tmc@Rudy.lan
+          - ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1MjEAAACFBAHdRgaHrPUcx0dAlqQxBPFCcjppSSvKeU6yWjkk1SfJv1IRm7ZUDMGtKUhsRYGSFYy+CHPGvIBxUP10VGr7ATsnmgDeWgE5SCtdEn0j/IIzEuxlTSAaUuQDb49MBh081TL29uY4qM8i9ceVyV0zNbg4RQ77s8cx89byTLSdVa+UM3UZaQ== tmc@Jocelyn.lan
+  early-commands:
+    - systemctl stop ssh
+  late-commands:
+    - curtin in-target --target=/target -- apt update
+    - curtin in-target --target=/target -- apt upgrade -y
