@@ -3,6 +3,7 @@ bin/**
 lib/**
 .terraform
 .secrets.env
+secrets.yaml
 
 # Local .terraform directories
 **/.terraform/*
@@ -50,3 +51,4 @@ key.txt
 xanmanning.k3s*
 elliotweiser.osx-command-line-tools*
 geerlingguy.dotfiles*
+ansible-role-k3s
