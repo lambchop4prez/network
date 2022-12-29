@@ -15,6 +15,11 @@ variable "proxmox_node" {
     type = string
     default = "${env("PROXMOX_NODE")}"
 }
+variable "ssh_password" {
+    type = string
+    default = "${env("SSH_PASSWORD")}"
+    sensitive = true
+}
 variable "vm_cpu_sockets" {
     type = number
     default = "1"
