@@ -1,0 +1,51 @@
+substitutions:
+  esp_name: Office 1 Time #Device Name
+  esp_hostname: office-clock-1
+  #ip_address: 192.168.1.107
+  #ip_gw: 192.168.1.1
+  #ip_netmask: 255.255.255.0
+  run_time: 5min #can be as long as needed to get data
+  sleep_time: 20min # normal sleep time
+  night_sleep_time: 6h # 1st sleep time after midnight
+  fonts_dir: ./fonts
+  images_dir: ./images
+
+esphome:
+  name: ${esp_hostname}
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+logger:
+api:
+ota:
+
+spi:
+  id: display_spi
+  clk_pin: GPIO14
+  mosi_pin: GPIO13
+
+font:
+  - id: digit_font
+    file: "fonts/Early_GameBoy.ttf"
+    size: 8
+
+time:
+  - platform: sntp
+    id: sntp_time
+
+display:
+  - platform: max7219digit
+    cs_pin: GPIO15
+    num_chips: 4
+    intensity: 5
+    spi_id: display_spi
+    scroll_speed: 100ms
+    update_interval: 100ms
+    lambda: |-
+      it.strftime(0, -1, id(digit_font), "%H", id(sntp_time).now());
+      it.print(14, -1, id(digit_font), ":");
+      it.strftime(18, -1, id(digit_font), "%M", id(sntp_time).now());

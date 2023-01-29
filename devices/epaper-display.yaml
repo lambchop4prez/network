@@ -1,0 +1,516 @@
+substitutions:
+  esp_name: ESP Display #Device Name
+  esp_hostname: esp-display
+  #ip_address: 192.168.1.107
+  #ip_gw: 192.168.1.1
+  #ip_netmask: 255.255.255.0
+  run_time: 5min #can be as long as needed to get data
+  sleep_time: 25min # normal sleep time
+  night_sleep_time: 7h # 1st sleep time after midnight
+  fonts_dir: ./fonts
+  images_dir: ./images
+
+esphome:
+  name: ${esp_hostname}
+  platform: ESP32
+  board: esp32dev
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  #manual_ip:
+  #  static_ip: ${ip_address}
+  #  gateway: ${ip_gw}
+  #  subnet: ${ip_netmask}
+  ap:
+    ssid: "${esp_name} Fallback Hotspot"
+    # password: !secret ap_password
+
+globals:
+  - id: icon_wifi
+    type: std::string
+    restore_value: no
+    initial_value: '"\U000F092E"'
+
+time:
+  - platform: sntp
+    id: ntp
+
+deep_sleep:
+  run_duration: ${run_time}
+  sleep_duration: ${sleep_time}
+  id: deep_sleep_1
+  esp32_ext1_wakeup:
+    pins: GPIO39
+    mode: ALL_LOW
+
+sun:
+  longitude: !secret longitude
+  latitude: !secret latitude
+
+captive_portal:
+
+logger:
+  level: DEBUG
+
+api:
+
+ota:
+
+font:
+  - file: "${fonts_dir}/VCR_OSD_MONO_1.001.ttf"
+    id: vga_font
+    size: 38
+  - file: "${fonts_dir}/VCR_OSD_MONO_1.001.ttf"
+    id: pixel_font
+    size: 56
+  # https://pictogrammers.github.io/@mdi/font/5.3.45/
+  - file: '${fonts_dir}/materialdesignicons-webfont.ttf'
+    id: font_icons
+    size: 160
+    glyphs:
+      - "\U000F0594" # clear-night
+      - "\U000F0590" # cloudy
+      - "\U000F0595" # partlycloudy
+      - "\U000F0591" # fog      
+      - "\U000F0592" # hail
+      - "\U000F0593" # lightning
+      - "\U000F067E" # lightning-rainy
+      - "\U000F0596" # pouring
+      - "\U000F0597" # rainy
+      - "\U000F0F36" # snowy
+      - "\U000F067F" # snowy-rainy
+      - "\U000F0599" # sunny
+      - "\U000F059D" # windy
+      - "\U000F059E" # windy-variant
+      - "\U000F0F38" # exceptional
+     
+  - file: '${fonts_dir}/materialdesignicons-webfont.ttf'
+    id: font_icons_small
+    size: 56
+    glyphs:
+      - "\U000F10C2" # Temperature High
+      - "\U000F10C3" # Temperature Low
+      - "\U000F07E4" # CO2
+      - "\U000F054B" # umbrella
+      - "\U000F0592" # hail
+      - "\U000F0593" # lightning
+      - "\U000F067E" # lightning-rainy
+      - "\U000F0597" # rainy
+      - "\U000F0F36" # snowy
+      - "\U000F0594" # clear-night
+      - "\U000F0599" # sunny
+      - "\U000F07CA" # fuel
+      - "\U000F024A" # flower
+      - "\U000F051F" # time-remaining
+      - "\U000F140B" # Energy
+      - "\U000F059B" # Sunset
+      - "\U000F059C" # Sunrise
+      - "\U000F0BAC" # Molecule (VOC)
+      - "\U000F0079" # Battery full
+      - "\U000F058E" # % drop (RH)
+      - "\U000F029A" # gague
+      - "\U000F091F" # wifi low
+      - "\U000F0922" # wifi med
+      - "\U000F0925" # wifi high
+      - "\U000F0928" # wifi max
+      - "\U000F092E" # wifi disconnected
+  - file: '${fonts_dir}/materialdesignicons-webfont.ttf'
+    id: font_icons_tiny
+    size: 28
+    glyphs:
+      - "\U000F091F" # wifi low
+      - "\U000F0922" # wifi med
+      - "\U000F0925" # wifi high
+      - "\U000F0928" # wifi max
+      - "\U000F092E" # wifi disconnected
+      - "\U000F0079" # Battery 100%
+      - "\U000F0082" # Battery 90%
+      - "\U000F0081" # Battery 80%
+      - "\U000F0080" # Battery 70%
+      - "\U000F007F" # Battery 60%
+      - "\U000F007E" # Battery 50%
+      - "\U000F007D" # Battery 40%
+      - "\U000F007C" # Battery 30%
+      - "\U000F007B" # Battery 20%
+      - "\U000F007A" # Battery 10%
+      - "\U000F05A9" # Wifi On
+      - "\U000F05AA" # Wifi Off
+      - "\U000F0BA3" # jack-o-lantern
+
+image:
+  - file: "${images_dir}/399Bidoof.png"
+    id: img_bidoof
+    resize: 300x300
+    type: BINARY
+    dither: FLOYDSTEINBERG
+  - file: "${images_dir}/001Bulbasaur.png"
+    id: img_bulbasaur
+    resize: 300x300
+    type: BINARY
+    dither: FLOYDSTEINBERG
+
+external_components:
+  - source: github://ashald/esphome@lilygo-t5-47
+    components:
+      - lilygo_t5_47
+
+###
+# Physical Inputs
+###
+
+# spi:
+#   clk_pin: 18
+#   mosi_pin: 23
+
+i2c:
+  sda: 12
+  scl: 13
+
+button:
+  - platform: restart
+    name: "${esp_name} Restart"
+ 
+  - platform: template
+    name: "${esp_name} Refresh"
+    icon: "mdi:update"
+    on_press:
+      then:
+      - component.update: t5_display
+
+###
+# Sensors
+###
+sensor:
+  - platform: uptime
+    name: ${esp_name} Uptime
+    update_interval: 60s
+
+  - platform: wifi_signal
+    id: wifi_strength
+    name: "${esp_name} WiFi Signal"
+    update_interval: 15s
+    on_value_range:
+      - above: -70
+        below: -66
+        then: 
+          - globals.set:
+              id: icon_wifi
+              value: '"\U000F091F"' # low
+      - above: -67
+        below: -50
+        then:
+          - globals.set:
+              id: icon_wifi
+              value: '"\U000F0922"' # Medium
+      - above: -50
+        then:
+          - globals.set:
+              id: icon_wifi
+              value: '"\U000F0928"' # High
+  
+  - platform: adc
+    pin: GPIO36
+    name: "${esp_name} Battery Voltage"
+    id: batt_volt
+    attenuation: 11db
+    update_interval: never
+    filters:
+      - multiply: 2
+
+  - platform: template
+    name: "${esp_name} Battery"
+    id: batt
+    unit_of_measurement: "%"
+    accuracy_decimals: 0
+    device_class: battery
+    lambda: |-
+      int y = (1-(4.1-id(batt_volt).state)/(4.1-3.3))*100;
+      if (y < 100) {return y;} else {return 100;};
+    update_interval: never
+
+  # - platform: homeassistant
+  #   entity_id: sensor.external_temperature
+  #   id: ext_temp
+  #   internal: true
+ 
+  # - platform: homeassistant
+  #   entity_id: sensor.openweathermap_forecast_precipitation_probability
+  #   id: prec_perc
+  #   internal: true
+ 
+  # - platform: homeassistant
+  #   entity_id: sensor.openweathermap_forecast_temperature_low
+  #   id: fc_low
+  #   internal: true
+ 
+  # - platform: homeassistant
+  #   entity_id: sensor.openweathermap_forecast_temperature
+  #   id: fc_high
+  #   internal: true
+  
+  # - platform: homeassistant
+  #   entity_id: sensor.openweathermap_feels_like_temperature
+  #   id: temp_feels_like
+  #   internal: true
+  
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_temperature
+    id: temp
+    internal: true
+  
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_weather_code
+    id: weather_code
+    internal: true
+  
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_humidity
+    id: weather_humidity
+  
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_pressure
+    id: weather_pressure
+
+  - platform: aht10
+    # temperature:
+    #   name: "${esp_name} Temperature"
+    humidity:
+      name: "${esp_name} Humidity"
+      id: internal_humidity
+    update_interval: 60s
+  
+  - platform: bmp280
+    temperature:
+      name: "${esp_name} Temperature"
+      oversampling: 16x
+      id: internal_temp
+    pressure:
+      name: "${esp_name} Pressure"
+      id: internal_pressure
+    address: 0x77
+    update_interval: 60s
+  # - platform: sgp30
+  #   id: air_quality
+  #   eco2:
+  #     name: "Office eCO2"
+  #     accuracy_decimals: 1
+  #   tvoc:
+  #     name: "Office TVOC"
+  #     accuracy_decimals: 1
+  #   store_baseline: yes
+  #   address: 0x58
+  #   update_interval: 1s
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO39
+      inverted: true
+    name: "${esp_name} Button 1"
+    on_press:
+      then:
+       - display.page.show_next: t5_display
+       - component.update: t5_display
+
+  - platform: gpio
+    pin:
+      number: GPIO34
+      inverted: true
+    name: "${esp_name} Button 2"
+
+  - platform: gpio
+    pin:
+      number: GPIO35
+      inverted: true
+    name: "${esp_name} Button 3"
+    on_press:
+      then:
+         - display.page.show_previous: t5_display
+         - component.update: t5_display
+
+text_sensor:
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_precipitation_kind
+    id: fc_prec
+    internal: true
+  
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_condition
+    id: weather_condition
+
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_forecast_condition
+    id: fc_weather
+    internal: true
+    on_value: # Actions to perform once data for the last sensor has been received
+      then:
+        - script.execute: all_data_received
+  
+  - platform: sun
+    name: Next Sunrise
+    type: sunrise
+    id: sunrise
+    format: "%H:%M"
+    internal: true
+  
+  - platform: sun
+    name: Next Sunset
+    type: sunset
+    id: sunset
+    format: "%H:%M"
+    internal: true
+
+
+script:
+  - id: all_data_received
+    then:
+      - component.update: batt_volt
+      - component.update: batt
+      - component.update: sunrise
+      - component.update: sunset
+      #- component.update: air_quality
+      - display.page.show: weather
+      - component.update: t5_display
+      #- script.execute: enter_sleep
+
+  - id: enter_sleep
+    then:
+      - if:
+          condition:
+            lambda: |-
+              auto time = id(ntp).now();
+              if (!time.is_valid()) {
+                return false;
+              }
+              return (time.hour < 6);
+          then:
+            - logger.log: "It's nighttime, entering long sleep for ${night_sleep_time}"          
+            - deep_sleep.enter:
+                id: deep_sleep_1
+                sleep_duration: ${night_sleep_time}
+          else:
+            - logger.log: "It's daytime, entering short sleep for ${sleep_time}"            
+            - deep_sleep.enter:
+                id: deep_sleep_1
+                sleep_duration: ${sleep_time}
+
+display:
+  - platform: lilygo_t5_47
+    id: t5_display
+    rotation: 0
+    update_interval: never
+    pages:
+      - id: loading
+        lambda: |-
+          #define xres 960
+          #define yres 540
+          it.print(480, 15, id(vga_font), TextAlign::CENTER, "Loading");
+          it.print(xres - 30, 5, id(font_icons_tiny), TextAlign::TOP_CENTER, id(icon_wifi).c_str());
+          it.image(480, 30, id(img_bidoof));
+      - id: weather
+        lambda: |-
+          #include<string>
+          #include<map>
+          using namespace std;
+          #define xres 960
+          #define yres 540
+          #define x_pad 15 // border padding
+          #define y_pad 15 // border padding
+          #define cat_pad 85 // padding before category
+          #define val_pad 70 // padding before value
+          #define icon_pad 35 //padding after icons
+          #define x1n 20 //x position 1st column name
+          #define x1v 25 //x position 1st column value
+          #define x1i 50 //x position 1st column icon
+          #define x2n xres/2 //x position 2nd column name
+          #define x2v xres/2 //x position 2nd column value
+          #define x2i xres/2 //x position 1st column icon
+          
+          int y = y_pad;
+          // Date
+          it.strftime(xres/2, y, id(vga_font), TextAlign::TOP_CENTER, "%A %d/%b/%Y", id(ntp).now());
+          // Status icons
+          static string battery_icons[10] = {
+            "\U000F007A",
+            "\U000F007B",
+            "\U000F007C",
+            "\U000F007D",
+            "\U000F007E",
+            "\U000F007F",
+            "\U000F0080",
+            "\U000F0081",
+            "\U000F0082",
+            "\U000F0079"
+          };
+          //static std::map<int, string> battery_icons = {
+          //  {10,"\U000F0079"},
+          //  {9, "\U000F0082"},
+          //  {8, "\U000F0081"},
+          //  {7, "\U000F0080"},
+          //  {6, "\U000F007F"},
+          //  {5, "\U000F007E"},
+          //  {4, "\U000F007D"},
+          //  {3, "\U000F007C"},
+          //  {2, "\U000F007B"},
+          //  {1, "\U000F007A"}
+          //};
+
+          it.print(xres - (30 + 5 + 30 + 5 + 30), 5, id(font_icons_tiny), TextAlign::TOP_CENTER, "\U000F0BA3");
+          // Battery
+          string battery_icon = battery_icons[((int)id(batt).state / 10) - 1];
+          it.print(xres - (30 + 5 + 30), 5, id(font_icons_tiny), TextAlign::TOP_CENTER, battery_icon.c_str());
+          // WiFi signal icon
+          it.print(xres - 30, 5, id(font_icons_tiny), TextAlign::TOP_CENTER, id(icon_wifi).c_str());
+          
+          // Weather condition icon
+          y+=30+y_pad;
+          static std::map<string, string> condition_icons = {
+            {"clear-night", "\U000F0594"},
+            {"cloudy", "\U000F0590"},
+            {"fog", "\U000F0591"},
+            {"hail", "\U000F0592"},
+            {"lightning", "\U000F0593"},
+            {"lightning-rainy", "\U000F067E"},
+            {"partlycloudy", "\U000F0595"},
+            {"pouring", "\U000F0596"},
+            {"rainy", "\U000F0597"},
+            {"snowy", "\U000F0F36"},
+            {"snowy-rainy", "\U000F067F"},
+            {"sunny", "\U000F0599"},
+            {"windy", "\U000F059D"},
+            {"windy-variant", "\U000F059E"},
+            {"exceptional", "\U000F0F38"}
+          };
+
+          #define current_condition_x (xres / 4) - x_pad
+          string current_condition = id(fc_weather).state;
+          string icon = condition_icons[current_condition];
+          ESP_LOGI("display", "condition icon %s", icon.c_str());
+          it.print(current_condition_x, y, id(font_icons), TextAlign::TOP_RIGHT, icon.c_str());
+          
+          // Outside Temp
+          #define temp_x x_pad + (xres/4)
+          //it.printf(temp_x, y + y_pad, id(vga_font), TextAlign::TOP_LEFT, "Temp %3.0f °F", id(temp).state);
+          //it.printf(temp_x, y + y_pad + 56, id(vga_font), TextAlign::TOP_LEFT, "Feels Like %3.0f °F", id(temp_feels_like).state);
+          //y+=val_pad;
+          if(id(temp).state) {
+            it.printf(temp_x, y + y_pad, id(pixel_font), TextAlign::TOP_LEFT, "%3.0f °F", (id(internal_temp).state * 1.8) + 32);
+          }
+          // Relative Humidity/Pressure
+          #define rh_icon_x x_pad + (xres/2)
+          it.printf(rh_icon_x, y + y_pad, id(font_icons_small), TextAlign::TOP_CENTER, "\U000F058E");
+          it.printf(rh_icon_x + icon_pad, y + y_pad, id(vga_font), "%2.0f %%", id(internal_humidity).state);
+          it.printf(rh_icon_x, y + 56 + y_pad, id(font_icons_small), TextAlign::TOP_CENTER, "\U000F029A");
+          it.printf(rh_icon_x + icon_pad, y + 56 + y_pad, id(vga_font), "%4.0f hPa", id(internal_pressure).state);
+          // Sunrise/Sunset
+          
+          #define sunrise_icon_x x_pad + (xres/2) + (xres/4)
+          it.printf(sunrise_icon_x, y + y_pad, id(font_icons_small), TextAlign::TOP_CENTER, "\U000F059C");
+          it.printf(sunrise_icon_x+icon_pad, y + y_pad, id(vga_font), "%.5s", id(sunrise).state.c_str());
+          it.printf(sunrise_icon_x, y + 56 + y_pad, id(font_icons_small), TextAlign::TOP_CENTER, "\U000F059B");
+          it.printf(sunrise_icon_x+icon_pad, y + 56 + y_pad, id(vga_font), "%.5s", id(sunset).state.c_str());
+          
+          y+=135+y_pad;
+          it.image(((xres / 4) - x_pad) - 150, y, id(img_bulbasaur));
+          it.image(((xres/2) + ((xres / 4) - x_pad)) - 150, y, id(img_bidoof));
