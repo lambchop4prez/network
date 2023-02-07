@@ -7,12 +7,14 @@ source "proxmox" "ubuntu-server" {
     node = "${var.proxmox_node}"
     vm_name = "ubuntu-server"
     vm_id = "9000"
+    
     sockets = "${var.vm_cpu_sockets}"
     cores = "${var.vm_cpu_cores}"
     memory = "${var.vm_mem_size}"
     cpu_type = "${var.vm_cpu_type}"
+    
     boot      = "c"
-    boot_wait = "5s"
+    boot_wait = "7s"
     boot_command = [
         "<esc><wait>",
         "e<wait>",
@@ -21,6 +23,7 @@ source "proxmox" "ubuntu-server" {
         "autoinstall ds=nocloud-net;s=/cidata/ ---<wait>",
         "<f10><wait>"
     ]
+
     additional_iso_files {
         cd_files = [
             "./ubuntu-server/meta-data",
@@ -29,10 +32,12 @@ source "proxmox" "ubuntu-server" {
         cd_label         = "cidata"
         iso_storage_pool = "local"
     }
+    
     iso_checksum = "file:https://releases.ubuntu.com/22.04.1/SHA256SUMS"
     iso_file = "local:iso/ubuntu-22.04.1-live-server-amd64.iso"
     scsi_controller = "virtio-scsi-pci"
     os = "l26"
+
     vga {
         type = "std"
         memory = 32
@@ -48,12 +53,15 @@ source "proxmox" "ubuntu-server" {
         disk_size = "${var.vm_os_disk_size}"
         cache_mode = "none"
     }
+
     template_name = "ubuntu-server"
     template_description = "Base template for ubuntu servers"
+
     unmount_iso = "true"
     qemu_agent = "true"
     cloud_init = true
     cloud_init_storage_pool="local"
+    
     communicator = "ssh"
     ssh_username = "ubuntu"
     ssh_password = "ubuntu"

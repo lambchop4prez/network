@@ -1,0 +1,16 @@
+---
+version: "3"
+
+tasks:
+  bootstrap:
+    desc: Sets default state of the node
+    cmds:
+      - ansible-playbook {{.ANSIBLE_DIR}}/playbooks/gpc.yaml
+  
+  templates:
+    desc: Builds all packer templates on GPC
+    dir: "{{.PACKER_DIR}}"
+    cmds:
+      - packer init .
+      - packer build -only 'base.*' .
+      - packer build -only 'template.*' .

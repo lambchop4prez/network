@@ -8,12 +8,9 @@ packer {
 }
 
 build {
-    name = "ubuntu-server-base"
-
+    name = "base.ubuntu-server"
     sources = ["source.proxmox.ubuntu-server"]
-    # source "proxmox-iso.ubuntu-desktop" {}
-    # source "proxmox-iso.windows-desktop" {}
-    # Provisioning the VM Template for Cloud-Init Integration in Proxmox #1
+    
     provisioner "shell" {
         inline = [
             "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done",
@@ -38,5 +35,22 @@ build {
             "sudo cp /tmp/99-pve.cfg /etc/cloud/cloud.cfg.d/99-pve.cfg"
         ]
     }
+}
 
+build {
+    name = "template.servonet-node"
+    sources = ["source.proxmox-clone.servonet-node"]
+
+    provisioner "shell" {
+      inline = [
+        "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done"
+      ]
+    }
+
+    provisioner "ansible" {
+        playbook_file = "../ansible/playbooks/servonet.yaml"
+        user = "ubuntu"
+        inventory_directory = "../ansible/inventory"
+        inventory_file_template = "servonet ansible_host={{ .Host }} ansible_user=ubuntu ansible_port={{ .Port }}\n"
+    }
 }

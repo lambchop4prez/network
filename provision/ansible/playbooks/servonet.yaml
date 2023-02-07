@@ -1,11 +1,15 @@
 ---
 - hosts:
-    - servonet:control-plane
-    - servonet:worker
+    - servonet
   become: true
+  become_method: sudo
+  become_user: root
   gather_facts: true
   any_errors_fatal: true
   pre_tasks:
+    - name: Print all available facts
+      ansible.builtin.debug:
+        var:  hostvars[inventory_hostname]
     - name: Pause for 3 seconds...
       pause:
         seconds: 3
@@ -25,5 +29,5 @@
   roles:
     - role: common.ubuntu
       tags: ["common.ubuntu"]
-    - role: k3s.node
-      tags: ["k3s.node"]
+    - role: ubuntu.k3s
+      tags: ["ubuntu.k3s"]

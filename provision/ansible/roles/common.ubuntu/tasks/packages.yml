@@ -12,22 +12,7 @@
 
 - name: Install common packages
   ansible.builtin.apt:
-    name:
-      - apt-transport-https
-      - arptables
-      - ca-certificates
-      - curl
-      - ebtables
-      - iputils-ping
-      - ipvsadm
-      - lvm2
-      - net-tools
-      - nfs-common
-      - open-iscsi
-      - psmisc
-      - smartmontools
-      - software-properties-common
-      - unattended-upgrades
+    name: "{{ ubuntu_common_packages }}"
     install_recommends: false
     update_cache: true
     cache_valid_time: 3600
@@ -36,7 +21,7 @@
   register: apt_install_common
   retries: 5
   until: apt_install_common is success
-
+  
 - name: Copy 20auto-upgrades unattended-upgrades config
   ansible.builtin.blockinfile:
     path: /etc/apt/apt.conf.d/20auto-upgrades

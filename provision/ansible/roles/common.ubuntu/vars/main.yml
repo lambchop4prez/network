@@ -1,0 +1,18 @@
+---
+ubuntu_common_packages:
+  - apt-transport-https
+  - arptables
+  - ca-certificates
+  - curl
+  - ebtables
+  - iputils-ping
+  - ipvsadm
+  - lvm2
+  - net-tools
+  - nfs-common
+  - open-iscsi
+  - psmisc
+  - smartmontools
+  - software-properties-common
+  - unattended-upgrades
+  - jq

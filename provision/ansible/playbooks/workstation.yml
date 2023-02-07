@@ -3,9 +3,9 @@
   gather_facts: true
 
   pre_tasks:
-    - name: Pausing for 5 seconds...
+    - name: Pausing for 3 seconds...
       pause:
-        seconds: 5
+        seconds: 3
   
   roles:
     - role: workstation.macos

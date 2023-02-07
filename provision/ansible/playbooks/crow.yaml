@@ -2,3 +2,12 @@
 - hosts: crow
   become: true
   gather_facts: false
+
+  pre_tasks:
+    - name: Pausing for 5 seconds...
+      pause:
+        seconds: 5
+  
+  roles:
+    - role: router.coredns
+      tags: ['coredns']

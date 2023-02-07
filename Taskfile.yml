@@ -5,10 +5,22 @@ vars:
   PROJECT_DIR:
     sh: "git rev-parse --show-toplevel"
   INVENTORY_DIR: "{{.PROJECT_DIR}}/provision/ansible/inventory"
+  PACKER_DIR: "{{.PROJECT_DIR}}/provision/packer"
   INVENTORY: "{{.INVENTORY_DIR}}/hosts.yml"
   PLAYBOOK_DIR: "{{.PROJECT_DIR}}/provision/ansible/playbooks"
 
+includes:
+  gpc: .taskfiles/gpc.yaml
+  # servonet: .taskfiles/servonet.yaml
+
 tasks:
+  packer:build:
+    desc: Builds packer templates
+    dir: "{{.PACKER_DIR}}"
+    cmds:
+      - packer init .
+      - packer build .
+
   hello:
     cmds:
       - echo "hello {{.PROJECT_DIR}}"

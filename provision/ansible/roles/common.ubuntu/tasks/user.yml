@@ -1,13 +1,13 @@
 ---
 - name: Add user to sudoers
   ansible.builtin.copy:
-    content: "{{ ansible_user }} ALL=(ALL:ALL) NOPASSWD:ALL"
-    dest: "/etc/sudoers.d/{{ ansible_user }}_nopasswd"
+    content: "tom ALL=(ALL:ALL) NOPASSWD:ALL"
+    dest: "/etc/sudoers.d/tom_nopasswd"
     mode: "0440"
 
 - name: Add additional user SSH public keys
   ansible.posix.authorized_key:
-    user: "{{ ansible_user }}"
+    user: "tom"
     key: "{{ item }}"
   loop: "{{ ssh_authorized_keys }}"
   when:
