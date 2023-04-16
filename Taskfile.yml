@@ -7,6 +7,7 @@ vars:
   INVENTORY_DIR: "{{.PROJECT_DIR}}/provision/ansible/inventory"
   PACKER_DIR: "{{.PROJECT_DIR}}/provision/packer"
   INVENTORY: "{{.INVENTORY_DIR}}/hosts.yml"
+  PACKER_DIR: "{{.PROJECT_DIR}}/provision/packer"
   PLAYBOOK_DIR: "{{.PROJECT_DIR}}/provision/ansible/playbooks"
 
 includes:
@@ -37,3 +38,4 @@ tasks:
   playbook:workstation:
     cmds:
       - "ansible-playbook -i {{.INVENTORY}} {{.PLAYBOOK_DIR}}/workstation.yml --ask-become-pass"
+  
