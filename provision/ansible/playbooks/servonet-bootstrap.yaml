@@ -7,7 +7,7 @@
   any_errors_fatal: true
   pre_tasks:
     - name: Pause for 3 seconds...
-      pause:
+      ansible.builtin.pause:
         seconds: 3
 
   tasks:
@@ -24,11 +24,11 @@
       when: k3s_check_installed.stat.exists
 
     - name: Ubuntu common configuration
-      include_role:
+      ansible.builtin.include_role:
         name: common.ubuntu
 
     - name: Install K3s on node
-      include_role:
+      ansible.builtin.include_role:
         name: k3s.node
 
     - name: Get absolute path to this Git repository

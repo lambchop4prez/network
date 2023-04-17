@@ -1,11 +1,12 @@
-- hosts: workstations
+- name: MacOS workstation setup
+  hosts: workstations
   become: true
   become_user: tmc
   gather_facts: true
 
   pre_tasks:
     - name: Pausing for 3 seconds...
-      pause:
+      ansible.builtin.pause:
         seconds: 3
 
   roles:

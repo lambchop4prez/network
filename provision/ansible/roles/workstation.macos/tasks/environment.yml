@@ -21,21 +21,21 @@
 #   when: not stat_omz_result.stat.exists
 
 - name: set dock and hot corners
-  shell: defaults write com.apple.dock {{ item.key }} -{{ item.type }} {{ item.value }}
+  ansible.builtin.shell: defaults write com.apple.dock {{ item.key }} -{{ item.type }} {{ item.value }}
   loop: "{{ dock }}"
 
 - name: restart dock
-  shell: killall Dock
+  ansible.builtin.shell: killall Dock
 
 - name: vscode extensions
-  shell: code --install-extension {{ item }}
+  ansible.builtin.shell: code --install-extension {{ item }}
   loop: "{{ vscode }}"
 
 - name: stat id_ecdsa
-  stat:
+  ansible.builtin.stat:
     path: ~/.ssh/id_ecdsa
   register: id_ecdsa
 
 - name: generate ssh key
-  shell: ssh-keygen -t ecdsa -b 521 -f ~/.ssh/id_ecdsa
+  ansible.builtin.shell: ssh-keygen -t ecdsa -b 521 -f ~/.ssh/id_ecdsa
   when: not id_ecdsa.stat.exists
