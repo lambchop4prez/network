@@ -26,7 +26,7 @@ users:
   sudo: "ALL=(ALL) NOPASSWD:ALL"
   ssh_import_id: gh:lambchop4prez
   shell: /bin/bash
-  
+
 ## Update apt database and upgrade packages on first boot
 package_update: true
 package_upgrade: true

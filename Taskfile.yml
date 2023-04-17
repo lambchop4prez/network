@@ -7,7 +7,6 @@ vars:
   INVENTORY_DIR: "{{.PROJECT_DIR}}/provision/ansible/inventory"
   PACKER_DIR: "{{.PROJECT_DIR}}/provision/packer"
   INVENTORY: "{{.INVENTORY_DIR}}/hosts.yml"
-  PACKER_DIR: "{{.PROJECT_DIR}}/provision/packer"
   PLAYBOOK_DIR: "{{.PROJECT_DIR}}/provision/ansible/playbooks"
 
 includes:
@@ -25,18 +24,17 @@ tasks:
   hello:
     cmds:
       - echo "hello {{.PROJECT_DIR}}"
-  
+
   ping:
     cmds:
       - "ansible workstations -i {{.INVENTORY}} --one-line -m 'ping'"
-  
+
   deps:
     dir: provision/ansible
     cmds:
       - "ansible-galaxy install -r requirements.yaml --force"
-  
+
   playbook:workstation:
     desc: Runs the workstation playbook, use args to pass in additional arguments
     cmds:
       - ansible-playbook {{.PLAYBOOK_DIR}}/workstation.yml --ask-become-pass {{.CLI_ARGS}}
-  

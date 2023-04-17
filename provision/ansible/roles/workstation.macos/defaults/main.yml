@@ -63,7 +63,7 @@ homebrew_installed_packages: []
   # - wget
   # - zsh
 
-  
+
 
 homebrew_taps: []
   # - homebrew/core
@@ -104,4 +104,3 @@ homebrew_cask_apps: []
   # - vlc
   # - wireshark
   # #- zoomus
-

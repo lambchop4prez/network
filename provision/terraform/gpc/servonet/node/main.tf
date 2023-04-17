@@ -4,7 +4,7 @@ terraform {
       source = "telmate/proxmox"
     }
   }
-  
+
   required_version = ">= 0.12"
 }
 

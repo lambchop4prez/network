@@ -15,4 +15,3 @@
 - name: brew tap cask
   homebrew_tap:
     tap: 'homebrew/cask'
-  

@@ -11,8 +11,7 @@ users:
     - name: packer@pve
       passwd: "{{lookup('ansible.builtin.env', 'GPC_PACKER_PASSWORD', default=Undefined)}}"
       role: "Packer"
-      
+
     - name: tmc@pve
       passwd: "{{lookup('ansible.builtin.env', 'GPC_TMC_PASSWORD', default=Undefined)}}"
       role: "Administrator"
-      

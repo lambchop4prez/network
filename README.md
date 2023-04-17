@@ -19,5 +19,3 @@ task playbook:workstation -- --limit 'workstation:<host>'
 ### GPC
 
 GPC is a single-node proxmox instance which acts as both a Hypervisor and NAS.
-
-

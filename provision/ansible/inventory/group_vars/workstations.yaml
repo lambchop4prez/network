@@ -65,7 +65,7 @@ homebrew_installed_packages:
   - wget
   - zsh
 
-  
+
 
 homebrew_taps:
   - hashicorp/tap

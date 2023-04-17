@@ -22,4 +22,3 @@
 - name: Add user to role
   ansible.builtin.shell:
     cmd: pveum aclmod / -user {{ item.name }} -role {{ item.role }}
-

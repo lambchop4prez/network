@@ -30,11 +30,11 @@
 # - block:
 #   - name: Clone driver repo
 #     ansible.builtin.git:
-#       repo: 
+#       repo:
 
 #   # - name: Make DKMS module
 #   #   ansible.builtin.shell:
 #   #     cmd: make dkms
-      
+
 
 #   when: fio_kernel_modul is set

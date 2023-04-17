@@ -12,4 +12,3 @@ base_packages:
  - wget
  - httpie
  - zsh
-

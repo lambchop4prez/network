@@ -1,6 +1,6 @@
 ---
 # - name: Setup commandline tools
-#   include_role: 
+#   include_role:
 #     name: elliotweiser.osx-command-line-tools
 #     public: true
 
@@ -22,4 +22,3 @@
 
 - name: setup environment
   include_tasks: environment.yml
-

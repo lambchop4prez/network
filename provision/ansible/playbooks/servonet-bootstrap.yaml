@@ -9,7 +9,7 @@
     - name: Pause for 3 seconds...
       pause:
         seconds: 3
-  
+
   tasks:
     - name: Check if k3s is installed on node
       ansible.builtin.stat:
@@ -22,11 +22,11 @@
         k3s_server_manifests_templates: []
         k3s_server_manifests_urls: []
       when: k3s_check_installed.stat.exists
-    
+
     - name: Ubuntu common configuration
       include_role:
         name: common.ubuntu
-      
+
     - name: Install K3s on node
       include_role:
         name: k3s.node

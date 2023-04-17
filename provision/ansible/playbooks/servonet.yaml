@@ -25,7 +25,7 @@
         k3s_server_manifests_templates: []
         k3s_server_manifests_urls: []
       when: k3s_check_installed.stat.exists
-  
+
   roles:
     - role: common.ubuntu
       tags: ["common.ubuntu"]
