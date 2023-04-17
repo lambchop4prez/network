@@ -55,6 +55,8 @@ homebrew_installed_packages:
   - kubernetes-cli
   - make
   - nmap
+  - node
+  - nvm
   - pre-commit
   - pyenv
   - rtl-sdr
