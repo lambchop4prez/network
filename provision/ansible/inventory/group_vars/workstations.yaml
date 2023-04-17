@@ -132,6 +132,8 @@ vscode:
   - foxundermoon.shell-format
   - hashicorp.terraform
   - signageos.signageos-vscode-sops
+  - esbenp.prettier-vscode
+  - editorconfig.editorconfig
 
 dock:
   - key: orientation
