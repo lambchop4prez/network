@@ -36,6 +36,7 @@ tasks:
       - "ansible-galaxy install -r requirements.yaml --force"
   
   playbook:workstation:
+    desc: Runs the workstation playbook, use args to pass in additional arguments
     cmds:
-      - "ansible-playbook -i {{.INVENTORY}} {{.PLAYBOOK_DIR}}/workstation.yml --ask-become-pass"
+      - ansible-playbook {{.PLAYBOOK_DIR}}/workstation.yml --ask-become-pass {{.CLI_ARGS}}
   

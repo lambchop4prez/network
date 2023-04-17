@@ -1,24 +1,24 @@
 ---
-- name: Setup commandline tools
-  include_role: 
-    name: elliotweiser.osx-command-line-tools
-    public: true
+# - name: Setup commandline tools
+#   include_role: 
+#     name: elliotweiser.osx-command-line-tools
+#     public: true
 
-- name: Configure and install homebrew apps
-  include_role:
-    name: geerlingguy.mac.homebrew
-    public: true
+# - name: Configure and install homebrew apps
+#   include_role:
+#     name: geerlingguy.mac.homebrew
+#     public: true
 
-- name: Instal Mac App Store apps
-  include_role:
-    name: geerlingguy.mac.mas
-    public: true
+# - name: Instal Mac App Store apps
+#   include_role:
+#     name: geerlingguy.mac.mas
+#     public: true
 
-- name: Configure dock
-  include_role:
-    name: geerlingguy.mac.dock
-    public: true
-  when: configure_dock
+# - name: Configure dock
+#   include_role:
+#     name: geerlingguy.mac.dock
+#     public: true
+#   when: configure_dock
 
 - name: setup environment
   include_tasks: environment.yml

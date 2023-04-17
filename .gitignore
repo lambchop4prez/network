@@ -52,3 +52,7 @@ xanmanning.k3s*
 elliotweiser.osx-command-line-tools*
 geerlingguy.dotfiles*
 ansible-role-k3s
+
+# ansible collections
+
+provision/ansible/collections/

@@ -22,6 +22,7 @@ dockitems_remove:
 # dotfiles_repo_local_distination: ~/Source/dotfiles
 # dotfiles_files: []
 homebrew_prefix: "{{ (ansible_machine == 'arm64') | ternary('/opt/homebrew', '/usr/local') }}"
+homebrew_user: tmc
 homebrew_install_path: "{{ homebrew_prefix }}/Homebrew"
 homebrew_installed_packages:
   - age
@@ -40,6 +41,9 @@ homebrew_installed_packages:
   - go
   - go-task
   - gifsicle
+  - hashicorp/tap/packer
+  - hashicorp/tap/vault
+  - hashicorp/tap/terraform
   - hackrf
   - helm
   - httpie
@@ -51,13 +55,11 @@ homebrew_installed_packages:
   - kubernetes-cli
   - make
   - nmap
-  - packer
   - pre-commit
   - pyenv
   - rtl-sdr
   - sops
   - telegraf
-  - terraform
   - tree
   - vim
   - wget
@@ -66,6 +68,7 @@ homebrew_installed_packages:
   
 
 homebrew_taps:
+  - hashicorp/tap
   - homebrew/core
   - homebrew/cask
   - fluxcd/tap
@@ -83,11 +86,13 @@ homebrew_cask_apps:
   - firefox
   - gb-studio
   - guitar-pro
+  - hashicorp/tap/hashicorp-vagrant
   - hex-fiend
   - iterm2
   - keepassx
   - krita
   - mgba
+  - openscad
   - pock
   - qlmarkdown
   - qlstephen
@@ -97,17 +102,15 @@ homebrew_cask_apps:
   - sameboy
   - spotify
   - the-unarchiver
-  #- tinymediamanager
   - transmission
-  #- vagrant
+  - ultimaker-cura
   - visual-studio-code
   - vlc
   - wireshark
-  #- zoomus
 
-mas_installed_apps:
-  - 1352778147 # Bitwarden
-  - 1320666476 # Wipr
+# mas_installed_apps:
+#   - 1352778147 # Bitwarden
+#   - 1320666476 # Wipr
 
 npm:
   - angular

@@ -1,5 +1,6 @@
-- hosts: local
+- hosts: workstations
   become: true
+  become_user: tmc
   gather_facts: true
 
   pre_tasks:
@@ -8,6 +9,18 @@
         seconds: 3
   
   roles:
+    - role: elliotweiser.osx-command-line-tools
+    - role: geerlingguy.mac.homebrew
+      tags: ['homebrew']
+    - role: geerlingguy.dotfiles
+      when: configure_dotfiles
+      tags: ['dotfiles']
+    # - role: geerlingguy.mac.mas
+    #   when: mas_installed_apps or mas_installed_app_ids
+    #   tags: ['mas']
+    - role: geerlingguy.mac.dock
+      when: configure_dock
+      tags: ['dock']
     - role: workstation.macos
       tags: ['workstation']
   
