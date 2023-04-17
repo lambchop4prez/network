@@ -27,7 +27,7 @@
           tar xvf /tmp/k8s_gateway_{{ coredns_version }}_freebsd_amd64.tar.gz -C /tmp/k8s_gateway_{{ coredns_version }}_freebsd_amd64
     - name: Move CoreDNS binary
       ansible.builtin.copy:
-        src:  /tmp/k8s_gateway_{{ coredns_version }}_freebsd_amd64/coredns
+        src: /tmp/k8s_gateway_{{ coredns_version }}_freebsd_amd64/coredns
         dest: /usr/local/sbin/coredns
         mode: 0755
         remote_src: true

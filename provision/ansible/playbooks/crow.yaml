@@ -10,4 +10,4 @@
 
   roles:
     - role: router.coredns
-      tags: ['coredns']
+      tags: ["coredns"]

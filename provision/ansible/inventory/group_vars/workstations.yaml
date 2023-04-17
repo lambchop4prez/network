@@ -14,8 +14,7 @@ dockitems_remove:
   - Music
   - Podcasts
   - News
-  - 'App Store'
-
+  - "App Store"
 
 # dotfiles_repo: ''
 # dotfiles_repo_accept_hostkey: true
@@ -66,8 +65,6 @@ homebrew_installed_packages:
   - vim
   - wget
   - zsh
-
-
 
 homebrew_taps:
   - hashicorp/tap
@@ -164,6 +161,5 @@ dock:
   - key: wvous-tr-modifier
     type: int
     value: 0
-
 
 python: 3.8.5
