@@ -77,6 +77,7 @@ homebrew_cask_appdir: /Applications
 
 homebrew_cask_apps:
   - arduino
+  - autodesk-fusion360
   - balenaetcher
   - cubicsdr
   - dbeaver-community
@@ -111,17 +112,21 @@ homebrew_cask_apps:
 #   - 1352778147 # Bitwarden
 #   - 1320666476 # Wipr
 
-npm:
-  - angular
-  - protractor
+npm_packages:
+  - name: prettier
+    state: present
 
-pip:
-  - click
-  - docker
+pip_packages:
+  - name: click
+    state: present
+  - name: pytest
+    state: present
 
-gems:
-  - bundler
-  - jekyll
+gem_packages:
+  - name: bundler
+    state: present
+  - name: jekyll
+    state: present
 
 vscode:
   - ms-vscode.powershell
@@ -165,3 +170,4 @@ dock:
     value: 0
 
 python: 3.8.5
+

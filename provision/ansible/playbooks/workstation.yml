@@ -24,3 +24,5 @@
       tags: ["dock"]
     - role: workstation.macos
       tags: ["workstation"]
+    - role: workstation.dev
+      tags: ["workstation.dev"]
