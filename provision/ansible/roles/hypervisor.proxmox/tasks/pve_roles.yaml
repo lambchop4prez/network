@@ -7,7 +7,7 @@
 - name: "Create role"
   ansible.builtin.shell:
     cmd: pveum roleadd {{ item.name }} -privs "{{ item.privs }}"
-  when: role_exists == ""
+  when: role_exists.stdout == ""
 
 - name: "Update role"
   ansible.builtin.shell:

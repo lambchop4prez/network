@@ -1,0 +1,20 @@
+---
+- name: Install prerequisites
+  ansible.builtin.apt:
+    name:
+      - nfs-common
+      - nfs-kernel-server
+      - netatalk
+    install_recommends: false
+    update_cache: true
+    cache_valid_time: 3600
+    autoclean: true
+    autoremove: true
+  register: apt_install_common
+  retries: 5
+  until: apt_install_common is success
+
+- name: "Import Pools"
+  ansible.builtin.shell:
+    cmd: zpool import storage-0
+

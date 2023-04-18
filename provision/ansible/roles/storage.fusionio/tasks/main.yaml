@@ -27,14 +27,14 @@
   retries: 5
   until: apt_install_common is success
 
-# - block:
-#   - name: Clone driver repo
-#     ansible.builtin.git:
-#       repo: 
+- block:
+  - name: Clone driver repo
+    ansible.builtin.git:
+      repo: https://github.com/snuf/iomemory-vsl
 
-#   # - name: Make DKMS module
-#   #   ansible.builtin.shell:
-#   #     cmd: make dkms
+  # - name: Make DKMS module
+  #   ansible.builtin.shell:
+  #     cmd: make dkms
       
 
 #   when: fio_kernel_modul is set

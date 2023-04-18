@@ -5,7 +5,7 @@ tasks:
   bootstrap:
     desc: Sets default state of the node
     cmds:
-      - ansible-playbook {{.ANSIBLE_DIR}}/playbooks/gpc.yaml
+      - ansible-playbook {{.PLAYBOOK_DIR}}/gpc.yaml
   
   templates:
     desc: Builds all packer templates on GPC
