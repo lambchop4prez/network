@@ -18,7 +18,7 @@
 
 
 - name: Install RubyGems
-  community.genral.gem:
+  community.general.gem:
     name: "{{ item.name | default(item) }}"
     state: "{{ item.state | default('present') }}"
     version: "{{ item.version | default(omit) }}"
