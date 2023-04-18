@@ -1,7 +1,7 @@
 ---
 downloads: ~/.ansible-downloads/
 
-configure_dotfiles: false
+configure_dotfiles: true
 configure_terminal: true
 configure_osx: true
 
@@ -16,10 +16,14 @@ dockitems_remove:
   - News
   - "App Store"
 
-# dotfiles_repo: ''
-# dotfiles_repo_accept_hostkey: true
-# dotfiles_repo_local_distination: ~/Source/dotfiles
-# dotfiles_files: []
+dotfiles_repo: 'github.com:lambchop4prez/dotfiles.git'
+dotfiles_repo_accept_hostkey: true
+dotfiles_repo_local_distination: ~/Source/dotfiles
+dotfiles_files:
+  - .gitignore
+  - .gitconfig
+  - .zshrc
+
 homebrew_prefix: "{{ (ansible_machine == 'arm64') | ternary('/opt/homebrew', '/usr/local') }}"
 homebrew_user: tmc
 homebrew_install_path: "{{ homebrew_prefix }}/Homebrew"
