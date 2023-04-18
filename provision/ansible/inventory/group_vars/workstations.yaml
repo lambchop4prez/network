@@ -16,7 +16,7 @@ dockitems_remove:
   - News
   - "App Store"
 
-dotfiles_repo: 'github.com:lambchop4prez/dotfiles.git'
+dotfiles_repo: 'https://github.com/lambchop4prez/dotfiles.git'
 dotfiles_repo_accept_hostkey: true
 dotfiles_repo_local_distination: ~/Source/dotfiles
 dotfiles_files:
