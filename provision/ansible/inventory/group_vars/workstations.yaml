@@ -14,14 +14,14 @@ dockitems_remove:
   - Music
   - Podcasts
   - News
-  - 'App Store'
-
+  - "App Store"
 
 # dotfiles_repo: ''
 # dotfiles_repo_accept_hostkey: true
 # dotfiles_repo_local_distination: ~/Source/dotfiles
 # dotfiles_files: []
 homebrew_prefix: "{{ (ansible_machine == 'arm64') | ternary('/opt/homebrew', '/usr/local') }}"
+homebrew_user: tmc
 homebrew_install_path: "{{ homebrew_prefix }}/Homebrew"
 homebrew_installed_packages:
   - age
@@ -40,6 +40,9 @@ homebrew_installed_packages:
   - go
   - go-task
   - gifsicle
+  - hashicorp/tap/packer
+  - hashicorp/tap/vault
+  - hashicorp/tap/terraform
   - hackrf
   - helm
   - httpie
@@ -51,21 +54,20 @@ homebrew_installed_packages:
   - kubernetes-cli
   - make
   - nmap
-  - packer
+  - node
+  - nvm
   - pre-commit
   - pyenv
   - rtl-sdr
   - sops
   - telegraf
-  - terraform
   - tree
   - vim
   - wget
   - zsh
 
-  
-
 homebrew_taps:
+  - hashicorp/tap
   - homebrew/core
   - homebrew/cask
   - fluxcd/tap
@@ -83,11 +85,13 @@ homebrew_cask_apps:
   - firefox
   - gb-studio
   - guitar-pro
+  - hashicorp/tap/hashicorp-vagrant
   - hex-fiend
   - iterm2
   - keepassx
   - krita
   - mgba
+  - openscad
   - pock
   - qlmarkdown
   - qlstephen
@@ -97,17 +101,15 @@ homebrew_cask_apps:
   - sameboy
   - spotify
   - the-unarchiver
-  #- tinymediamanager
   - transmission
-  #- vagrant
+  - ultimaker-cura
   - visual-studio-code
   - vlc
   - wireshark
-  #- zoomus
 
-mas_installed_apps:
-  - 1352778147 # Bitwarden
-  - 1320666476 # Wipr
+# mas_installed_apps:
+#   - 1352778147 # Bitwarden
+#   - 1320666476 # Wipr
 
 npm:
   - angular
@@ -130,6 +132,8 @@ vscode:
   - foxundermoon.shell-format
   - hashicorp.terraform
   - signageos.signageos-vscode-sops
+  - esbenp.prettier-vscode
+  - editorconfig.editorconfig
 
 dock:
   - key: orientation
@@ -159,6 +163,5 @@ dock:
   - key: wvous-tr-modifier
     type: int
     value: 0
-
 
 python: 3.8.5

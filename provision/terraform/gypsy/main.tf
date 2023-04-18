@@ -4,7 +4,7 @@ terraform {
       source = "telmate/proxmox"
     }
   }
-  
+
   required_version = ">= 0.12"
 }
 
@@ -22,7 +22,7 @@ locals {
 
 module "servonet-cluster" {
   source = "./servonet-node"
-  
+
   count = length(local.macaddrs)
 
   name = "tom-${count.index + 4}"

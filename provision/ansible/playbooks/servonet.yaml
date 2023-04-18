@@ -9,7 +9,7 @@
   pre_tasks:
     - name: Print all available facts
       ansible.builtin.debug:
-        var:  hostvars[inventory_hostname]
+        var: hostvars[inventory_hostname]
     - name: Pause for 3 seconds...
       pause:
         seconds: 3
@@ -25,7 +25,7 @@
         k3s_server_manifests_templates: []
         k3s_server_manifests_urls: []
       when: k3s_check_installed.stat.exists
-  
+
   roles:
     - role: common.ubuntu
       tags: ["common.ubuntu"]

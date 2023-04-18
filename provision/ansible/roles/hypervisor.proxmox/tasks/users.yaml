@@ -6,20 +6,19 @@
 
 - name: Create User
   block:
-  - name: Create packer user
-    ansible.builtin.shell:
-      cmd: pveum useradd {{ item.name }}
+    - name: Create packer user
+      ansible.builtin.shell:
+        cmd: pveum useradd {{ item.name }}
 
-  - name: Set user password
-    ansible.builtin.shell:
-      cmd: |-
-        pveum passwd {{ item.name }} << PW
-        {{ item.passwd }}
-        {{ item.passwd }}
-        PW
+    - name: Set user password
+      ansible.builtin.shell:
+        cmd: |-
+          pveum passwd {{ item.name }} << PW
+          {{ item.passwd }}
+          {{ item.passwd }}
+          PW
   when: user_exists.stdout == ""
 
 - name: Add user to role
   ansible.builtin.shell:
     cmd: pveum aclmod / -user {{ item.name }} -role {{ item.role }}
-

@@ -1,9 +1,9 @@
 ---
 collections:
   - name: community.general
-    version: "4.7.0"
+    version: "6.5.0"
   - name: community.sops
-    version: 1.4.1
+    version: 1.6.1
   - name: geerlingguy.mac
 roles:
   - name: xanmanning.k3s

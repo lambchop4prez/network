@@ -2,46 +2,20 @@
 
 Infrastructure as code for my network.
 
-## Robot Roll Call
+## Playbooks
 
-### Cambot
-
-ODroid H2 running OSMC
-
-### Gypsy
-
-Intel Xeon LGA1155 running Proxmox
-
-10Tb ZFS RaidZ storage array (5x3Tb)
-
-### Tom Servo
-
-6 Node HA Kubernetes Cluster
-
-3x Rasbperry Pi 4 8Gb
-1x Zotak zBox 8Gb
-2x Virtual 
-
-### Croooooooooow
-
-Generic Intel(R) Celeron(R) CPU J1900 @ 1.99GHz board running pfsense
-
-## Additional systems
+The following Ansible playbooks are defined for various purposes.
 
 ### Workstations
 
-Install python with homebrew
-Install ansible with pip
-No direnv yet, so export ansible.cfg
-`export ANSIBLE_CONFIG=./ansible.cfg`
-`ansible-galaxy install -r ./provision/ansible/requirements.yaml`
+This keeps my Macbook and Mac Mini synchronized in terms of installed applications and configuration.
 
-Run the playbook
+To quickly run the playbook, run:
 
-`ansible-playbook ./provision/ansible/workstation.yaml --ask-become-pass`
+```sh
+task playbook:workstation -- --limit 'workstation:<host>'
+```
 
+### GPC
 
-### Terraform
-
-**Gypsy** Intel Xeon LGA1155 running Proxmox
-
+GPC is a single-node proxmox instance which acts as both a Hypervisor and NAS.

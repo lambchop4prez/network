@@ -15,4 +15,3 @@
     mode: 0644
     remote_src: false
   notify: Update kernel modules
-

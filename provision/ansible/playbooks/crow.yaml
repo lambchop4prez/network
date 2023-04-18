@@ -7,7 +7,7 @@
     - name: Pausing for 5 seconds...
       pause:
         seconds: 5
-  
+
   roles:
     - role: router.coredns
-      tags: ['coredns']
+      tags: ["coredns"]

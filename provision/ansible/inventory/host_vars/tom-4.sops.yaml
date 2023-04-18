@@ -2,22 +2,22 @@ kind: Secret
 ansible_user: ENC[AES256_GCM,data:imDI,iv:D5EcpcBBcHMJqUw9JC2ElThlEkq4+FB2DuRtRmQXxt0=,tag:h1llASooXeCmQmkhazKptQ==,type:str]
 ansible_become_pass: ENC[AES256_GCM,data:IOSjP3TDRjXYnlxrGXApgE2GLQk=,iv:73Qylng064bAZOFjArpMSRgPsINwiawYHjK8EeTRG90=,tag:736AjuAq1Pce+RfJFaK/yQ==,type:str]
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age:
-        - recipient: age13a30av7z5dzumzzrpc5pqmmyjmqdmamh8jzxsdz2zgschr9k2p8qz6v5uw
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBoQWRQc2ZMNnpkd3lhWnJE
-            MUlZeXhmOTg3OHZ6NVdzN1hOQU1MMEFDVEZ3CitUbWNjYVBtZXMxaFA1Y1I1Umkr
-            VlRyYTloR3R6MnRjc0VqY1lRR2YwUEEKLS0tIFlhS0p5ZExzamdvN0FZT3RrZ1VX
-            WWhaSDUybjJIcFN2dVRZRWlzY21GTG8KeUv9n0Ror7vSb9cz1J+pZxwC5au1oG/Z
-            lzhkvgq7XjPkXEvZRD/Fuk8/6nqXqV/UTS7pwsXoDzonixU9DZMr6A==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2021-12-07T02:34:39Z"
-    mac: ENC[AES256_GCM,data:OB9GC6AMap+XQjAAacSRQnrARXLUx59R+KzgPtxpGiN+TZSyBWa0v0jc9G7jfhG9ELnYL1lG4w0bGr6ufrv+BrzBJPstC4MmEg34eQky2l8opFMABTlrs2hluMjR3KRZdZAMbjIkHE4h1Ycg39FlS/CwBOzq9PFOQ3T/zqtF7fY=,iv:n++osWU/fbgP2RvQbdRNWBXrb2olGs/J+Untjj+vYaE=,tag:veXIwhqhn+NN5z6XkIXzKQ==,type:str]
-    pgp: []
-    unencrypted_regex: ^(kind)$
-    version: 3.7.1
+  kms: []
+  gcp_kms: []
+  azure_kv: []
+  hc_vault: []
+  age:
+    - recipient: age13a30av7z5dzumzzrpc5pqmmyjmqdmamh8jzxsdz2zgschr9k2p8qz6v5uw
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBoQWRQc2ZMNnpkd3lhWnJE
+        MUlZeXhmOTg3OHZ6NVdzN1hOQU1MMEFDVEZ3CitUbWNjYVBtZXMxaFA1Y1I1Umkr
+        VlRyYTloR3R6MnRjc0VqY1lRR2YwUEEKLS0tIFlhS0p5ZExzamdvN0FZT3RrZ1VX
+        WWhaSDUybjJIcFN2dVRZRWlzY21GTG8KeUv9n0Ror7vSb9cz1J+pZxwC5au1oG/Z
+        lzhkvgq7XjPkXEvZRD/Fuk8/6nqXqV/UTS7pwsXoDzonixU9DZMr6A==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2021-12-07T02:34:39Z"
+  mac: ENC[AES256_GCM,data:OB9GC6AMap+XQjAAacSRQnrARXLUx59R+KzgPtxpGiN+TZSyBWa0v0jc9G7jfhG9ELnYL1lG4w0bGr6ufrv+BrzBJPstC4MmEg34eQky2l8opFMABTlrs2hluMjR3KRZdZAMbjIkHE4h1Ycg39FlS/CwBOzq9PFOQ3T/zqtF7fY=,iv:n++osWU/fbgP2RvQbdRNWBXrb2olGs/J+Untjj+vYaE=,tag:veXIwhqhn+NN5z6XkIXzKQ==,type:str]
+  pgp: []
+  unencrypted_regex: ^(kind)$
+  version: 3.7.1
