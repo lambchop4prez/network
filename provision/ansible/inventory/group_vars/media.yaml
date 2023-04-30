@@ -1,0 +1,7 @@
+---
+install_addons:
+  - plugin.video.youtube
+  - plugin.video.plutotv
+  - pvr.hts
+
+nas: gpc.lan
