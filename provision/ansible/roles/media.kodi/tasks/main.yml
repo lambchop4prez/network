@@ -1,0 +1,23 @@
+---
+- name: Install addons
+  ansible.builtin.shell:
+    cmd: kodi-send --action="InstallAddon({{item}})"
+  loop: "{{ install_addons }}"
+
+- name: Setup youtube API keys
+  ansible.builtin.template:
+    src: templates/api_keys.json.j2
+    dest: /storage/.kodi/userdata/addon_data/plugin.video.youtube/api_keys.json
+
+- name: Create directory for media mount
+  ansible.builtin.shell:
+    cmd: mkdir /storage/media
+
+- name: Setup NFS mount for media
+  ansible.builtin.template:
+    src: storage-media.mount.j2
+    dest: /storage/.config/system.d/storage-media.mount
+
+- name: Enable NFS mount service
+  ansible.builtin.shell:
+    cmd: systemctl enable storage-media.mount
