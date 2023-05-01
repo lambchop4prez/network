@@ -5,3 +5,6 @@ install_addons:
   - pvr.hts
 
 nas: gpc.lan
+
+youtube_api_key: "AIzaSyDTNSF-SbbccwoQ5i8ifwojPyaxcsj51Gg"
+youtube_client_id: "768796602252-g9dg5n5rsskprvpm5lvro81ii5kqfntr"

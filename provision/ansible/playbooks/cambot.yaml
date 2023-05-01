@@ -1,0 +1,10 @@
+---
+# Kodi setup
+- hosts:
+    - media
+  become: false
+  gather_facts: true
+
+  roles:
+    - role: media.kodi
+      tags: ["media.kodi"]
