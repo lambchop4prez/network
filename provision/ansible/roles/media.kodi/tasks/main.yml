@@ -1,7 +1,6 @@
 ---
 - name: Install addons
-  ansible.builtin.shell:
-    cmd: kodi-send --action="InstallAddon({{item}})"
+  ansible.builtin.include_tasks: addon.yml
   loop: "{{ install_addons }}"
 
 - name: Setup youtube API keys

@@ -1,0 +1,6 @@
+- name: Install addon (requires user input)
+  ansible.builtin.shell:
+    cmd: kodi-send --action="InstallAddon({{item}})"
+- name: Pause while addon installs
+  ansible.builtin.pause:
+    seconds: 30
