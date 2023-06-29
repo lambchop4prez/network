@@ -4,8 +4,8 @@ terraform {
       source = "telmate/proxmox"
     }
   }
-  
-  required_version = ">= 0.12"
+
+  required_version = ">= 0.14"
 }
 
 provider "proxmox" {
@@ -15,39 +15,42 @@ provider "proxmox" {
   pm_password = var.pve_password
 }
 
-locals {
-    nodes = [
-        {ip = "10.4.212.1", cpus = 2, storage_size = "32G"},
-        # {ip = "10.4.212.2", cpus = 2, storage_size = "32G"},
-        # {ip = "10.4.212.3", cpus = 2, storage_size = "32G"},
-        # {ip = "10.4.212.4", cpus = 4, storage_size = "64G"},
-        # {ip = "10.4.212.5", cpus = 4, storage_size = "64G"},
-        # {ip = "10.4.212.6", cpus = 4, storage_size = "64G"}
-    ]
+provider "vault" {}
+
+data "vault_secret_generic" "proxmox_auth" {
+  path = "secret/terraform/proxmox"
 }
 
+data "vault_secret_generic" "proxmox_password" {
+  path = "secret/proxmox/data/proxmox_password"
+}
 
+module "server-nodes" {
 
-module "servonet-cluster" {
+  for_each = var.server-nodes
   source = "./node"
-  
-  count = length(local.nodes)
 
-  name = "tom-${count.index}"
-  ip = local.nodes[count.index].ip
-  cores = local.nodes[count.index].cpus
 
-  gateway = "10.4.20.1"
+  name = each.key
+  ip = each.value
+  cores = 2
+
+  gateway = "10.4.1.1"
   bridge = "vmbr0"
-  storage_size = local.nodes[count.index].storage_size
+  storage_size = "32G"
   storage_pool = "local-lvm"
   target_node = "gpc"
   pve_host = var.pve_host
-  pve_user = var.pve_user
-  pve_password = var.pve_password
+  pve_user = data.vault_secret_generic.proxmox_auth.data["username"]
+  pve_password = data.vault_secret_generic.proxmox_auth.data["password"]
   ciuser = "tom"
   cipassword_hashed = var.cipassword_hashed
 }
+
+module "agent-nodes" {
+
+}
+
 
 variable "pve_host" {
   type = string
