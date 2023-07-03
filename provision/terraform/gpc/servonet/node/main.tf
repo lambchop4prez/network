@@ -1,3 +1,6 @@
+
+
+
 resource "null_resource" "cloud_init_config_file" {
   connection {
     type = "ssh"
@@ -14,10 +17,6 @@ resource "null_resource" "cloud_init_config_file" {
 
 
 resource "proxmox_vm_qemu" "servonet-node" {
-#   depends_on = [
-#     null_resource.cloud_init_config_file
-#   ]
-
   name = "${var.name}"
   desc = "servonet node"
   target_node = var.target_node
@@ -25,26 +24,21 @@ resource "proxmox_vm_qemu" "servonet-node" {
   clone = var.template_name
   full_clone = false
 
+  agent = 1
+
   cores = var.cores
   sockets = 1
-  memory = 4096
+  memory = var.memory
 
   disk {
     type = "scsi"
     storage = var.storage_pool
     size = var.storage_size
   }
-  // secondary disk for block storage
-#   disk {
-#     type = "scsi"
-#     storage = "vmstoragelimited"
-#     size = "100G"
-#   }
 
   network {
     model = "virtio"
     bridge = var.bridge
-    # macaddr =  var.macaddr
   }
 
 #   cicustom = "user=local:snippets/${var.name}.yml"

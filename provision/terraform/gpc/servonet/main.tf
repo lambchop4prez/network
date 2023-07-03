@@ -21,8 +21,8 @@ data "vault_secret_generic" "proxmox_auth" {
   path = "secret/terraform/proxmox"
 }
 
-data "vault_secret_generic" "proxmox_password" {
-  path = "secret/proxmox/data/proxmox_password"
+data "vault_secret_generic" "servonet" {
+  path = "secret/servonet"
 }
 
 module "server-nodes" {
@@ -48,7 +48,13 @@ module "server-nodes" {
 }
 
 module "agent-nodes" {
+  for_each = var.agent-nodes
+  source = "./node"
 
+  name = each.key
+  ip = each.value
+
+  cores = 2
 }
 
 
