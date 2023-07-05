@@ -1,0 +1,15 @@
+# Servonet K3s cluster
+
+This is a HA Kubernetes cluster running a server across 3 VMs. The intent is to allow agent nodes to join as needed.
+
+## Features
+
+- [ ] Server Init
+- [ ] HA Control plane
+- [ ] Virtual agent nodes
+- [ ] Bare-metal agent node provisioning (PXE boot?)
+
+## References
+
+- https://github.com/Telmate/terraform-provider-proxmox
+- https://github.com/aigisuk/terraform-digitalocean-ha-k3s
