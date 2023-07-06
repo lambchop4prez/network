@@ -1,7 +1,8 @@
 terraform {
   required_providers {
     proxmox = {
-      source = "telmate/proxmox"
+      source = "terraform.local/telmate/proxmox"
+      version = "2.9.15"
     }
   }
 
@@ -13,6 +14,7 @@ provider "proxmox" {
   pm_api_url = "https://gpc.lan:8006/api2/json"
   pm_user = data.vault_generic_secret.proxmox_auth.data["proxmox_user"]
   pm_password = data.vault_generic_secret.proxmox_auth.data["proxmox_password"]
+  pm_debug = true
 }
 
 provider "vault" {}

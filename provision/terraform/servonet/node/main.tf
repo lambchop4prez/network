@@ -1,7 +1,8 @@
 terraform {
   required_providers {
     proxmox = {
-      source = "telmate/proxmox"
+      source = "terraform.local/telmate/proxmox"
+      version = "2.9.15"
     }
   }
 
@@ -17,7 +18,7 @@ data "cloudinit_config" "user_data" {
     content = templatefile(
       "${path.module}/files/user-data.tpl",
       {
-        hostname = proxmox_vm_qemu.servonet_node.name,
+        hostname = local.hostname,
         username = var.ciuser
         password = var.ciuserpassword
       }
@@ -33,6 +34,17 @@ data "cloudinit_config" "user_data" {
   #   content_type = "text/x-shellscript"
   #   content = templatefile("${path.module}/files/setup-k3s.sh")
   # }
+}
+
+resource "proxmox_cloud_init_disk" "ci" {
+  name = local.hostname
+  pve_node = var.target_node
+  storage = "local"
+  meta_data = yamlencode({
+    instance_id = sha1(local.hostname)
+    local-hostname = local.hostname
+  })
+  user_data = yamlencode(data.cloudinit_config.user_data.rendered)
 }
 
 # resource "null_resource" "cloud_init_config_file" {
@@ -70,13 +82,19 @@ resource "proxmox_vm_qemu" "servonet_node" {
     size = var.storage_size
   }
 
+  disk {
+    type = "scsi"
+    media = "cdrom"
+    storage = "local-lvm"
+    volume = proxmox_cloud_init_disk.ci.id
+    size = proxmox_cloud_init_disk.ci.size
+  }
+
   network {
     model = "virtio"
     bridge = var.bridge
   }
 
-#   cicustom = "user=local:snippets/${var.name}.yml"
-#   cloudinit_cdrom_storage = "local"
 
   os_type = "cloud-init"
   ipconfig0 = "ip=${var.ip}/16,gw=${var.gateway}"

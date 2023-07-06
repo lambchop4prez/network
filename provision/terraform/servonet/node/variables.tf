@@ -36,7 +36,7 @@ variable "storage_size" {
 variable "storage_pool" {
   description = "storage pool for disk"
   type = string
-  default = "local"
+  default = "local-lvm"
 }
 
 variable "target_node" {
