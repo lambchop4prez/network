@@ -9,9 +9,9 @@ module "server_init" {
   storage_pool = "local-lvm"
   target_node = "gpc"
   template_name = "alpine-3.18"
-  # pve_host = var.pve_host
-  # pve_user = data.vault_generic_secret.proxmox_auth.data["proxmox_username"]
-  # pve_password = data.vault_generic_secret.proxmox_auth.data["proxmox_password"]
+  pve_host = data.vault_generic_secret.proxmox_auth.data["proxmox_host"]
+  pve_user = data.vault_generic_secret.proxmox_auth.data["proxmox_user"]
+  pve_password = data.vault_generic_secret.proxmox_auth.data["proxmox_password"]
   ciuser = "tom"
   ciuserpassword = data.vault_generic_secret.servonet.data["tom_password"]
   cluster_token = random_password.k3s_token.result

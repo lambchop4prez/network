@@ -11,10 +11,15 @@ terraform {
 
 provider "proxmox" {
   pm_tls_insecure = true
-  pm_api_url = "https://gpc.lan:8006/api2/json"
+  pm_api_url = "https://${data.vault_generic_secret.proxmox_auth.data["proxmox_host"]}:8006/api2/json"
   pm_user = data.vault_generic_secret.proxmox_auth.data["proxmox_user"]
   pm_password = data.vault_generic_secret.proxmox_auth.data["proxmox_password"]
-  pm_debug = true
+  # pm_debug = true
+  # pm_log_enable = true
+  # pm_log_levels = {
+  #   _default    = "debug"
+  #   _capturelog = ""
+  # }
 }
 
 provider "vault" {}

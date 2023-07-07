@@ -5,7 +5,7 @@ This is a HA Kubernetes cluster running a server across 3 VMs. The intent is to 
 ## Features
 
 - [ ] Server Init
-- [ ] HA Control plane
+- [ ] Highly Available Control plane
 - [ ] Virtual agent nodes
 - [ ] Bare-metal agent node provisioning (PXE boot?)
 

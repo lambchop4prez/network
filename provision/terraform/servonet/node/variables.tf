@@ -50,21 +50,21 @@ variable "template_name" {
   default = "servonet-node"
 }
 
-# variable "pve_host" {
-#   description = "proxmox host"
-#   type = string
-# }
+variable "pve_host" {
+  description = "proxmox host"
+  type = string
+}
 
-# variable "pve_user" {
-#   description = "proxmox user"
-#   type = string
-# }
+variable "pve_user" {
+  description = "proxmox user"
+  type = string
+}
 
-# variable "pve_password" {
-#   description = "proxmox password"
-#   type = string
-#   sensitive = true
-# }
+variable "pve_password" {
+  description = "proxmox password"
+  type = string
+  sensitive = true
+}
 
 variable "ciuser" {
   description = "Username to create with cloud-init"
