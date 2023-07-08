@@ -77,6 +77,14 @@ provider "registry.terraform.io/hashicorp/vault" {
   ]
 }
 
+provider "terraform.local/gxben/opnsense" {
+  version     = "0.3.2"
+  constraints = "0.3.2"
+  hashes = [
+    "h1:1vtgbFtm8Ry5etAkHXKR3a6NICXlAsEFSG5aobAAmTI=",
+  ]
+}
+
 provider "terraform.local/telmate/proxmox" {
   version     = "2.9.15"
   constraints = "2.9.15"
