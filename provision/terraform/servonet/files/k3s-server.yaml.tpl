@@ -10,7 +10,7 @@ k3s_server:
   token: ${k3s_token}
   tls-san:
     # kube-vip
-    - "{{ kubevip_address }}"
+    - "${kubevip_address}"
   # Disable Docker - this will use the default containerd CRI
   docker: false
   flannel-backend: "none" # This needs to be in quotes
@@ -29,7 +29,7 @@ k3s_server:
   # Network CIDR to use for pod IPs
   cluster-cidr: "${cluster_cidr}"
   # Network CIDR to use for service IPs
-  service-cidr: "#{service_cidr}"
+  service-cidr: "${service_cidr}"
   kubelet-arg:
     # Enables the kubelet to gracefully evict pods during a node shutdown
     - "feature-gates=GracefulNodeShutdown=true"
