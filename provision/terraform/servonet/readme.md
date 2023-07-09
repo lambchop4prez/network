@@ -9,6 +9,13 @@ This is a HA Kubernetes cluster running a server across 3 VMs. The intent is to 
 - [ ] Virtual agent nodes
 - [ ] Bare-metal agent node provisioning (PXE boot?)
 
+## CloudInit
+
+`cloud-init status --long`
+`cloud-init analyze show`
+
+Right now, cloud-init doesn't seem to run the finalize step. This can be run with `cloud-init module --mode final`
+
 ## References
 
 - https://github.com/Telmate/terraform-provider-proxmox

@@ -57,3 +57,21 @@ variable proxmox_storage_pool {
   description = "Storage pool for all disk images"
   default = "local-lvm"
 }
+
+variable cluster_vip_address {
+  type = string
+  description = "IP Address for the cluster to advertize on."
+  default = "10.4.88.212"
+}
+
+variable cluster_cidr {
+  type = string
+  description = "Address space for pod IPs."
+  default = "10.42.0.0/16"
+}
+
+variable service_cidr {
+  type = string
+  description = "Adress space for service IPs"
+  default = "10.43.0.0/16"
+}

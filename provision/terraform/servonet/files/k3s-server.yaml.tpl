@@ -1,6 +1,5 @@
 ---
 # https://rancher.com/docs/k3s/latest/en/installation/install-options/server-config/
-# https://github.com/PyratLabs/ansible-role-k3s
 
 # (bool) Specify if a host (or host group) are part of the control plane
 k3s_control_node: true
@@ -8,6 +7,7 @@ k3s_control_node: true
 # (dict) k3s settings for all control-plane nodes
 k3s_server:
   node-ip: "${hostname}"
+  token: ${k3s_token}
   tls-san:
     # kube-vip
     - "{{ kubevip_address }}"
@@ -15,7 +15,7 @@ k3s_server:
   docker: false
   flannel-backend: "none" # This needs to be in quotes
   disable:
-    # Disable flannel - replaced with Calico
+    # Disable flannel - replaced with Cilium
     - flannel
     # Disable traefik - installed with Flux
     - traefik
@@ -27,9 +27,9 @@ k3s_server:
   disable-cloud-controller: true
   write-kubeconfig-mode: "644"
   # Network CIDR to use for pod IPs
-  cluster-cidr: "10.42.0.0/16"
+  cluster-cidr: "${cluster_cidr}"
   # Network CIDR to use for service IPs
-  service-cidr: "10.43.0.0/16"
+  service-cidr: "#{service_cidr}"
   kubelet-arg:
     # Enables the kubelet to gracefully evict pods during a node shutdown
     - "feature-gates=GracefulNodeShutdown=true"

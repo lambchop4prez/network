@@ -31,6 +31,17 @@ resource "proxmox_vm_qemu" "server_init" {
   cicustom = "user=local:snippets/tom-${random_id.server_node_id[0].hex}-1.yml"
   cloudinit_cdrom_storage = var.proxmox_storage_pool
 
+  # connection {
+  #   type = "ssh"
+  #   user = "tom"
+  #   host = local.server_ips[0]
+  #   private_key = file("~/.ssh/id_ecdsa")
+  # }
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "cloud-init modules --mode final"
+  #   ]
+  # }
 }
 
 resource "opnsense_dhcp_static_map" "dhcp1" {
@@ -52,12 +63,20 @@ resource "null_resource" "cloud_init_config_file" {
     content = templatefile(
       "${path.module}/files/user-data.tpl",
       {
-        hostname = "tom-${random_id.server_node_id[0].hex}-1",
+        hostname = "tom-${random_id.server_node_id[0].hex}-1"
         username = "tom"
         password = data.vault_generic_secret.servonet.data["tom_password"]
         ip = local.server_ips[0]
         gateway = var.gateway
-        prep_k3s = base64gzip(file("${path.module}/files/prep-k3s.sh"))
+        k3s_config = base64gzip(templatefile("${path.module}/files/k3s-server.yaml.tpl",
+        {
+          hostname = "tom-${random_id.server_node_id[0].hex}-1"
+          k3s_token = random_password.k3s_token.result
+          kubevip_address = var.cluster_vip_address
+          cluster_cidr = var.cluster_cidr
+          service_cidr = var.service_cidr
+        }))
+        k3s_init_script = base64gzip(file("${path.module}/files/k3s-server-init.sh"))
       }
     )
     destination = "/var/lib/vz/snippets/tom-${random_id.server_node_id[0].hex}-1.yml"
