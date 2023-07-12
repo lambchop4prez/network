@@ -25,7 +25,7 @@ variable server_cores {
 variable server_memory {
   type = number
   description = "Ammount of memory for server nodes"
-  default = 2048
+  default = 4098
 }
 
 variable server_storage_size {

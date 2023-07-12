@@ -68,15 +68,29 @@ resource "null_resource" "cloud_init_config_file" {
         password = data.vault_generic_secret.servonet.data["tom_password"]
         ip = local.server_ips[0]
         gateway = var.gateway
+        ssh_key = file("~/.ssh/id_ecdsa")
         k3s_config = base64gzip(templatefile("${path.module}/files/k3s-server.yaml.tpl",
         {
           hostname = "tom-${random_id.server_node_id[0].hex}-1"
           k3s_token = random_password.k3s_token.result
-          kubevip_address = var.cluster_vip_address
+          kube_vip_address = var.cluster_vip_address
           cluster_cidr = var.cluster_cidr
           service_cidr = var.service_cidr
         }))
         k3s_init_script = base64gzip(file("${path.module}/files/k3s-server-init.sh"))
+        pod_kube_vip = base64gzip(templatefile("${path.module}/manifests/pod-kube-vip.yaml.tpl",
+        {
+          kube_vip_address = var.cluster_vip_address
+        }))
+        cilium_helmchart = base64gzip(templatefile("${path.module}/manifests/custom-cilium-helmchart.yaml.tpl",
+        {
+          kube_vip_address = var.cluster_vip_address
+          cluster_cidr = var.cluster_cidr
+        }))
+        cilium_l2 = base64gzip(templatefile("${path.module}/manifests/custom-cilium-l2.yaml.tpl",
+        {
+          service_cidr = var.service_cidr
+        }))
       }
     )
     destination = "/var/lib/vz/snippets/tom-${random_id.server_node_id[0].hex}-1.yml"
