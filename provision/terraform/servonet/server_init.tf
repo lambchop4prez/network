@@ -8,6 +8,7 @@ resource "proxmox_vm_qemu" "server_init" {
   clone = var.vm_template
   full_clone = false
 
+  qemu_os = "l26"
   agent = 1
 
   cores = var.server_cores
@@ -23,6 +24,7 @@ resource "proxmox_vm_qemu" "server_init" {
   network {
     model = "virtio"
     bridge = var.proxmox_bridge_interface
+
   }
 
   ipconfig0 = "ip=${local.server_ips[0]}/24,gw=${var.gateway}"
@@ -56,7 +58,7 @@ resource "null_resource" "cloud_init_config_file" {
   connection {
     type = "ssh"
     host = data.vault_generic_secret.proxmox_auth.data["proxmox_host"]
-    private_key = file("~/.ssh/id_ecdsa")
+    private_key = data.local_sensitive_file.ssh_key.content
   }
 
   provisioner "file" {
@@ -68,7 +70,7 @@ resource "null_resource" "cloud_init_config_file" {
         password = data.vault_generic_secret.servonet.data["tom_password"]
         ip = local.server_ips[0]
         gateway = var.gateway
-        ssh_key = file("~/.ssh/id_ecdsa")
+        ssh_key = data.local_sensitive_file.ssh_pub_key.content
         k3s_config = base64gzip(templatefile("${path.module}/files/k3s-server.yaml.tpl",
         {
           hostname = "tom-${random_id.server_node_id[0].hex}-1"
@@ -82,17 +84,29 @@ resource "null_resource" "cloud_init_config_file" {
         {
           kube_vip_address = var.cluster_vip_address
         }))
-        cilium_helmchart = base64gzip(templatefile("${path.module}/manifests/custom-cilium-helmchart.yaml.tpl",
-        {
-          kube_vip_address = var.cluster_vip_address
-          cluster_cidr = var.cluster_cidr
-        }))
-        cilium_l2 = base64gzip(templatefile("${path.module}/manifests/custom-cilium-l2.yaml.tpl",
-        {
-          service_cidr = var.service_cidr
-        }))
       }
     )
     destination = "/var/lib/vz/snippets/tom-${random_id.server_node_id[0].hex}-1.yml"
   }
 }
+
+# resource "terraform_data" "cluster-bootstrap" {
+#   # Replacement of any instance of the cluster requires re-provisioning
+#   triggers_replace = proxmox_vm_qemu.server_init[*].name
+
+#   # Bootstrap script can run on any instance of the cluster
+#   # So we just choose the first in this case
+#   connection {
+#     type = "ssh"
+#     host = proxmox_vm_qemu.server_init[0].name
+#     user = "tom"
+#     private_key = data.local_sensitive_file.ssh_key.content
+#   }
+
+#   provisioner "remote-exec" {
+#     # Bootstrap script called with private_ip of each node in the cluster
+#     inline = [
+#       "cloud-init modules --mode final",
+#     ]
+#   }
+# }

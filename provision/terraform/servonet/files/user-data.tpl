@@ -6,8 +6,9 @@ locale: en_US.UTF-8
 timezone: America/Detroit
 keyboard:
   layout: us
-ssh_pwauth: false
-
+ssh_pwauth: true
+ssh:
+  emit_keys_to_console: false
 mounts:
   - ["cgroup", "/sys/fs/cgroup", "cgroup", "defaults", "0", "0"]
 
@@ -44,14 +45,6 @@ write_files:
     content: ${pod_kube_vip}
     encoding: gzip+b64
     permissions: "0644"
-  # - path: /var/lib/rancher/k3s/server/manifests/custom-cilium-helmchart.yaml
-  #   content: ${cilium_helmchart}
-  #   encoding: gzip+b64
-  #   permissions: "0644"
-  # - path: /var/lib/rancher/k3s/server/manifests/custom-cilium-l2.yaml
-  #   content: ${cilium_l2}
-  #   encoding: gzip+b64
-  #   permissions: "0644"
   - path: /usr/local/custom_scripts/k3s-install.sh
     content: ${k3s_init_script}
     encoding: gzip+b64

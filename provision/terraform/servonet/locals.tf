@@ -5,9 +5,10 @@ locals {
     [
       for key, server in proxmox_vm_qemu.server_init:
       {
-        name = server.name
+        hostname = server.name
+        ip = local.server_ips[0]
+        mac = server.network[0].macaddr
       }
     ]
   )
-
 }
