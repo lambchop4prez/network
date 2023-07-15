@@ -1,7 +1,6 @@
-
-resource "proxmox_vm_qemu" "server_init" {
-  count = 1
-  name = "tom-${random_id.server_node_id[0].hex}-1"
+resource "proxmox_vm_qemu" "server_nodes" {
+  count = var.server_count - 1
+  name = "tom-${random_id.server_node_id[count.index + 1].hex}-${count.index + 2}"
   desc = "Servonet node"
   target_node = var.proxmox_target_node
 
@@ -27,10 +26,10 @@ resource "proxmox_vm_qemu" "server_init" {
 
   }
 
-  ipconfig0 = "ip=${local.server_ips[0]}/24,gw=${var.gateway}"
+  ipconfig0 = "ip=${local.server_ips[count.index + 1]}/24,gw=${var.gateway}"
 
   os_type = "cloud-init"
-  cicustom = "user=local:snippets/tom-${random_id.server_node_id[0].hex}-1.yml"
+  cicustom = "user=local:snippets/tom-${random_id.server_node_id[count.index + 1].hex}-${count.index + 2}.yml"
   cloudinit_cdrom_storage = var.proxmox_storage_pool
 
   # connection {
@@ -46,15 +45,17 @@ resource "proxmox_vm_qemu" "server_init" {
   # }
 }
 
-resource "opnsense_dhcp_static_map" "dhcp1" {
+resource "opnsense_dhcp_static_map" "dhcp2" {
+  count = var.server_count - 1
   interface = "lan"
-  mac       = "${proxmox_vm_qemu.server_init[0].network[0].macaddr}"
-  ipaddr    = "${local.server_ips[0]}"
-  hostname  = "${proxmox_vm_qemu.server_init[0].name}"
+  mac       = "${proxmox_vm_qemu.server_nodes[count.index].network[0].macaddr}"
+  ipaddr    = "${local.server_ips[count.index + 1]}"
+  hostname  = "${proxmox_vm_qemu.server_nodes[count.index].name}"
 }
 
 
-resource "null_resource" "cloud_init_config_file" {
+resource "null_resource" "cloud_init_config_file2" {
+  count = var.server_count - 1
   connection {
     type = "ssh"
     host = data.vault_generic_secret.proxmox_auth.data["proxmox_host"]
@@ -63,30 +64,26 @@ resource "null_resource" "cloud_init_config_file" {
 
   provisioner "file" {
     content = templatefile(
-      "${path.module}/files/user-data.init.tpl",
+      "${path.module}/files/user-data.server.tpl",
       {
-        hostname = "tom-${random_id.server_node_id[0].hex}-1"
+        hostname = "tom-${random_id.server_node_id[count.index + 1].hex}-${count.index + 2}"
         username = "tom"
         password = data.vault_generic_secret.servonet.data["tom_password"]
-        ip = local.server_ips[0]
+        ip = local.server_ips[count.index + 1]
         gateway = var.gateway
         ssh_key = data.local_sensitive_file.ssh_pub_key.content
-        k3s_config = base64gzip(templatefile("${path.module}/files/k3s-server.init.yaml.tpl",
+        k3s_config = base64gzip(templatefile("${path.module}/files/k3s-server.yaml.tpl",
         {
-          hostname = "tom-${random_id.server_node_id[0].hex}-1"
+          hostname = "tom-${random_id.server_node_id[count.index + 1].hex}-${count.index + 2}"
           k3s_token = random_password.k3s_token.result
           kube_vip_address = var.cluster_vip_address
           cluster_cidr = var.cluster_cidr
           service_cidr = var.service_cidr
         }))
         k3s_init_script = base64gzip(file("${path.module}/files/k3s-server-init.sh"))
-        pod_kube_vip = base64gzip(templatefile("${path.module}/manifests/pod-kube-vip.yaml.tpl",
-        {
-          kube_vip_address = var.cluster_vip_address
-        }))
       }
     )
-    destination = "/var/lib/vz/snippets/tom-${random_id.server_node_id[0].hex}-1.yml"
+    destination = "/var/lib/vz/snippets/tom-${random_id.server_node_id[count.index + 1].hex}-${count.index + 2}.yml"
   }
 }
 

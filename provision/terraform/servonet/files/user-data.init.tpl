@@ -60,7 +60,7 @@ runcmd:
   - /usr/local/custom_scripts/k3s-install.sh
   - [touch, /etc/cloud/cloud-init.disabled]
 
-power_status:
+power_state:
   mode: reboot
   delay: now
 

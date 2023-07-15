@@ -7,7 +7,7 @@ tls-san:
   - "${kube_vip_address}"
 node-label:
   - "foo=bar"
-server: https://${kube_vip_address}:6443
+cluster-init: true
 token: ${k3s_token}
 
 # Disable Docker - this will use the default containerd CRI

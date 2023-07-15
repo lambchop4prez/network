@@ -9,6 +9,14 @@ locals {
         ip = local.server_ips[0]
         mac = server.network[0].macaddr
       }
+    ],
+    [
+      for i, server in proxmox_vm_qemu.server_nodes:
+      {
+        hostname = server.name
+        ip = local.server_ips[i + 1]
+        mac = server.network[0].macaddr
+      }
     ]
   )
 }
