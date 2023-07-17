@@ -4,13 +4,15 @@ This module currently provisions a single node k3s cluster, running on Alpine Li
 
 ## Current limitations
 
-The cloud-final modules aren't being run in cloud-init. This is because when the machine boots, the `cloud-final` service is in a "stopped" mode at boot. This configuration is used to setup the user, and most importantly to bootstrap k3s. In order to bootstrap the cluster, you need to run `rc-service cloud-final restart` for the modules to run. This could be provisioned over ssh, but for some reason ssh doesn't seem to be working either.
+~~The cloud-final modules aren't being run in cloud-init. This is because when the machine boots, the `cloud-final` service is in a "stopped" mode at boot. This configuration is used to setup the user, and most importantly to bootstrap k3s. In order to bootstrap the cluster, you need to run `rc-service cloud-final restart` for the modules to run. This could be provisioned over ssh, but for some reason ssh doesn't seem to be working either.~~
+
+The reason behind this issue is the default inclusion of `tiny-cloud` in alpine. By removing the `tiny-cloud-alpine` package in the VM template, all of the cloud-init services trigger correctly.
 
 ## Features
 
 - [x] Server Init
 - [x] Highly Available Control plane
-- [ ] Virtual agent nodes
+- [x] Virtual agent nodes
 - [ ] Bare-metal agent node provisioning
 
 ## CloudInit
