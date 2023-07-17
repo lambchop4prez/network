@@ -32,18 +32,6 @@ resource "proxmox_vm_qemu" "server_init" {
   os_type = "cloud-init"
   cicustom = "user=local:snippets/tom-${random_id.server_node_id[0].hex}-1.yml"
   cloudinit_cdrom_storage = var.proxmox_storage_pool
-
-  # connection {
-  #   type = "ssh"
-  #   user = "tom"
-  #   host = local.server_ips[0]
-  #   private_key = file("~/.ssh/id_ecdsa")
-  # }
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "cloud-init modules --mode final"
-  #   ]
-  # }
 }
 
 resource "opnsense_dhcp_static_map" "dhcp1" {
@@ -98,25 +86,3 @@ data "remote_file" "kubeconfig" {
   }
   path = "/etc/rancher/k3s/k3s.yaml"
 }
-
-# resource "terraform_data" "cluster_kubeconfig" {
-#   # Replacement of any instance of the cluster requires re-provisioning
-#   triggers_replace = proxmox_vm_qemu.server_init[*].name
-
-#   # Bootstrap script can run on any instance of the cluster
-#   # So we just choose the first in this case
-#   connection {
-#     type = "ssh"
-#     host = proxmox_vm_qemu.server_init[0].name
-#     user = "tom"
-#     private_key = data.local_sensitive_file.ssh_key.content
-#   }
-
-
-#   provisioner "remote-exec" {
-#     # Bootstrap script called with private_ip of each node in the cluster
-#     inline = [
-#       "kubectl config raw",
-#     ]
-#   }
-# }

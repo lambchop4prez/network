@@ -47,7 +47,7 @@ runcmd:
   - [apk, add, --no-cache, cni-plugins, --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing]
   - [sed, -i, "/^default_kernel_opts=/ s/\"$/ cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory\"/", /etc/update-extlinux.conf]
   - update-extlinux
-  - curl -sfL https://get.k3s.io | sh -
+  - curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="${exec}" sh -
   - [touch, /etc/cloud/cloud-init.disabled]
 
 # power_state:

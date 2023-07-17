@@ -1,5 +1,5 @@
 ---
-# https://rancher.com/docs/k3s/latest/en/installation/install-options/server-config/
+# https://docs.k3s.io/cli/server
 
 write-kubeconfig-mode: "0644"
 tls-san:

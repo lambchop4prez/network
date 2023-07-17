@@ -33,17 +33,6 @@ resource "proxmox_vm_qemu" "server_nodes" {
   cicustom = "user=local:snippets/tom-${random_id.server_node_id[count.index + 1].hex}-${count.index + 2}.yml"
   cloudinit_cdrom_storage = var.proxmox_storage_pool
 
-  # connection {
-  #   type = "ssh"
-  #   user = "tom"
-  #   host = local.server_ips[0]
-  #   private_key = file("~/.ssh/id_ecdsa")
-  # }
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "cloud-init modules --mode final"
-  #   ]
-  # }
 }
 
 resource "opnsense_dhcp_static_map" "dhcp2" {
@@ -65,8 +54,9 @@ resource "terraform_data" "cloud_init_config_file2" {
 
   provisioner "file" {
     content = templatefile(
-      "${path.module}/files/user-data.server.tpl",
+      "${path.module}/files/user-data.tpl",
       {
+        exec = "server"
         hostname = "tom-${random_id.server_node_id[count.index + 1].hex}-${count.index + 2}"
         username = "tom"
         password = data.vault_generic_secret.servonet.data["tom_password"]
@@ -86,24 +76,3 @@ resource "terraform_data" "cloud_init_config_file2" {
     destination = "/var/lib/vz/snippets/tom-${random_id.server_node_id[count.index + 1].hex}-${count.index + 2}.yml"
   }
 }
-
-# resource "terraform_data" "cluster-bootstrap" {
-#   # Replacement of any instance of the cluster requires re-provisioning
-#   triggers_replace = proxmox_vm_qemu.server_init[*].name
-
-#   # Bootstrap script can run on any instance of the cluster
-#   # So we just choose the first in this case
-#   connection {
-#     type = "ssh"
-#     host = proxmox_vm_qemu.server_init[0].name
-#     user = "tom"
-#     private_key = data.local_sensitive_file.ssh_key.content
-#   }
-
-#   provisioner "remote-exec" {
-#     # Bootstrap script called with private_ip of each node in the cluster
-#     inline = [
-#       "cloud-init modules --mode final",
-#     ]
-#   }
-# }
