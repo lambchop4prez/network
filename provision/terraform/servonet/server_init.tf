@@ -54,7 +54,7 @@ resource "opnsense_dhcp_static_map" "dhcp1" {
 }
 
 
-resource "null_resource" "cloud_init_config_file" {
+resource "terraform_data" "cloud_init_config_file" {
   connection {
     type = "ssh"
     host = data.vault_generic_secret.proxmox_auth.data["proxmox_host"]
@@ -79,7 +79,6 @@ resource "null_resource" "cloud_init_config_file" {
           cluster_cidr = var.cluster_cidr
           service_cidr = var.service_cidr
         }))
-        k3s_init_script = base64gzip(file("${path.module}/files/k3s-server-init.sh"))
         pod_kube_vip = base64gzip(templatefile("${path.module}/manifests/pod-kube-vip.yaml.tpl",
         {
           kube_vip_address = var.cluster_vip_address
@@ -90,7 +89,17 @@ resource "null_resource" "cloud_init_config_file" {
   }
 }
 
-# resource "terraform_data" "cluster-bootstrap" {
+data "remote_file" "kubeconfig" {
+  depends_on = [ proxmox_vm_qemu.server_init, opnsense_dhcp_static_map.dhcp1 ]
+  conn {
+    host = local.server_ips[0]
+    user = "tom"
+    private_key = data.local_sensitive_file.ssh_key.content
+  }
+  path = "/etc/rancher/k3s/k3s.yaml"
+}
+
+# resource "terraform_data" "cluster_kubeconfig" {
 #   # Replacement of any instance of the cluster requires re-provisioning
 #   triggers_replace = proxmox_vm_qemu.server_init[*].name
 
@@ -103,10 +112,11 @@ resource "null_resource" "cloud_init_config_file" {
 #     private_key = data.local_sensitive_file.ssh_key.content
 #   }
 
+
 #   provisioner "remote-exec" {
 #     # Bootstrap script called with private_ip of each node in the cluster
 #     inline = [
-#       "cloud-init modules --mode final",
+#       "kubectl config raw",
 #     ]
 #   }
 # }

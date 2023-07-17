@@ -6,9 +6,9 @@ locale: en_US.UTF-8
 timezone: America/Detroit
 keyboard:
   layout: us
-ssh_pwauth: true
+ssh_pwauth: false
 ssh:
-  emit_keys_to_console: false
+  ssh_quiet_keygen: false
 mounts:
   - ["cgroup", "/sys/fs/cgroup", "cgroup", "defaults", "0", "0"]
 
@@ -45,24 +45,20 @@ write_files:
     content: ${pod_kube_vip}
     encoding: gzip+b64
     permissions: "0644"
-  - path: /usr/local/custom_scripts/k3s-install.sh
-    content: ${k3s_init_script}
-    encoding: gzip+b64
-    permissions: "0655"
 
 runcmd:
-  - [sed, -i, "/^default_kernel_opts=/ s/\"$/ cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory\"/", /etc/update-extlinux.conf]
-  - update-extlinux
   - [apk, add, iptables, sudo, vim, ca-certificates, curl, chrony]
   - [curl, https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/tigera-operator.yaml, --output, /var/lib/rancher/k3s/server/manifests/tigera-operator.yaml]
   - [curl, https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/custom-resources.yaml, --output, /var/lib/rancher/k3s/server/manifests/custom-resources.yaml]
   - [apk, add, --no-cache, cni-plugins, --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing]
-  - /usr/local/custom_scripts/k3s-install.sh
+  - [sed, -i, "/^default_kernel_opts=/ s/\"$/ cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory\"/", /etc/update-extlinux.conf]
+  - update-extlinux
+  - curl -sfL https://get.k3s.io | sh -
   - [touch, /etc/cloud/cloud-init.disabled]
 
-power_state:
-  mode: reboot
-  delay: now
+# power_state:
+#   mode: reboot
+#   delay: now
 
 
 package_update: true

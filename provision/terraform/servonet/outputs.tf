@@ -4,3 +4,8 @@ output "cluster_summary" {
     servers = local.servers
   }
 }
+output "kubeconfig" {
+  description = "Cluster kubeconfig file"
+  sensitive = true
+  value = local.kubeconfig
+}

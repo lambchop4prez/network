@@ -1,4 +1,5 @@
 resource "proxmox_vm_qemu" "server_nodes" {
+  depends_on = [ proxmox_vm_qemu.server_init ]
   count = var.server_count - 1
   name = "tom-${random_id.server_node_id[count.index + 1].hex}-${count.index + 2}"
   desc = "Servonet node"
@@ -54,7 +55,7 @@ resource "opnsense_dhcp_static_map" "dhcp2" {
 }
 
 
-resource "null_resource" "cloud_init_config_file2" {
+resource "terraform_data" "cloud_init_config_file2" {
   count = var.server_count - 1
   connection {
     type = "ssh"
@@ -80,7 +81,6 @@ resource "null_resource" "cloud_init_config_file2" {
           cluster_cidr = var.cluster_cidr
           service_cidr = var.service_cidr
         }))
-        k3s_init_script = base64gzip(file("${path.module}/files/k3s-server-init.sh"))
       }
     )
     destination = "/var/lib/vz/snippets/tom-${random_id.server_node_id[count.index + 1].hex}-${count.index + 2}.yml"

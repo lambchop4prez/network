@@ -8,6 +8,10 @@ terraform {
       source = "terraform.local/gxben/opnsense"
       version = "0.3.2"
     }
+    remote = {
+      source = "tenstad/remote"
+      version = "0.1.2"
+    }
   }
 
   required_version = ">= 0.14"
