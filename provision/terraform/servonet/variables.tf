@@ -24,7 +24,7 @@ variable server_cores {
 
 variable server_memory {
   type = number
-  description = "Ammount of memory for server nodes"
+  description = "Amount of memory for server nodes"
   default = 4098
 }
 
@@ -32,6 +32,24 @@ variable server_storage_size {
   type = string
   description = "Disk size for server nodes"
   default = "32G"
+}
+
+variable agent_cores {
+  type = number
+  description = "Number of vCPU cores to give to agent nodes"
+  default = 4
+}
+
+variable agent_memory {
+  type = number
+  description = "Amount of memory for agent nodes"
+  default = 8196
+}
+
+variable agent_storage_size {
+  type = string
+  description = "Disk size for agent nodes"
+  default = "64G"
 }
 
 variable gateway {

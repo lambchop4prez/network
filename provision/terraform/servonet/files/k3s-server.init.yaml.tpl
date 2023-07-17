@@ -1,5 +1,5 @@
 ---
-# https://docs.k3s.io/cli/server
+# https://rancher.com/docs/k3s/latest/en/installation/install-options/server-config/
 
 write-kubeconfig-mode: "0644"
 tls-san:
@@ -7,7 +7,7 @@ tls-san:
   - "${kube_vip_address}"
 node-label:
   - "foo=bar"
-server: https://${kube_vip_address}:6443
+cluster-init: true
 token: ${k3s_token}
 
 # Disable Docker - this will use the default containerd CRI

@@ -8,7 +8,7 @@ keyboard:
   layout: us
 ssh_pwauth: false
 ssh:
-  emit_keys_to_console: false
+  ssh_quiet_keygen: false
 mounts:
   - ["cgroup", "/sys/fs/cgroup", "cgroup", "defaults", "0", "0"]
 
@@ -41,13 +41,19 @@ write_files:
     content: ${k3s_config}
     encoding: gzip+b64
     permissions: "0644"
+  - path: /var/lib/rancher/k3s/server/manifests/pod-kube-vip.yaml
+    content: ${pod_kube_vip}
+    encoding: gzip+b64
+    permissions: "0644"
 
 runcmd:
   - [apk, add, iptables, sudo, vim, ca-certificates, curl, chrony]
+  - [curl, https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/tigera-operator.yaml, --output, /var/lib/rancher/k3s/server/manifests/tigera-operator.yaml]
+  - [curl, https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/custom-resources.yaml, --output, /var/lib/rancher/k3s/server/manifests/custom-resources.yaml]
   - [apk, add, --no-cache, cni-plugins, --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing]
   - [sed, -i, "/^default_kernel_opts=/ s/\"$/ cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory\"/", /etc/update-extlinux.conf]
   - update-extlinux
-  - curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="${exec}" sh -
+  - curl -sfL https://get.k3s.io | sh -
   - [touch, /etc/cloud/cloud-init.disabled]
 
 package_update: true
