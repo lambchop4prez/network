@@ -24,7 +24,6 @@ resource "proxmox_vm_qemu" "server_init" {
   network {
     model = "virtio"
     bridge = var.proxmox_bridge_interface
-
   }
 
   ipconfig0 = "ip=${local.server_ips[0]}/24,gw=${var.gateway}"
@@ -40,7 +39,6 @@ resource "opnsense_dhcp_static_map" "server_init_static_lease" {
   ipaddr    = "${local.server_ips[0]}"
   hostname  = "${proxmox_vm_qemu.server_init[0].name}"
 }
-
 
 resource "terraform_data" "server_init_cloud_init_config" {
   connection {

@@ -50,10 +50,5 @@ runcmd:
   - curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="${exec}" sh -
   - [touch, /etc/cloud/cloud-init.disabled]
 
-# power_state:
-#   mode: reboot
-#   delay: now
-
-
 package_update: true
 package_upgrade: true

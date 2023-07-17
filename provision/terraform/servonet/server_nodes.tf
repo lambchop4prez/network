@@ -24,7 +24,6 @@ resource "proxmox_vm_qemu" "server_nodes" {
   network {
     model = "virtio"
     bridge = var.proxmox_bridge_interface
-
   }
 
   ipconfig0 = "ip=${local.server_ips[count.index + 1]}/24,gw=${var.gateway}"
@@ -32,7 +31,6 @@ resource "proxmox_vm_qemu" "server_nodes" {
   os_type = "cloud-init"
   cicustom = "user=local:snippets/${local.server_hostnames[count.index + 1]}.yml"
   cloudinit_cdrom_storage = var.proxmox_storage_pool
-
 }
 
 resource "opnsense_dhcp_static_map" "server_static_lease" {
@@ -42,7 +40,6 @@ resource "opnsense_dhcp_static_map" "server_static_lease" {
   ipaddr    = "${local.server_ips[count.index + 1]}"
   hostname  = "${proxmox_vm_qemu.server_nodes[count.index].name}"
 }
-
 
 resource "terraform_data" "server_cloud_init_config" {
   count = var.server_count - 1

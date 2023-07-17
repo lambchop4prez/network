@@ -56,10 +56,5 @@ runcmd:
   - curl -sfL https://get.k3s.io | sh -
   - [touch, /etc/cloud/cloud-init.disabled]
 
-# power_state:
-#   mode: reboot
-#   delay: now
-
-
 package_update: true
 package_upgrade: true

@@ -1,10 +1,7 @@
-
-
 resource "proxmox_vm_qemu" "agent_nodes" {
   depends_on = [ proxmox_vm_qemu.server_init ]
   count = var.agent_count
   name = local.agent_hostnames[count.index]
-  # name = "tom-${random_id.agent_node_id[count.index].hex}-${count.index + var.server_count + 1}"
   desc = "Servonet agent node"
   target_node = var.proxmox_target_node
 
@@ -27,7 +24,6 @@ resource "proxmox_vm_qemu" "agent_nodes" {
   network {
     model = "virtio"
     bridge = var.proxmox_bridge_interface
-
   }
 
   ipconfig0 = "ip=${local.agent_ips[count.index]}/24,gw=${var.gateway}"
@@ -35,7 +31,6 @@ resource "proxmox_vm_qemu" "agent_nodes" {
   os_type = "cloud-init"
   cicustom = "user=local:snippets/${local.agent_hostnames[count.index]}.yml"
   cloudinit_cdrom_storage = var.proxmox_storage_pool
-
 }
 
 resource "opnsense_dhcp_static_map" "agent_static_leases" {
