@@ -23,7 +23,6 @@ disable:
   - metrics-server
 disable-network-policy: true
 disable-cloud-controller: true
-disable-servicelb: true
 # Network CIDR to use for pod IPs
 cluster-cidr: "${cluster_cidr}"
 # Network CIDR to use for service IPs
