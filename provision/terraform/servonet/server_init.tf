@@ -59,6 +59,7 @@ resource "terraform_data" "server_init_cloud_init_config" {
         ssh_key = data.local_sensitive_file.ssh_pub_key.content
         k3s_config = base64gzip(templatefile("${path.module}/files/k3s-server.init.yaml.tpl",
         {
+          cluster_domain = var.cluster_domain
           hostname = local.server_hostnames[0]
           k3s_token = random_password.k3s_token.result
           kube_vip_address = var.cluster_vip_address

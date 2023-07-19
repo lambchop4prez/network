@@ -34,6 +34,6 @@ resource "flux_bootstrap_git" "flux_bootstrap" {
     proxmox_vm_qemu.server_nodes,
     proxmox_vm_qemu.agent_nodes
   ]
-  cluster_domain = "servonet.lan"
-  path = "cluster"
+  cluster_domain = var.cluster_domain
+  path = "cluster/base"
 }

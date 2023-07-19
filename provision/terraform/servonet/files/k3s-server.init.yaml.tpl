@@ -7,7 +7,7 @@ tls-san:
   - "${kube_vip_address}"
 cluster-init: true
 token: ${k3s_token}
-cluster-domain: servonet.lan
+cluster-domain: ${cluster_domain}
 
 # Disable Docker - this will use the default containerd CRI
 docker: false
