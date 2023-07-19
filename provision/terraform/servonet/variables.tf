@@ -1,3 +1,9 @@
+variable "cluster_domain" {
+  type = string
+  description = "Domain name to use for the internal cluster"
+  default = "servonet.lan"
+}
+
 variable "server_count" {
   type = number
   description = "Number of server nodes to provision"

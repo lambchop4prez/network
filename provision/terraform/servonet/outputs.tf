@@ -8,5 +8,5 @@ output "cluster_summary" {
 output "kubeconfig" {
   description = "Cluster kubeconfig file"
   sensitive = true
-  value = local.kubeconfig
+  value = yamlencode(local.kubeconfig)
 }

@@ -33,5 +33,6 @@ locals {
     }
   ]
 
-  kubeconfig = sensitive(replace(data.remote_file.kubeconfig.content, "127.0.0.1", var.cluster_vip_address))
+  kubeconfig = sensitive(yamldecode(replace(data.remote_file.kubeconfig.content, "127.0.0.1", var.cluster_vip_address)))
+
 }

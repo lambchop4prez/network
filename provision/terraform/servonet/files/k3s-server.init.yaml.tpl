@@ -5,10 +5,9 @@ write-kubeconfig-mode: "0644"
 tls-san:
   # kube-vip
   - "${kube_vip_address}"
-node-label:
-  - "foo=bar"
 cluster-init: true
 token: ${k3s_token}
+cluster-domain: ${cluster_domain}
 
 # Disable Docker - this will use the default containerd CRI
 docker: false
@@ -24,7 +23,6 @@ disable:
   - metrics-server
 disable-network-policy: true
 disable-cloud-controller: true
-disable-servicelb: true
 # Network CIDR to use for pod IPs
 cluster-cidr: "${cluster_cidr}"
 # Network CIDR to use for service IPs

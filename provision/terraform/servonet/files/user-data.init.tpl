@@ -45,6 +45,10 @@ write_files:
     content: ${pod_kube_vip}
     encoding: gzip+b64
     permissions: "0644"
+  - path: /var/lib/rancher/k3s/server/manifests/calico-installation.yaml
+    content: ${calico_installation}
+    encoding: gzip+b64
+    permissions: "0644"
 
 runcmd:
   - [apk, add, iptables, sudo, vim, ca-certificates, curl, chrony]

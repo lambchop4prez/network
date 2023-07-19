@@ -1,5 +1,5 @@
 resource "proxmox_vm_qemu" "agent_nodes" {
-  depends_on = [ proxmox_vm_qemu.server_init ]
+  depends_on = [ proxmox_vm_qemu.server_init, proxmox_vm_qemu.server_nodes ]
   count = var.agent_count
   name = local.agent_hostnames[count.index]
   desc = "Servonet agent node"
