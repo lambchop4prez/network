@@ -5,10 +5,9 @@ write-kubeconfig-mode: "0644"
 tls-san:
   # kube-vip
   - "${kube_vip_address}"
-node-label:
-  - "foo=bar"
 cluster-init: true
 token: ${k3s_token}
+cluster-domain: servonet.lan
 
 # Disable Docker - this will use the default containerd CRI
 docker: false

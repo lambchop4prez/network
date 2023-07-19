@@ -69,6 +69,10 @@ resource "terraform_data" "server_init_cloud_init_config" {
         {
           kube_vip_address = var.cluster_vip_address
         }))
+        calico_installation = base64gzip(templatefile("${path.module}/manifests/calico-installation.yaml.tpl",
+        {
+          cluster_cidr = var.cluster_cidr
+        }))
       }
     )
     destination = "/var/lib/vz/snippets/${local.server_hostnames[0]}.yml"
