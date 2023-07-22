@@ -70,9 +70,15 @@ resource "terraform_data" "server_init_cloud_init_config" {
         {
           kube_vip_address = var.cluster_vip_address
         }))
-        calico_installation = base64gzip(templatefile("${path.module}/manifests/calico-installation.yaml.tpl",
+        cilium_helmchart = base64gzip(templatefile("${path.module}/manifests/custom-cilium-helmchart.yaml.tpl",
         {
           cluster_cidr = var.cluster_cidr
+          kube_vip_address = var.cluster_vip_address
+          service_cidr = var.service_cidr
+        }))
+        cilium_l2 = base64gzip(templatefile("${path.module}/manifests/custom-cilium-l2.yaml.tpl",
+        {
+          service_cidr = var.service_cidr
         }))
       }
     )

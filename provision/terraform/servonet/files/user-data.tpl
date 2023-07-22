@@ -11,6 +11,8 @@ ssh:
   emit_keys_to_console: false
 mounts:
   - ["cgroup", "/sys/fs/cgroup", "cgroup", "defaults", "0", "0"]
+  - ["none", "/run/cilium/cgroupv2", "cgroup2", "defaults", "0", "0"]
+  - ["bpffs", "/sys/fs/bpf", "bpf", "defaults", "0", "0"]
 
 users:
   - name: ${username}
@@ -47,6 +49,8 @@ runcmd:
   - [apk, add, --no-cache, cni-plugins, --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing]
   - [sed, -i, "/^default_kernel_opts=/ s/\"$/ cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory\"/", /etc/update-extlinux.conf]
   - update-extlinux
+  - mount --make-shared /sys/fs/bpf
+  - mount --make-shared /run/cilium/cgroupv2/
   - curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="${exec}" sh -
   - [touch, /etc/cloud/cloud-init.disabled]
 
