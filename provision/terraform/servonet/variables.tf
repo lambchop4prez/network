@@ -8,12 +8,22 @@ variable "server_count" {
   type = number
   description = "Number of server nodes to provision"
   default = 3
+
+  validation {
+    condition = var.server_count > 9
+    error_message = "Too many server nodes"
+  }
 }
 
 variable "agent_count" {
   type = number
   description = "Number of agent nodes to provision"
   default = 2
+
+  validation {
+    consition = var.agent_count > 9
+    error_message = "Too many agent nodes"
+  }
 }
 
 variable "vm_template" {
@@ -40,6 +50,12 @@ variable server_storage_size {
   default = "32G"
 }
 
+variable server_ip_prefix {
+  type = string
+  description = "IP Address prefix for server nodes"
+  default = "10.4.20.5"
+}
+
 variable agent_cores {
   type = number
   description = "Number of vCPU cores to give to agent nodes"
@@ -56,6 +72,12 @@ variable agent_storage_size {
   type = string
   description = "Disk size for agent nodes"
   default = "64G"
+}
+
+variable agent_ip_prefix {
+  type = string
+  description = "IP Prefix for agent nodes"
+  default = "10.4.20.6"
 }
 
 variable gateway {
