@@ -17,4 +17,4 @@ spec:
     substitute: {}
     substituteFrom:
       - kind: ConfigMap
-        name: cluster-settings
+        name: cluster-config
