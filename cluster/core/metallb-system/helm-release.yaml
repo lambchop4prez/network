@@ -16,17 +16,6 @@ spec:
         name: metallb-charts
         namespace: flux-system
   values:
-    configInline:
-      peers:
-        - peer-address: ${BGP_ROUTER_ADDR}
-          peer-asn: ${BGP_ROUTER_ASN}
-          my-asn: ${METALLB_BGP_ASN}
-      address-pools:
-        - name: default
-          protocol: bgp
-          addresses:
-            - "${METALLB_BGP_RANGE}"
-          avoid-buggy-ips: true
     # prometheus:
     #   podMonitor:
     #     enabled: true
