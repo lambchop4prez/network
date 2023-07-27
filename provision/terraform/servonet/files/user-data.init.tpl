@@ -54,6 +54,7 @@ runcmd:
   - [apk, add, iptables, sudo, vim, ca-certificates, curl, chrony]
   - [curl, https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/tigera-operator.yaml, --output, /var/lib/rancher/k3s/server/manifests/tigera-operator.yaml]
   - [curl, https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/custom-resources.yaml, --output, /var/lib/rancher/k3s/server/manifests/custom-resources.yaml]
+  - [curl, https://raw.githubusercontent.com/kube-vip/kube-vip/main/docs/manifests/rbac.yaml, --output, /var/lib/rancher/k3s/server/manifests/kube-vip-rbac.yaml]
   - [apk, add, --no-cache, cni-plugins, --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing]
   - [sed, -i, "/^default_kernel_opts=/ s/\"$/ cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory\"/", /etc/update-extlinux.conf]
   - update-extlinux
