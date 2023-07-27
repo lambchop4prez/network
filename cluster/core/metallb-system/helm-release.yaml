@@ -27,11 +27,11 @@ spec:
           addresses:
             - "${METALLB_BGP_RANGE}"
           avoid-buggy-ips: true
-    prometheus:
-      podMonitor:
-        enabled: true
-      prometheusRule:
-        enabled: true
+    # prometheus:
+    #   podMonitor:
+    #     enabled: true
+    #   prometheusRule:
+    #     enabled: true
     speaker:
       tolerations:
         - effect: "NoExecute"
