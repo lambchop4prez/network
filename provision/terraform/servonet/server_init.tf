@@ -74,6 +74,17 @@ resource "terraform_data" "server_init_cloud_init_config" {
         {
           cluster_cidr = var.cluster_cidr
         }))
+        calico_bgppeer = base64gzip(templatefile("${path.module}/manifests/calico-bgppeer.yaml.tpl",
+        {
+          bgp_router_address = var.bgp_router_address
+          bgp_router_asn = var.bgp_router_address
+        }))
+        calico_bgpconfiguration = base64gzip(templatefile("${path.module}/manifests/calico-bgpconfiguration.yaml.tpl",
+        {
+          bgp_node_asn = var.bgp_node_asn
+          external_cidr = var.external_cidr
+          service_cidr = var.service_cidr
+        }))
       }
     )
     destination = "/var/lib/vz/snippets/${local.server_hostnames[0]}.yml"
