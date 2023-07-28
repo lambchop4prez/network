@@ -49,6 +49,14 @@ write_files:
     content: ${calico_installation}
     encoding: gzip+b64
     permissions: "0644"
+  - path: /var/lib/rancher/k3s/server/manifests/calico-bgppeer.yaml
+    content: ${calico_bgppeer}
+    encoding: gzip+b64
+    permissions: "0644"
+  - path: /var/lib/rancher/k3s/server/manifests/calico-bgpconfiguration.yaml
+    content: ${calico_bgpconfiguration}
+    encoding: gzip+b64
+    permissions: "0644"
 
 runcmd:
   - [apk, add, iptables, sudo, vim, ca-certificates, curl, chrony]
