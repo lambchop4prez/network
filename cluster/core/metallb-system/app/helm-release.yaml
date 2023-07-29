@@ -16,11 +16,11 @@ spec:
         name: metallb-charts
         namespace: flux-system
   values:
-    # prometheus:
-    #   podMonitor:
-    #     enabled: true
-    #   prometheusRule:
-    #     enabled: true
+    prometheus:
+      podMonitor:
+        enabled: true
+      prometheusRule:
+        enabled: true
     speaker:
       frr:
         enabled: true
