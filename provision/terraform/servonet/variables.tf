@@ -99,3 +99,27 @@ variable service_cidr {
   description = "Adress space for service IPs"
   default = "10.43.0.0/16"
 }
+
+variable external_cidr {
+  type = string
+  description = "Address space for external IPs"
+  default = "10.10.100.0/24"
+}
+
+variable bgp_router_address {
+  type = string
+  description = "IP Address for BGP router"
+  default = "10.4.1.1"
+}
+
+variable bgp_router_asn {
+  type = number
+  description = "AS number for bgp router"
+  default = 65551
+}
+
+variable bgp_node_asn {
+  type = number
+  description = "AS number for calico nodes"
+  default = 64512
+}

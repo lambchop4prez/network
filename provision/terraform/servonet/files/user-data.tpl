@@ -56,3 +56,7 @@ runcmd:
 
 package_update: true
 package_upgrade: true
+
+power_state:
+  mode: reboot
+  delay: now
