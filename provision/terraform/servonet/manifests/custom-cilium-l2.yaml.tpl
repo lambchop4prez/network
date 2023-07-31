@@ -19,4 +19,4 @@ metadata:
   name: pool
 spec:
   cidrs:
-    - cidr: "${ service_cidr }"
+    - cidr: "${ external_cidr }"

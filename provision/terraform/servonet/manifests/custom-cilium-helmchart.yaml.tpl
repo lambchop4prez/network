@@ -9,10 +9,11 @@ spec:
   repo: https://helm.cilium.io/
   chart: cilium
   # renovate: datasource=helm depName=cilium registryUrl=https://helm.cilium.io
-  version: "1.14.0-rc.1"
+  version: "1.14.0"
   targetNamespace: kube-system
   bootstrap: true
   valuesContent: |-
+
     autoDirectNodeRoutes: true
     bpf:
       masquerade: true
