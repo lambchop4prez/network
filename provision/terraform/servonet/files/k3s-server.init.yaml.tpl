@@ -23,6 +23,7 @@ disable:
   - metrics-server
 disable-network-policy: true
 disable-cloud-controller: true
+disable-kube-proxy: true            # Cilium uses eBPF
 # Network CIDR to use for pod IPs
 cluster-cidr: "${cluster_cidr}"
 # Network CIDR to use for service IPs
@@ -36,8 +37,6 @@ kubelet-arg:
 kube-controller-manager-arg:
   - "bind-address=0.0.0.0"
 # Required to monitor kube-proxy with kube-prometheus-stack
-kube-proxy-arg:
-  - "metrics-bind-address=0.0.0.0"
 # Required to monitor kube-scheduler with kube-prometheus-stack
 kube-scheduler-arg:
   - "bind-address=0.0.0.0"

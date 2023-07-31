@@ -11,6 +11,13 @@ ssh:
   ssh_quiet_keygen: false
 mounts:
   - ["cgroup", "/sys/fs/cgroup", "cgroup", "defaults", "0", "0"]
+  - ["bpffs", "/sys/fs/bpf", "bpf", "defaults", "0", "0"]
+  - ["none", "/run/cilium/cgroupv2", "cgroup2", "rw,relatime", "0", "0"]
+
+bootcmd:
+  - ["mount", "--make-shared", "/sys/fs/cgroup"]
+  - ["mount", "--make-shared", "/sys/fs/bpf"]
+  - ["mount", "--make-shared", "/run/cilium/cgroupv2"]
 
 users:
   - name: ${username}
@@ -36,6 +43,7 @@ write_files:
         blkio = /cgroup/blkio;
         cpuset = /cgroup/cpuset;
         cpu = /cgroup/cpu;
+
       }
   - path: /etc/rancher/k3s/config.yaml
     content: ${k3s_config}
@@ -45,23 +53,17 @@ write_files:
     content: ${pod_kube_vip}
     encoding: gzip+b64
     permissions: "0644"
-  - path: /var/lib/rancher/k3s/server/manifests/calico-installation.yaml
-    content: ${calico_installation}
+  - path: /var/lib/rancher/k3s/server/manifests/custom-cilium-helmchart.yaml
+    content: ${cilium_helmchart}
     encoding: gzip+b64
     permissions: "0644"
-  - path: /var/lib/rancher/k3s/server/manifests/calico-bgppeer.yaml
-    content: ${calico_bgppeer}
-    encoding: gzip+b64
-    permissions: "0644"
-  - path: /var/lib/rancher/k3s/server/manifests/calico-bgpconfiguration.yaml
-    content: ${calico_bgpconfiguration}
+  - path: /var/lib/rancher/k3s/server/manifests/custom-cilium-l2.yaml
+    content: ${cilium_l2}
     encoding: gzip+b64
     permissions: "0644"
 
 runcmd:
   - [apk, add, iptables, sudo, vim, ca-certificates, curl, chrony]
-  - [curl, https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/tigera-operator.yaml, --output, /var/lib/rancher/k3s/server/manifests/tigera-operator.yaml]
-  - [curl, https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/custom-resources.yaml, --output, /var/lib/rancher/k3s/server/manifests/custom-resources.yaml]
   - [curl, https://raw.githubusercontent.com/kube-vip/kube-vip/main/docs/manifests/rbac.yaml, --output, /var/lib/rancher/k3s/server/manifests/kube-vip-rbac.yaml]
   - [curl, https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.66.0/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml, --output, /var/lib/rancher/k3s/server/manifests/custom-prometheus-podmonitors.yaml]
   - [curl, https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.66.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml, --output, /var/lib/rancher/k3s/server/manifests/custom-prometheus-prometheusrules.yaml]
@@ -70,12 +72,15 @@ runcmd:
   - [apk, add, --no-cache, cni-plugins, --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing]
   - [sed, -i, "/^default_kernel_opts=/ s/\"$/ cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory\"/", /etc/update-extlinux.conf]
   - update-extlinux
+  # - mount --make-shared /sys/fs/bpf
+  # - mount --make-shared /run/cilium/cgroupv2/
   - curl -sfL https://get.k3s.io | sh -
   - [touch, /etc/cloud/cloud-init.disabled]
-
-package_update: true
-package_upgrade: true
 
 power_state:
   mode: reboot
   delay: now
+
+
+package_update: true
+package_upgrade: true
