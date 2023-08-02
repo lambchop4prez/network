@@ -13,7 +13,6 @@ spec:
   targetNamespace: kube-system
   bootstrap: true
   valuesContent: |-
-
     autoDirectNodeRoutes: true
     bpf:
       masquerade: true
@@ -32,7 +31,7 @@ spec:
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: "${ cluster_cidr }"
-    k8sServiceHost: "127.0.0.1"
+    k8sServiceHost: "${ kube_vip_address }"
     k8sServicePort: 6443
     kubeProxyReplacement: strict
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256

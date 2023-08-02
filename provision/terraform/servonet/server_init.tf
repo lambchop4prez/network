@@ -66,7 +66,7 @@ resource "terraform_data" "server_init_cloud_init_config" {
           cluster_cidr = var.cluster_cidr
           service_cidr = var.service_cidr
         }))
-        pod_kube_vip = base64gzip(templatefile("${path.module}/manifests/pod-kube-vip.yaml.tpl",
+        ds_kube_vip = base64gzip(templatefile("${path.module}/manifests/kube-vip-ds.yaml.tpl",
         {
           kube_vip_address = var.cluster_vip_address
         }))
