@@ -14,6 +14,11 @@ mounts:
   - ["none", "/run/cilium/cgroupv2", "cgroup2", "defaults", "0", "0"]
   - ["bpffs", "/sys/fs/bpf", "bpf", "defaults", "0", "0"]
 
+bootcmd:
+  - ["mount", "--make-shared", "/sys/fs/cgroup"]
+  - ["mount", "--make-shared", "/sys/fs/bpf"]
+  - ["mount", "--make-shared", "/run/cilium/cgroupv2"]
+
 users:
   - name: ${username}
     gecos: Tom Servo

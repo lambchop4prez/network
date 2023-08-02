@@ -50,7 +50,7 @@ write_files:
     encoding: gzip+b64
     permissions: "0644"
   - path: /var/lib/rancher/k3s/server/manifests/pod-kube-vip.yaml
-    content: ${pod_kube_vip}
+    content: ${ds_kube_vip}
     encoding: gzip+b64
     permissions: "0644"
   - path: /var/lib/rancher/k3s/server/manifests/custom-cilium-helmchart.yaml
