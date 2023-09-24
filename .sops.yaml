@@ -1,6 +1,0 @@
----
-creation_rules:
-  - path_regex: provision/.*\.sops\.ya?ml
-    unencrypted_regex: "^(kind)$"
-    age: >-
-      age13a30av7z5dzumzzrpc5pqmmyjmqdmamh8jzxsdz2zgschr9k2p8qz6v5uw

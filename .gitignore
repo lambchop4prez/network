@@ -2,8 +2,6 @@
 bin/**
 lib/**
 .terraform
-.secrets.env
-secrets.yaml
 
 # Local .terraform directories
 **/.terraform/*
@@ -39,22 +37,6 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
-
-# vscode-sops
-.decrypted~*.yaml
-.config.env
-
-key.txt
-
-# ansible dependencies
-
-xanmanning.k3s*
-elliotweiser.osx-command-line-tools*
-geerlingguy.dotfiles*
-ansible-role-k3s
-
-# ansible collections
-provision/ansible/collections
 
 # NodeJS cruft
 node_modules
