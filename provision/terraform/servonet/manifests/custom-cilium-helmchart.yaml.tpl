@@ -18,6 +18,8 @@ spec:
       masquerade: true
     bgp:
       enabled: false
+    bgpControlPlane:
+      enabled: true
     cluster:
       name: servonet
       id: 1

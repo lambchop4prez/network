@@ -109,7 +109,7 @@ variable external_cidr {
 variable bgp_router_address {
   type = string
   description = "IP Address for BGP router"
-  default = "10.4.1.1"
+  default = "10.4.1.1/16"
 }
 
 variable bgp_router_asn {
@@ -120,6 +120,6 @@ variable bgp_router_asn {
 
 variable bgp_node_asn {
   type = number
-  description = "AS number for calico nodes"
+  description = "AS number for nodes"
   default = 64512
 }

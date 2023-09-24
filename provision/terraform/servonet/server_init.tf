@@ -76,9 +76,15 @@ resource "terraform_data" "server_init_cloud_init_config" {
           kube_vip_address = var.cluster_vip_address
           service_cidr = var.service_cidr
         }))
-        cilium_l2 = base64gzip(templatefile("${path.module}/manifests/custom-cilium-l2.yaml.tpl",
+        cilium_ippool = base64gzip(templatefile("${path.module}/manifests/custom-cilium-ippool.yaml.tpl",
         {
           external_cidr = var.external_cidr
+        }))
+        cilium_bgppeer = base64gzip(templatefile("${path.module}/manifests/custom-cilium-bgppeeringpolicy.yaml.tpl",
+        {
+          bgp_router_address = var.bgp_router_address
+          bgp_router_asn = var.bgp_router_asn
+          bgp_node_asn = var.bgp_node_asn
         }))
       }
     )

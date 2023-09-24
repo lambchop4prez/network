@@ -10,7 +10,7 @@ ssh_pwauth: false
 ssh:
   emit_keys_to_console: false
 mounts:
-  - ["cgroup", "/sys/fs/cgroup", "cgroup", "defaults", "0", "0"]
+  - ["cgroup", "/sys/fs/cgroup", "cgroup2", "defaults", "0", "0"]
   - ["none", "/run/cilium/cgroupv2", "cgroup2", "defaults", "0", "0"]
   - ["bpffs", "/sys/fs/bpf", "bpf", "defaults", "0", "0"]
 
@@ -50,6 +50,7 @@ write_files:
     permissions: "0644"
 
 runcmd:
+  - echo 'rc_cgroup_mode="unified"' >> /etc/rc.conf
   - [apk, add, iptables, sudo, vim, ca-certificates, curl, chrony]
   - [apk, add, --no-cache, cni-plugins, --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing]
   - [sed, -i, "/^default_kernel_opts=/ s/\"$/ cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory\"/", /etc/update-extlinux.conf]

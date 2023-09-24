@@ -10,7 +10,7 @@ ssh_pwauth: false
 ssh:
   ssh_quiet_keygen: false
 mounts:
-  - ["cgroup", "/sys/fs/cgroup", "cgroup", "defaults", "0", "0"]
+  - ["cgroup", "/sys/fs/cgroup", "cgroup2", "defaults", "0", "0"]
   - ["bpffs", "/sys/fs/bpf", "bpf", "defaults", "0", "0"]
   - ["none", "/run/cilium/cgroupv2", "cgroup2", "rw,relatime", "0", "0"]
 
@@ -57,12 +57,17 @@ write_files:
     content: ${cilium_helmchart}
     encoding: gzip+b64
     permissions: "0644"
-  - path: /var/lib/rancher/k3s/server/manifests/custom-cilium-l2.yaml
-    content: ${cilium_l2}
+  - path: /var/lib/rancher/k3s/server/manifests/custom-cilium-ippool.yaml
+    content: ${cilium_ippool}
+    encoding: gzip+b64
+    permissions: "0644"
+  - path: /var/lib/rancher/k3s/server/manifests/custom-cilium-bgppeeringpolicy.yaml
+    content: ${cilium_bgppeer}
     encoding: gzip+b64
     permissions: "0644"
 
 runcmd:
+  - echo 'rc_cgroup_mode="unified"' >> /etc/rc.conf
   - [apk, add, iptables, sudo, vim, ca-certificates, curl, chrony]
   - [curl, https://raw.githubusercontent.com/kube-vip/kube-vip/main/docs/manifests/rbac.yaml, --output, /var/lib/rancher/k3s/server/manifests/kube-vip-rbac.yaml]
   - [curl, https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.66.0/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml, --output, /var/lib/rancher/k3s/server/manifests/custom-prometheus-podmonitors.yaml]
