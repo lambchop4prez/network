@@ -32,7 +32,7 @@ spec:
           value: "${TIMEZONE}"
       service:
         annotations:
-          metallb.universe.tf/loadBalancerIPs: "${INGRESS_NGINX_ADDRESS}"
+          io.cilium/lb-ipam-ips: ["${INGRESS_NGINX_ADDRESS}"]
         externalTrafficPolicy: Cluster
       publishService:
         enabled: true

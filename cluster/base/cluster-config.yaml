@@ -6,8 +6,6 @@ metadata:
   namespace: flux-system
 data:
   TIMEZONE: "America/Detroit"
-  METALLB_BGP_RANGE: "10.10.100.0/24"
-  METALLB_BGP_ASN: "64512"
   BGP_ROUTER_ADDR: "10.4.1.1"
   BGP_ROUTER_ASN: "65551"
   INGRESS_NGINX_ADDRESS: "10.10.100.101"
