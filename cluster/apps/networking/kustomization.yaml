@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ingress-nginx
   - cert-manager
+  - k8s-gateway
