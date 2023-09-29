@@ -9,7 +9,7 @@ repos:
       - id: check-yaml
         args: [--allow-multiple-documents]
       - id: check-added-large-files
-      - id: check-byte-order-marker
+      - id: fix-byte-order-marker
       - id: detect-private-key
       - id: check-merge-conflict
       - id: mixed-line-ending
@@ -17,7 +17,7 @@ repos:
     rev: fc260393cc4ec09f8fc0a5ba4437f481c8b55dc1 # v3.0.3
     hooks:
       - id: prettier
-# - repo: https://github.com/ansible-community/ansible-lint
-#   rev: v6.14.6
-#   hooks:
-#   - id: ansible-lint
+  - repo: https://github.com/adrienverge/yamllint
+    rev: b05e028c5881819161d11cb543fd96a30c06cceb # v1.32.0
+    hooks:
+      - id: yamllint
