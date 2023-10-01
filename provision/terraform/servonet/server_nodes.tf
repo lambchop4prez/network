@@ -36,9 +36,9 @@ resource "proxmox_vm_qemu" "server_nodes" {
 resource "opnsense_dhcp_static_map" "server_static_lease" {
   count = var.server_count - 1
   interface = "lan"
-  mac       = "${proxmox_vm_qemu.server_nodes[count.index].network[0].macaddr}"
-  ipaddr    = "${local.server_ips[count.index + 1]}"
-  hostname  = "${proxmox_vm_qemu.server_nodes[count.index].name}"
+  mac       = proxmox_vm_qemu.server_nodes[count.index].network[0].macaddr
+  ipaddr    = local.server_ips[count.index + 1]
+  hostname  = proxmox_vm_qemu.server_nodes[count.index].name
 }
 
 resource "terraform_data" "server_cloud_init_config" {

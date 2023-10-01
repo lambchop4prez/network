@@ -1,5 +1,9 @@
 terraform {
   required_providers {
+    vault = {
+      source = "hashicorp/vault"
+      version = "3.17.0"
+    }
     proxmox = {
       source = "terraform.local/telmate/proxmox"
       version = "2.9.15"
@@ -14,10 +18,23 @@ terraform {
     }
     flux = {
       source = "fluxcd/flux"
+      version = "1.0.1"
     }
     github = {
       source  = "integrations/github"
       version = ">=5.18.0"
+    }
+    tls = {
+      source = "hashicorp/tls"
+      version = "4.0.5"
+    }
+    random = {
+      source = "hashicorp/random"
+      version = "3.5.1"
+    }
+    local = {
+      source = "hashicorp/local"
+      version = "2.4.0"
     }
   }
 
