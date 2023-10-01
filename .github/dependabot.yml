@@ -6,3 +6,9 @@ updates:
       timezone: "05:42 UTC"
       interval: weekly
       day: sunday
+  - directory: provision/terraform
+    package-ecosystem: terraform
+    schedule:
+      interval: weekly
+      time: "04:31"
+      day: monday
