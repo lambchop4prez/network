@@ -3,6 +3,12 @@ updates:
   - directory: .github/
     package-ecosystem: github-actions
     schedule:
-      timezone: "05:42 UTC"
+      time: "05:42"
       interval: weekly
       day: sunday
+  - directory: provision/terraform
+    package-ecosystem: terraform
+    schedule:
+      interval: weekly
+      time: "04:31"
+      day: monday

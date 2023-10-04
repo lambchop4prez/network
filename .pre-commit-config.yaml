@@ -21,3 +21,8 @@ repos:
   #   rev: b05e028c5881819161d11cb543fd96a30c06cceb # v1.32.0
   #   hooks:
   #     - id: yamllint
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: 66a1469a7c7954d8469d7a6f79f4ffb8c9ae09bf # v1.83.4
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_tflint

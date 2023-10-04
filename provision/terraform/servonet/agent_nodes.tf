@@ -36,9 +36,9 @@ resource "proxmox_vm_qemu" "agent_nodes" {
 resource "opnsense_dhcp_static_map" "agent_static_leases" {
   count = var.agent_count
   interface = "lan"
-  mac       = "${proxmox_vm_qemu.agent_nodes[count.index].network[0].macaddr}"
-  ipaddr    = "${local.agent_ips[count.index]}"
-  hostname  = "${proxmox_vm_qemu.agent_nodes[count.index].name}"
+  mac       = proxmox_vm_qemu.agent_nodes[count.index].network[0].macaddr
+  ipaddr    = local.agent_ips[count.index]
+  hostname  = proxmox_vm_qemu.agent_nodes[count.index].name
 }
 
 
