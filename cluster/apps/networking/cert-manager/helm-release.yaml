@@ -20,4 +20,3 @@ spec:
     webhook:
       enabled: true
     replicaCount: 1
-    podDnsPolicy: "None"
