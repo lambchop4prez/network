@@ -1,0 +1,40 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: monitoring
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://grafana.github.io/helm-charts
+      chart: loki
+      version: 5.27.0
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    global:
+      clusterDomain: "servonet.lan"
+    image:
+      repository: ghcr.io/k8s-at-home/loki
+    ingress:
+      enabled: true
+      ingressClassName: "nginx"
+      annotations:
+        kubernetes.io/ingress.class: "nginx"
+        cert-manager.io/cluster-issuer: "step-ca"
+      hosts:
+        - host: "loki.lan"
+          paths:
+            - /
+      tls:
+        - hosts:
+            - "loki.lan"
+          secretName: loki-cert
+    serviceMonitor:
+      enabled: true
+    config:
