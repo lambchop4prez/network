@@ -21,7 +21,7 @@ spec:
     replicaCount: 2
     nfs:
       server: "gpc.lan"
-      path: "/pool/storage-0/"
+      path: "/pool/storage-0/media"
     storageClass:
       defaultClass: false
       pathPattern: "${.PVC.namespace}-${.PVC.name}"
