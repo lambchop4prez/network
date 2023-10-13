@@ -51,7 +51,7 @@ write_files:
 
 runcmd:
   - echo 'rc_cgroup_mode="unified"' >> /etc/rc.conf
-  - [apk, add, iptables, sudo, vim, ca-certificates, curl, chrony]
+  - [apk, add, iptables, sudo, vim, ca-certificates, curl, chrony, nfs-utils]
   - [apk, add, --no-cache, cni-plugins, --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing]
   - [sed, -i, "/^default_kernel_opts=/ s/\"$/ cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory\"/", /etc/update-extlinux.conf]
   - update-extlinux
