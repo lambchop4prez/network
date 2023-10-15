@@ -8,5 +8,6 @@
       pause:
         seconds: 3
   roles:
-    # - storage.fusionio
     - hypervisor.proxmox
+    - storage.nas
+    - storage.fusionio
