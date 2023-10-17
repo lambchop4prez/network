@@ -61,7 +61,8 @@ provider "registry.terraform.io/hashicorp/random" {
 }
 
 provider "registry.terraform.io/hashicorp/tls" {
-  version = "4.0.4"
+  version     = "4.0.4"
+  constraints = "4.0.4"
   hashes = [
     "h1:Wd3RqmQW60k2QWPN4sK5CtjGuO1d+CRNXgC+D4rKtXc=",
     "zh:23671ed83e1fcf79745534841e10291bbf34046b27d6e68a5d0aab77206f4a55",
@@ -99,24 +100,46 @@ provider "registry.terraform.io/hashicorp/vault" {
 }
 
 provider "registry.terraform.io/integrations/github" {
-  version     = "5.31.0"
+  version     = "5.40.0"
   constraints = ">= 5.18.0"
   hashes = [
-    "h1:vrkktGyd2Wc5ZNi3ZXImuTtK4DlnSqOSx5O8rGMv6as=",
-    "zh:0070a5e07e3f1a0455e1f12d089264fc7332a1a8118d02130b60724b83862d9d",
-    "zh:1c5e4b81520601d1f9a3d8163e2ac027c6cb60874ce3ef781a9bde6afac9830c",
-    "zh:26f6a5504af4f94f7c9f5ac6d10ff3e776825e7e9889e49ff4e5b7aed3e29bf6",
-    "zh:5270178515e14a0f89018bcf83b3f739de8b5c372d5d25535daf8cd72d006aec",
-    "zh:55940b646b9ff85643f4b37f438f0cbe5e569217e6a5bb8367d7d0ae6edcf6f0",
-    "zh:802097e55264dba3f0afe163e977486a0dc4c90f0a90b9038c37835ed9bf7520",
-    "zh:805b898db2b64d5cf7e0534f52b99db9b3d656133874334d423c10a5eb134344",
-    "zh:812d4a682ca1a633410345bc5f446a5b25fe52e90477acbf15a8e2b816fc6305",
-    "zh:96dd406b6feb12cd7cfece6edd7a4cc925ceedb703bb5eb8054da1da50433d11",
-    "zh:aabdac84f25096f8710ec38b9f98691e46358321b9c6c60f1106cd2f60b52fbc",
-    "zh:bbc763dff6119878adfc45ae0c0622462fc250233d69ed3b750ed79e6b5a6c5b",
-    "zh:cdd0f5cec24d25b5ac09fccd6b02261a51c335af32fb27f435c1ff1e0bb82044",
-    "zh:d045aa45b33511635eb25c54085b16af1a59f31057b94fb21865b510ad0c4597",
-    "zh:f272fd6a0c9bb4313b7cf8108a0beb26c71c4e09dadb813c35bda07ea0ae02dd",
+    "h1:DNmVzYxz8wlkrIe9gr+exwzCakE61UHXIn+qPq+5QRE=",
+    "zh:02922b9eb54dcdbad524caaef7901a800759ae5d3a6c8cbdf934d4cfce395d5d",
+    "zh:282b9736c2afa9f4a7817d5da9ac0caeddb4edc085c7236b71f3ecbb539b2132",
+    "zh:49275a2a1b523da1794f0ea19dfc0f595d1ac8c711d24c6887bb672a5a571e01",
+    "zh:521bdef1fdd3211be6ba30edb3092acbed5974b62497d83028f0e8fd2d7bcd24",
+    "zh:62e8e8de673859a3c0c1e9fb0fd623e0012c8d9b44d45728ad1aa04d744b724c",
+    "zh:6fc1fbecf16b896f791d5708208295267f20cf4a62e393ecb93f70538306f30e",
+    "zh:6fef1d1c77ca2f77501a6ffd63640e0174905c7ae88aca516ede1a7263af8bc3",
+    "zh:923968a2eb3856db4e02b2e87dd0f09555531d09ad707c6dd53b1c9c3af0ff82",
+    "zh:95e409dfb3437171f66c97493c6ae9a75a7329c90a1d4c489663c6e3823d32af",
+    "zh:a45d0f1449bc2833974ba88e238a5ec0b41da64b18da626153ec0b650bf90e4c",
+    "zh:af5d8e506f3280ecf22824549c5b2b68ec047a0df9da0a19721b1a6303f77d5a",
+    "zh:ba03a3a81ebc68cc452930bca9289a5feb2b0d22d7997bea7f9e59bfd89babed",
+    "zh:d941df409e689f3deb06f912a57f2ee36ab223e1f48d395e3d43937e62a7fbea",
+    "zh:eaf71e9586b98c631218a67b1f1d7295ff224ba31b0c899e88e4aa217a160116",
+  ]
+}
+
+provider "registry.terraform.io/telmate/proxmox" {
+  version     = "2.9.14"
+  constraints = "2.9.14"
+  hashes = [
+    "h1:KWPlH228/+BiH8OOY754MTTaUkLJLN/1krSSzqiyNsE=",
+    "zh:0d049d33f705e5b814d30028770c084151218439424e99684ce31d7e26a720b5",
+    "zh:20b1c64ed56d81de95f3f37b82b45b4654c0de26670c0e87a474c5cce13cd015",
+    "zh:2946058abd1d8e50e475b9ec39781eb02576b40dbd80f4653fade4493a4514c6",
+    "zh:29e50a25c456f040ce072f23ac57b5b82ebd3b916ca5ae6688332b5ec62adc4a",
+    "zh:3612932306ce5f08db94868f526cbb8c56d0d3c6ebe1c11a83f92bbf94354296",
+    "zh:42d1699b0abebaac82ea5a19f4393541d8bb2741bde204a8ac1028cdc29d1b14",
+    "zh:5ffd5dc567262eb8aafdf2f6eac63f7f21361da9c5d75a3c36b479638a0001b0",
+    "zh:6692ef323e3b89de99934ad731f6a1850525bf8142916ae28ea4e4048d73a787",
+    "zh:a5afc98e9a4038516bb58e788cb77dea67a60dce780dfcd206d7373c5a56b776",
+    "zh:bf902cded709d84fa27fbf91b589c241f2238a6c4924e4e479eebd74320b93a5",
+    "zh:cab0e1e72c9cebcf669fc6f35ec28cb8ab2dffb0237afc8860aa40d23bf8a49f",
+    "zh:e523b99a48beec83d9bc04b2d336266044f9f53514cefb652fe6768611847196",
+    "zh:f593915e8a24829d322d2eaeedcb153328cf9042f0d84f66040dde1be70ede04",
+    "zh:fba1aff541133e2129dfda0160369635ab48503d5c44b8407ce5922ecc15d0bd",
   ]
 }
 
@@ -147,13 +170,5 @@ provider "terraform.local/gxben/opnsense" {
   constraints = "0.3.2"
   hashes = [
     "h1:1vtgbFtm8Ry5etAkHXKR3a6NICXlAsEFSG5aobAAmTI=",
-  ]
-}
-
-provider "terraform.local/telmate/proxmox" {
-  version     = "2.9.15"
-  constraints = "2.9.15"
-  hashes = [
-    "h1:TGUZP0V+mH9YrrHha3j7kaOzZHdFMnOv6jM1m5ZGX9U=",
   ]
 }
