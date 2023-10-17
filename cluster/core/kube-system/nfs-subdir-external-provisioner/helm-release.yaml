@@ -22,7 +22,6 @@ spec:
     nfs:
       server: "gpc.lan"
       path: "/pool/storage-0/media"
-      mountOptions: "nfsvers=4"
     storageClass:
       defaultClass: false
       pathPattern: "${.PVC.namespace}-${.PVC.name}"
