@@ -9,48 +9,60 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://bjw-s.github.io/helm-charts
-      chart: sonarr
-      version: 16.2.3
+      chart: app-template
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
       interval: 5m
   values:
-    image:
-      repository: ghcr.io/k8s-at-home/sonarr
-      tag: v3.0.9.1549
-    env:
-      TZ: "America/Detroit"
-      PUID: 1000
-      PGID: 1001
-
+    controller:
+      main:
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1001
+            fsGroup: 1001
+      containers:
+        main:
+          image:
+            repository: ghcr.io/onedr0p/sonarr
+            tag: v3.0.10.1567@sha256:ea8acd3ec2c212e254c8c8f6d8f748227c0691d90816761d220bd3e4765b21c7
+          env:
+            TZ: "America/Detroit"
+            PUID: 1000
+            PGID: 1001
+            SONARR__INSTANCE_NAME: Sonarr
+            SONARR__PORT: &port 8989
+          resources:
+            requests:
+              memory: 250Mi
+              cpu: 1
+            limits:
+              memory: 1500Mi
+    service:
+      main:
+        ports:
+          http:
+            port: *port
     ingress:
       main:
         enabled: true
         ingressClassName: "nginx"
         annotations:
-          cert-manager.io/cluster-issuer: "step-ca"
+          cert-manager.io/cluster-issuer: "step"
         hosts:
-          - host: "sonarr.lan"
+          - host: &host "sonarr.lan"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
-              - "sonarr.lan"
+              - *host
             secretName: sonarr-cert
-    podSecurityContext:
-      runAsUser: 1000
-      runAsGroup: 1001
-      fsGroup: 1001
-    metrics:
-      enabled: true
-      serviceMonitor:
-        interval: 3m
-        scrapeTimeout: 1m
-      prometheusRule:
-        enabled: true
     persistence:
       config:
         enabled: true
@@ -62,15 +74,4 @@ spec:
         mountPath: /config
       media:
         enabled: true
-        type: custom
-        volumeSpec:
-          nfs:
-            server: "gpc"
-            path: /pool/storage-0/media
-        mountPath: /media
-    resources:
-      requests:
-        memory: 250Mi
-        cpu: 1
-      limits:
-        memory: 1500Mi
+        existing-claim: nas-media

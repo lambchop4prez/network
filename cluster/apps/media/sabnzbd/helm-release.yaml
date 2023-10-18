@@ -53,6 +53,8 @@ spec:
       main:
         enabled: true
         className: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: "step"
         hosts:
           - host: &host "sabnzbd.lan"
             paths:
@@ -63,3 +65,17 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: "sabnzbd-cert"
+
+    persistence:
+      config:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "gpc"
+            path: /pool/storage-0/media/config/sabnzbd
+        mountPath: /config
+      media:
+        enabled: true
+        existing-claim: nas-media
