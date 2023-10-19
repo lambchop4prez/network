@@ -83,4 +83,4 @@ spec:
             path: /pool/storage-0/media/config/sabnzbd
         mountPath: /config
       media:
-        existing-claim: nas-media
+        existingClaim: nas-media

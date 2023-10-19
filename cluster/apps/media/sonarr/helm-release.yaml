@@ -79,4 +79,4 @@ spec:
             path: /pool/storage-0/media/config/sonarr
         mountPath: /config
       media:
-        existing-claim: nas-media
+        existingClaim: nas-media
