@@ -40,5 +40,6 @@ spec:
     requests:
       storage: 1Mi
   volumeMode: Filesystem
+  storageClassName: downloads-nas-media
   accessModes:
     - ReadWriteMany
