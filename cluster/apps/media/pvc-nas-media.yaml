@@ -1,0 +1,44 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: downloads-nas-media
+provisioner: nfs
+parameters:
+  archiveOnDelete: "false"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: downloads-nas-media
+spec:
+  capacity:
+    storage: 1Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: downloads-nas-media
+  mountOptions:
+    - nfsvers=4.1
+    - nconnect=8
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
+  nfs:
+    path: /pool/storage-0/media
+    server: gpc.lan
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nas-media
+  namespace: media
+spec:
+  resources:
+    requests:
+      storage: 1Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
