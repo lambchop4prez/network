@@ -79,5 +79,4 @@ spec:
             path: /pool/storage-0/media/config/sonarr
         mountPath: /config
       media:
-        enabled: true
         existing-claim: nas-media
