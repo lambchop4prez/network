@@ -72,6 +72,12 @@ spec:
         enabled: true
         type: custom
         volumeSpec:
+          resources:
+            requests:
+              storage: 1Mi
+          volumeMode: Filesystem
+          accessModes:
+            - ReadWriteMany
           nfs:
             server: "gpc"
             path: /pool/storage-0/media/config/sabnzbd
