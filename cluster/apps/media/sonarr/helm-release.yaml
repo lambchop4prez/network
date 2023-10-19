@@ -24,23 +24,23 @@ spec:
             runAsUser: 1000
             runAsGroup: 1001
             fsGroup: 1001
-      containers:
-        main:
-          image:
-            repository: ghcr.io/onedr0p/sonarr
-            tag: v3.0.10.1567@sha256:ea8acd3ec2c212e254c8c8f6d8f748227c0691d90816761d220bd3e4765b21c7
-          env:
-            TZ: "America/Detroit"
-            PUID: 1000
-            PGID: 1001
-            SONARR__INSTANCE_NAME: Sonarr
-            SONARR__PORT: &port 8989
-          resources:
-            requests:
-              memory: 250Mi
-              cpu: 1
-            limits:
-              memory: 1500Mi
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/sonarr
+              tag: v3.0.10.1567@sha256:ea8acd3ec2c212e254c8c8f6d8f748227c0691d90816761d220bd3e4765b21c7
+            env:
+              TZ: "America/Detroit"
+              PUID: 1000
+              PGID: 1001
+              SONARR__INSTANCE_NAME: Sonarr
+              SONARR__PORT: &port 8989
+            resources:
+              requests:
+                memory: 250Mi
+                cpu: 1
+              limits:
+                memory: 1500Mi
     service:
       main:
         ports:
