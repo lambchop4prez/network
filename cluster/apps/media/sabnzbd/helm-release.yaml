@@ -35,7 +35,7 @@ spec:
               SABNZBD__PORT: &port 8080
               SABNZBD__HOST_WHITELIST_ENTRIES: >-
                 sabnzbd,
-                sabnzbd.lan
+                sabnzbd.lan,
                 sabnzbd.media.svc.servonet.lan
             resources:
               requests:
