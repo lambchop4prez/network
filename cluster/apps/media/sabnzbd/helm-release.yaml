@@ -38,7 +38,7 @@ spec:
                 sabnzbd.lan
             resources:
               requests:
-                cpu: 500m
+                cpu: 1
                 memory: "250Mi"
               limits:
                 memory: "1500Mi"
