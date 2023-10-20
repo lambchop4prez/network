@@ -34,7 +34,7 @@ spec:
               PUID: 1000
               PGID: 1001
               RADARR__INSTANCE_NAME: Radarr
-              RADARR__PORT: &port 8989
+              RADARR__PORT: &port 7878
             resources:
               requests:
                 memory: 250Mi

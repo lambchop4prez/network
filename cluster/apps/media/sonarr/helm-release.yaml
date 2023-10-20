@@ -34,12 +34,21 @@ spec:
               TZ: "America/Detroit"
               SONARR__INSTANCE_NAME: Sonarr
               SONARR__PORT: &port 8989
+            volumeMounts:
+              - name: ca-pemstore
+                mountPath: /etc/ssl/certs/step_root.pem
+                subPath: step_root.pem
+                readOnly: false
             resources:
               requests:
                 memory: 250Mi
                 cpu: 1
               limits:
                 memory: 1500Mi
+        volumes:
+          - name: ca-pemstore
+            configMap:
+              name: ca-pemstore
     service:
       main:
         ports:
