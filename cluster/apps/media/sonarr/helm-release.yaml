@@ -79,13 +79,3 @@ spec:
         mountPath: /config
       media:
         existingClaim: nas-media
-      certs:
-        enabled: true
-        type: configMap
-        name: ca-pemstore
-        items:
-          - key: step_root.pem
-            path: step_root.pem
-        globalMounts:
-          - path: /etc/ssl/certs/step_root.pem
-            subPath: step_root.pem
