@@ -1,0 +1,3 @@
+[submodule "vm-templates"]
+	path = vm-templates
+	url = git@github.com:lambchop4prez/vm-templates.git
