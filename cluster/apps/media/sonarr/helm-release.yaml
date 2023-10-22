@@ -84,5 +84,5 @@ spec:
         type: configMap
         name: ca-pemstore
         item: step_root.pem
-        mountPath: /etc/ssl/certs/step_root.pem
+        path: /etc/ssl/certs
         subPath: step_root.pem
