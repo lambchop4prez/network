@@ -83,7 +83,8 @@ spec:
         enabled: true
         type: configMap
         name: ca-pemstore
-        item: step_root.pem
+        items:
+          - step_root.pem
         globalMounts:
-          - path: /etc/ssl/certs
+          - path: /etc/ssl/certs/step_root.pem
             subPath: step_root.pem
