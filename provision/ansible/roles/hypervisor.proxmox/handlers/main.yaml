@@ -1,7 +1,7 @@
 ---
 - name: Refresh boot
   ansible.builtin.shell:
-    cmd: proxmox-boot-tool refresh
+    cmd: update-grub
 
 - name: Update kernel modules
   ansible.builtin.shell:
