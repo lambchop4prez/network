@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - nfs-subdir-external-provisioner
   - node-feature-discovery
+  - external-secrets
