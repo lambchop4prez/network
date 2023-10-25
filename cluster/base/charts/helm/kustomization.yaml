@@ -5,6 +5,7 @@ resources:
   - bjw-s-charts.yaml
   - emqx-charts.yaml
   - external-dns-charts.yaml
+  - external-secrets-charts.yaml
   - grafana-charts.yaml
   - influxdata-charts.yaml
   - ingress-nginx-charts.yaml
