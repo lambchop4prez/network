@@ -6,6 +6,20 @@ metadata:
   namespace: home
 spec:
   postgresVersion: 15
+  dataSource:
+    pgbackrest:
+      repo:
+        name: home-assistant
+        volume:
+          volumeClaimSpec:
+            accessModes:
+              - "ReadWriteOnce"
+            resources:
+              requests:
+                storage: 1Gi
+            storageClassName: postgres-nas-backup
+            volumeName: postgres-nas-backup
+
   instances:
     - name: home-assistant
       replicas: 2
