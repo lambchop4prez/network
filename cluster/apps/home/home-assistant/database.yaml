@@ -31,7 +31,5 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
-              volumeMode: Filesystem
-              nfs:
-                server: "gpc"
-                path: /pool/storage-0/data/backup/home-assistant
+              storageClassName: postgres-nas-backup
+              volumeName: postgres-nas-backup
