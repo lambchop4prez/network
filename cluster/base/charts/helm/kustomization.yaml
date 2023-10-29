@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - bitnami-charts.yaml
   - bjw-s-charts.yaml
+  - crunchydata-charts.yaml
   - emqx-charts.yaml
   - external-dns-charts.yaml
   - external-secrets-charts.yaml
