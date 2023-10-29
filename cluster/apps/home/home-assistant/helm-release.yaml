@@ -1,0 +1,73 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: home-assistant
+  namespace: home
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.0.3
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  values:
+    controllers:
+      main:
+        type: statefulset
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              accessMode: ReadWriteOnce
+              size: 1Gi
+              storageClass: "local-path"
+              globalMounts:
+                - path: /config
+
+      containers:
+        main:
+          image:
+            repository: ghcr.io/home-assistant/home-assistant
+            tag: 2023.10.5@sha256:3b2810093b118a77c87f3639e51930ffb0f10e8af679ba8582843e9bbfdd5fa5
+          envFrom:
+            - secretRef:
+                name: home-assistant-secrets
+          probes:
+            liveness:
+              enabled: false
+            readiness:
+              enabled: false
+            startup:
+              enabled: false
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1024M
+            limits:
+              memory: 2048M
+
+      service:
+        main:
+          ports:
+            http:
+              port: 8123
+
+      ingress:
+        main:
+          enabled: true
+          className: "nginx"
+          hosts:
+            - host: &host "hass.lan"
+              paths:
+                - path: /
+                  service:
+                    name: main
+                    port: http
+          tls:
+            - hosts:
+                - *host
