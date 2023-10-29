@@ -23,7 +23,8 @@ spec:
   backups:
     pgbackrest:
       repos:
-        - volume:
+        - name: home-assistant
+          volume:
             volumeClaimSpec:
               accessModes:
                 - "ReadWriteOnce"
