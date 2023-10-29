@@ -9,7 +9,7 @@ spec:
   dataSource:
     pgbackrest:
       repo:
-        name: home-assistant
+        name: repo1
         volume:
           volumeClaimSpec:
             accessModes:
@@ -37,7 +37,7 @@ spec:
   backups:
     pgbackrest:
       repos:
-        - name: home-assistant
+        - name: repo1
           volume:
             volumeClaimSpec:
               accessModes:
