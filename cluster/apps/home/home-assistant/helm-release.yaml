@@ -29,45 +29,45 @@ spec:
               globalMounts:
                 - path: /config
 
-      containers:
-        main:
-          image:
-            repository: ghcr.io/home-assistant/home-assistant
-            tag: 2023.10.5@sha256:3b2810093b118a77c87f3639e51930ffb0f10e8af679ba8582843e9bbfdd5fa5
-          envFrom:
-            - secretRef:
-                name: home-assistant-secrets
-          probes:
-            liveness:
-              enabled: false
-            readiness:
-              enabled: false
-            startup:
-              enabled: false
-          resources:
-            requests:
-              cpu: 500m
-              memory: 1024M
-            limits:
-              memory: 2048M
+        containers:
+          main:
+            image:
+              repository: ghcr.io/home-assistant/home-assistant
+              tag: 2023.10.5@sha256:3b2810093b118a77c87f3639e51930ffb0f10e8af679ba8582843e9bbfdd5fa5
+            envFrom:
+              - secretRef:
+                  name: home-assistant-secrets
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 500m
+                memory: 1024M
+              limits:
+                memory: 2048M
 
-      service:
-        main:
-          ports:
-            http:
-              port: 8123
+        service:
+          main:
+            ports:
+              http:
+                port: 8123
 
-      ingress:
-        main:
-          enabled: true
-          className: "nginx"
-          hosts:
-            - host: &host "hass.lan"
-              paths:
-                - path: /
-                  service:
-                    name: main
-                    port: http
-          tls:
-            - hosts:
-                - *host
+        ingress:
+          main:
+            enabled: true
+            className: "nginx"
+            hosts:
+              - host: &host "hass.lan"
+                paths:
+                  - path: /
+                    service:
+                      name: main
+                      port: http
+            tls:
+              - hosts:
+                  - *host
