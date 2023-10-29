@@ -1,0 +1,36 @@
+---
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: home-assistant
+  namespace: home
+spec:
+  postgresVersion: 15
+  instances:
+    - name: home-assistant
+      replicas: 2
+      dataVolumeClaimSpec:
+        accessModes:
+          - "ReadWriteMany"
+        resources:
+          requests:
+            storage: 1Gi
+  users:
+    - name: home-assistant
+      databases:
+        - home-assistant
+      options: "SUPERUSER"
+  backups:
+    pgbackrest:
+      repos:
+        - volume:
+            volumeClaimSpec:
+              accessModes:
+                - "ReadWriteOnce"
+              resources:
+                requests:
+                  storage: 1Gi
+              volumeMode: Filesystem
+              nfs:
+                server: "gpc"
+                path: /pool/storage-0/data/backup/home-assistant
