@@ -61,6 +61,8 @@ spec:
       main:
         enabled: true
         className: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: "step"
         hosts:
           - host: &host "hass.lan"
             paths:
