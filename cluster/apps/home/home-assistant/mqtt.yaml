@@ -13,3 +13,4 @@ spec:
         coredns.io/hostname: "mqtt.lan"
     spec:
       type: LoadBalancer
+      externalTrafficPolicy: Local
