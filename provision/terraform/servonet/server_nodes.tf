@@ -51,7 +51,7 @@ resource "terraform_data" "server_cloud_init_config" {
 
   provisioner "file" {
     content = templatefile(
-      "${path.module}/files/user-data.tpl",
+      "${path.module}/files/user-data.alpine.tpl",
       {
         exec     = "server"
         hostname = local.server_hostnames[count.index + 1]

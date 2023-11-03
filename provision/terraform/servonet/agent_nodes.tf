@@ -1,11 +1,12 @@
 resource "proxmox_vm_qemu" "agent_nodes" {
   depends_on  = [proxmox_vm_qemu.server_init, proxmox_vm_qemu.server_nodes]
-  count       = var.agent_count
+  count       = var.vm_agents.count
   name        = local.agent_hostnames[count.index]
   desc        = "Servonet agent node"
   target_node = var.proxmox_target_node
 
-  clone      = var.vm_template
+  vmid       = var.vm_agents[count.index][0]
+  clone      = var.vm_agents[count.index][1]
   full_clone = false
 
   qemu_os = "l26"
@@ -34,7 +35,7 @@ resource "proxmox_vm_qemu" "agent_nodes" {
 }
 
 resource "opnsense_dhcp_static_map" "agent_static_leases" {
-  count     = var.agent_count
+  count     = var.vm_agents.count
   interface = "lan"
   mac       = proxmox_vm_qemu.agent_nodes[count.index].network[0].macaddr
   ipaddr    = local.agent_ips[count.index]
@@ -43,7 +44,7 @@ resource "opnsense_dhcp_static_map" "agent_static_leases" {
 
 
 resource "terraform_data" "agent_cloud_init_config" {
-  count = var.agent_count
+  count = var.vm_agents.count
   connection {
     type        = "ssh"
     host        = data.vault_generic_secret.proxmox_auth.data["proxmox_host"]
@@ -52,7 +53,7 @@ resource "terraform_data" "agent_cloud_init_config" {
 
   provisioner "file" {
     content = templatefile(
-      "${path.module}/files/user-data.tpl",
+      "${path.module}/files/user-data.${var.vm_agents[count.index][2]}.tpl",
       {
         exec     = "agent"
         hostname = local.agent_hostnames[count.index]

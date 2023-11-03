@@ -10,16 +10,27 @@ variable "server_count" {
   default     = 3
 }
 
-variable "agent_count" {
-  type        = number
-  description = "Number of agent nodes to provision"
-  default     = 2
-}
+# variable "agent_count" {
+#   type        = number
+#   description = "Number of agent nodes to provision"
+#   default     = 2
+# }
 
 variable "vm_template" {
   type        = string
   description = "VM Template to use for provisioning."
   default     = "alpine-3.18"
+}
+
+variable "vm_agents" {
+  type        = list(tuple([number, string, string]))
+  description = "List of VMID, Templates, and Flavors"
+  default = [
+    [5001, "alpine-3.18", "alpine"],
+    [5002, "alpine-3.18", "alpine"],
+    [5003, "debian-12.2.0", "debian"],
+    # [ 5004, "debian-bookworm-nvme-iomemory-1", "debian"]
+  ]
 }
 
 variable "server_cores" {
