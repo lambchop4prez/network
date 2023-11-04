@@ -4,7 +4,8 @@
     name:
       - nfs-common
       - nfs-kernel-server
-      - netatalk
+      - samba
+      - samba-common
     install_recommends: false
     update_cache: true
     cache_valid_time: 3600
@@ -14,7 +15,7 @@
   retries: 5
   until: apt_install_common is success
 
+# TODO: Check that pool hasn't already been imported
 - name: "Import Pools"
   ansible.builtin.shell:
-    cmd: zpool import storage-0
-
+    cmd: zpool import -f storage-0

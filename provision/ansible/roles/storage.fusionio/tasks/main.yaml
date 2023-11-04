@@ -28,13 +28,13 @@
   until: apt_install_common is success
 
 - block:
-  - name: Clone driver repo
-    ansible.builtin.git:
-      repo: https://github.com/snuf/iomemory-vsl
+    - name: Clone driver repo
+      ansible.builtin.git:
+        repo: https://github.com/RemixVSL/iomemory-vsl4.git
+        dest: /root/iomemory-vsl4
 
-  # - name: Make DKMS module
-  #   ansible.builtin.shell:
-  #     cmd: make dkms
-      
-
+    - name: Make DKMS module
+      ansible.builtin.shell:
+        cmd: make dkms
+        chdir: /root/iomemory-vsl4
 #   when: fio_kernel_modul is set

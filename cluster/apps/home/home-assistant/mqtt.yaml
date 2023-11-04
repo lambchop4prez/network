@@ -1,0 +1,16 @@
+---
+apiVersion: apps.emqx.io/v2beta1
+kind: EMQX
+metadata:
+  name: emqx
+  namespace: home
+spec:
+  image: emqx:5.1
+  listenersServiceTemplate:
+    metadata:
+      annotations:
+        io.cilium/lb-ipam-ips: "${MQTT_ADDRESS}"
+        coredns.io/hostname: "mqtt.lan"
+    spec:
+      type: LoadBalancer
+      externalTrafficPolicy: Local

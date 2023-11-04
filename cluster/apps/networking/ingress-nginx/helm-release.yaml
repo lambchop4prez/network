@@ -30,6 +30,7 @@ spec:
       extraEnvs:
         - name: TZ
           value: "${TIMEZONE}"
+      enableAnnotationValidations: true
       service:
         annotations:
           io.cilium/lb-ipam-ips: "${INGRESS_NGINX_ADDRESS}"

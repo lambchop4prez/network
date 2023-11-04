@@ -68,7 +68,7 @@ write_files:
 
 runcmd:
   - echo 'rc_cgroup_mode="unified"' >> /etc/rc.conf
-  - [apk, add, iptables, sudo, vim, ca-certificates, curl, chrony]
+  - [apk, add, iptables, sudo, vim, ca-certificates, curl, chrony, nfs-utils]
   - [curl, https://raw.githubusercontent.com/kube-vip/kube-vip/main/docs/manifests/rbac.yaml, --output, /var/lib/rancher/k3s/server/manifests/kube-vip-rbac.yaml]
   - [curl, https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.66.0/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml, --output, /var/lib/rancher/k3s/server/manifests/custom-prometheus-podmonitors.yaml]
   - [curl, https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.66.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml, --output, /var/lib/rancher/k3s/server/manifests/custom-prometheus-prometheusrules.yaml]

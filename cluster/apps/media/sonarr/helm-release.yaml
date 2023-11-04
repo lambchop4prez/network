@@ -1,0 +1,81 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: sonarr
+  namespace: media
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://bjw-s.github.io/helm-charts
+      chart: app-template
+      version: 2.0.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 5m
+  values:
+    controllers:
+      main:
+        pod:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+            fsGroup: 1001
+            fsGroupChangePolicy: OnRootMismatch
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/sonarr
+              tag: v3.0.10.1567@sha256:ea8acd3ec2c212e254c8c8f6d8f748227c0691d90816761d220bd3e4765b21c7
+            env:
+              TZ: "America/Detroit"
+              SONARR__INSTANCE_NAME: Sonarr
+              SONARR__PORT: &port 8989
+            resources:
+              requests:
+                memory: 250Mi
+                cpu: 1
+              limits:
+                memory: 1500Mi
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: "step"
+        hosts:
+          - host: &host "sonarr.lan"
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: sonarr-cert
+    persistence:
+      config:
+        enabled: true
+        type: custom
+        volumeSpec:
+          resources:
+            requests:
+              storage: 1Mi
+          volumeMode: Filesystem
+          accessModes:
+            - ReadWriteMany
+          nfs:
+            server: "gpc"
+            path: /pool/storage-0/media/config/sonarr
+        mountPath: /config
+      media:
+        existingClaim: nas-media

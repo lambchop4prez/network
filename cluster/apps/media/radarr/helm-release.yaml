@@ -1,0 +1,82 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: radarr
+  namespace: media
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://bjw-s.github.io/helm-charts
+      chart: app-template
+      version: 2.0.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 5m
+  values:
+    controllers:
+      main:
+        pod:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+            fsGroup: 1001
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/radarr
+              tag: 5.0.3.8127@sha256:0d9a584e18080bc5e6a597bc13d96455777539ee5ad27cf1c4c88940dbbf4cf9
+            env:
+              TZ: "America/Detroit"
+              PUID: 1000
+              PGID: 1001
+              RADARR__INSTANCE_NAME: Radarr
+              RADARR__PORT: &port 7878
+            resources:
+              requests:
+                memory: 250Mi
+                cpu: 1
+              limits:
+                memory: 1500Mi
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: "step"
+        hosts:
+          - host: &host "radarr.lan"
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: radarr-cert
+    persistence:
+      config:
+        enabled: true
+        type: custom
+        volumeSpec:
+          resources:
+            requests:
+              storage: 1Mi
+          volumeMode: Filesystem
+          accessModes:
+            - ReadWriteMany
+          nfs:
+            server: "gpc"
+            path: /pool/storage-0/media/config/radarr
+        mountPath: /config
+      media:
+        existingClaim: nas-media

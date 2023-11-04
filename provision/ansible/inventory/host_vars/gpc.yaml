@@ -1,20 +1,19 @@
 ansible_user: "{{lookup('ansible.builtin.env', 'GPC_ROOT_USER', default='root')}}"
 ansible_become_pass: "{{lookup('ansible.builtin.env', 'GPC_ROOT_PASSWORD', default=Undefined)}}"
-become: "no"
-become_method: su
+# become: "no"
+# become_method: su
 pve_roles:
   - name: Packer
-    privs: "VM.Clone VM.Config.Disk VM.Config.CPU VM.Config.Memory Datastore.Allocate Datastore.AllocateSpace Datastore.AllocateTemplate Sys.Modify VM.Config.Options VM.Allocate VM.Audit VM.Console VM.Config.CDROM VM.Config.Network VM.PowerMgmt VM.Config.HWType VM.Monitor VM.Clone VM.Config.Cloudinit"
+    privs: "VM.Clone VM.Config.Disk VM.Config.CPU VM.Config.Memory Datastore.Allocate Datastore.AllocateSpace Datastore.AllocateTemplate Sys.Modify VM.Config.Options VM.Allocate VM.Audit VM.Console VM.Config.CDROM VM.Config.Network VM.PowerMgmt VM.Config.HWType VM.Monitor VM.Clone VM.Config.Cloudinit SDN.Use"
   - name: Terraform
-    privs: "Datastore.AllocateSpace Datastore.Audit Pool.Allocate Sys.Audit VM.Allocate VM.Audit VM.Clone VM.Config.CDROM VM.Config.CPU VM.Config.Cloudinit VM.Config.Disk VM.Config.HWType VM.Config.Memory VM.Config.Network VM.Config.Options VM.Monitor VM.PowerMgmt"
+    privs: "Datastore.AllocateSpace Datastore.Audit Pool.Allocate Sys.Audit VM.Allocate VM.Audit VM.Clone VM.Config.CDROM VM.Config.CPU VM.Config.Cloudinit VM.Config.Disk VM.Config.HWType VM.Config.Memory VM.Config.Network VM.Config.Options VM.Monitor VM.PowerMgmt Sys.Console Sys.Modify VM.Migrate SDN.Use"
 users:
-    - name: packer@pve
-      passwd: "{{lookup('ansible.builtin.env', 'GPC_PACKER_PASSWORD', default=Undefined)}}"
-      role: "Packer"
-    - name: terraform@pve
-      passwd: "{{lookup('ansible.builtin.env', 'GPC_TERRAFORM_PASSWORD', default=Undefined)}}"
-      role: "Terraform"
-    - name: tmc@pve
-      passwd: "{{lookup('ansible.builtin.env', 'GPC_TMC_PASSWORD', default=Undefined)}}"
-      role: "Administrator"
-      
+  - name: packer@pve
+    passwd: "{{lookup('ansible.builtin.env', 'GPC_PACKER_PASSWORD', default=Undefined)}}"
+    role: "Packer"
+  - name: terraform@pve
+    passwd: "{{lookup('ansible.builtin.env', 'GPC_TERRAFORM_PASSWORD', default=Undefined)}}"
+    role: "Terraform"
+  - name: tmc@pve
+    passwd: "{{lookup('ansible.builtin.env', 'GPC_TMC_PASSWORD', default=Undefined)}}"
+    role: "Administrator"
