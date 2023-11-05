@@ -90,6 +90,18 @@ spec:
             sourceLabels:
               - __meta_kubernetes_pod_node_name
             targetLabel: kubernetes_node
+          - action: replace
+            regex: (.*)
+            replacement: $1
+            sourceLabels:
+              - __meta_kubernetes_pod_node_name
+            targetLabel: nodename
+          - action: replace
+            regex: (.*)
+            replacement: $1.servonet.lan:9100
+            sourceLabels:
+              - kubernetes_node
+            targetLabel: instance
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
     prometheus-node-exporter:
