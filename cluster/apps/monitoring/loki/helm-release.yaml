@@ -33,7 +33,7 @@ spec:
             - /
       tls:
         - hosts:
-            - "loki.lan"
+            - host: "loki.lan"
           secretName: loki-cert
     serviceMonitor:
       enabled: true
