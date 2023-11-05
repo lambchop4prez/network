@@ -1,0 +1,112 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://grafana.github.io/helm-charts
+      chart: grafana
+      version: 7.0.3
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    replicas: 1
+    env:
+      GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
+    grafana.ini:
+      server:
+        root_url: "https://grafana.lan"
+      paths:
+        data: /var/lib/grafana/data
+        logs: /var/log/grafana
+        plugins: /var/lib/grafana/plugins
+        provisioning: /etc/grafana/provisioning
+      analytics:
+        check_for_updates: false
+      log:
+        mode: console
+      grafana_net:
+        url: https://grafana.net
+      auth.basic:
+        disable_login_form: false
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: "default"
+            orgId: 1
+            folder: ""
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/default
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        deleteDatasources:
+          - name: Loki
+            orgId: 1
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            access: proxy
+            url: "https://prometheus.lan"
+          - name: Loki
+            type: loki
+            access: proxy
+            url: http://loki.lan:3100
+    dashboards:
+      default:
+        flux-cluster:
+          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
+          datasource: Prometheus
+        flux-control-plane:
+          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
+          datasource: Prometheus
+        # radarr:
+        #   url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/radarr.json
+        #   datasource: Prometheus
+        # sonarr:
+        #   url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/sonarr.json
+        #   datasource: Prometheus
+        speedtest:
+          gnetId: 13665
+          revision: 1
+          datasource: Prometheus
+    sidecar:
+      dashboards:
+        enabled: true
+        searchNamespaces: ALL
+      datasources:
+        enabled: true
+        searchNamespaces: ALL
+    plugins:
+      - grafana-worldmap-panel
+      - grafana-clock-panel
+    serviceMonitor:
+      enabled: true
+    ingress:
+      enabled: true
+      pathType: Prefix
+      ingressClassName: "nginx"
+      annotations:
+        cert-manager.io/cluster-issuer: "step"
+      hosts:
+        - "grafana.lan"
+      tls:
+        - hosts:
+            - "grafana.lan"
+          secretName: grafana-cert
+    serviceAccount:
+      create: true
+      autoMount: true
+    persistence:
+      enabled: false
