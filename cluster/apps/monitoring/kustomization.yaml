@@ -8,3 +8,4 @@ resources:
   - promtail
   - loki
   - influxdb
+  - node-exporter
