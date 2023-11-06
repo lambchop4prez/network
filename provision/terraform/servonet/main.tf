@@ -9,8 +9,8 @@ terraform {
       version = "2.9.14"
     }
     opnsense = {
-      source  = "terraform.local/gxben/opnsense"
-      version = "0.3.2"
+      source  = "xyhhx/opnsense"
+      version = "0.3.1-rc2"
     }
     remote = {
       source  = "tenstad/remote"

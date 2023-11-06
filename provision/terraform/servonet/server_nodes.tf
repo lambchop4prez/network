@@ -5,6 +5,8 @@ resource "proxmox_vm_qemu" "server_nodes" {
   desc        = "Servonet node"
   target_node = var.proxmox_target_node
 
+  vmid = 4000 + count.index + 1
+
   clone      = var.vm_template
   full_clone = false
 

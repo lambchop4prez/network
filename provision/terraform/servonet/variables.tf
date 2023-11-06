@@ -13,7 +13,7 @@ variable "server_count" {
 variable "agent_count" {
   type        = number
   description = "Number of agent nodes to provision"
-  default     = 2
+  default     = 4
 }
 
 variable "vm_template" {
@@ -31,7 +31,7 @@ variable "server_cores" {
 variable "server_memory" {
   type        = number
   description = "Amount of memory for server nodes"
-  default     = 4098
+  default     = 6144
 }
 
 variable "server_storage_size" {

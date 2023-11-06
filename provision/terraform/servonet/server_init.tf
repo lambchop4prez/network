@@ -5,6 +5,8 @@ resource "proxmox_vm_qemu" "server_init" {
   desc        = "Servonet node"
   target_node = var.proxmox_target_node
 
+  vmid = 4000
+
   clone      = var.vm_template
   full_clone = false
 
@@ -93,7 +95,7 @@ resource "terraform_data" "server_init_cloud_init_config" {
 }
 
 data "remote_file" "kubeconfig" {
-  depends_on = [proxmox_vm_qemu.server_init, opnsense_dhcp_static_map.server_init_static_lease]
+  depends_on = [proxmox_vm_qemu.server_init]
   conn {
     host        = local.server_ips[0]
     user        = "tom"
