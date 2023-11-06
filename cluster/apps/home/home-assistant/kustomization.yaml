@@ -4,5 +4,5 @@ kind: Kustomization
 resources:
   - external-secret.yaml
   - database.yaml
-  - mqtt.yaml
+  # - mqtt.yaml
   - helm-release.yaml
