@@ -26,9 +26,8 @@ spec:
         kubernetes.io/ingress.class: "nginx"
         cert-manager.io/cluster-issuer: "step"
       hosts:
-        - host: &host "loki.lan"
-          paths:
-            - /
+        - &host "loki.lan"
+
       tls:
         - hosts:
             - *host
