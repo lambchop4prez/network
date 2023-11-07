@@ -8,3 +8,4 @@ resources:
   - speedtest-exporter
   - promtail
   - loki
+  - node-exporter
