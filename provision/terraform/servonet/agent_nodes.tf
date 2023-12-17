@@ -1,13 +1,13 @@
 resource "proxmox_vm_qemu" "agent_nodes" {
   depends_on  = [proxmox_vm_qemu.server_init, proxmox_vm_qemu.server_nodes]
-  count       = var.agent_count
+  count       = length(var.vm_agents)
   name        = local.agent_hostnames[count.index]
   desc        = "Servonet agent node"
   target_node = var.proxmox_target_node
 
   vmid = 4500 + count.index
 
-  clone      = var.vm_template
+  clone      = var.vm_agents[count.index]
   full_clone = false
 
   qemu_os = "l26"
@@ -36,16 +36,16 @@ resource "proxmox_vm_qemu" "agent_nodes" {
 }
 
 resource "opnsense_dhcp_static_map" "agent_static_leases" {
-  count     = var.agent_count
+  count     = length(var.vm_agents)
   interface = "lan"
   mac       = proxmox_vm_qemu.agent_nodes[count.index].network[0].macaddr
   ipaddr    = local.agent_ips[count.index]
   hostname  = proxmox_vm_qemu.agent_nodes[count.index].name
 }
 
-
 resource "terraform_data" "agent_cloud_init_config" {
-  count = var.agent_count
+  count = length(var.vm_agents)
+
   connection {
     type        = "ssh"
     host        = data.vault_generic_secret.proxmox_auth.data["proxmox_host"]
@@ -53,26 +53,7 @@ resource "terraform_data" "agent_cloud_init_config" {
   }
 
   provisioner "file" {
-    content = templatefile(
-      "${path.module}/files/user-data.tpl",
-      {
-        exec     = "agent"
-        hostname = local.agent_hostnames[count.index]
-        username = "tom"
-        password = data.vault_generic_secret.servonet.data["tom_password"]
-        ip       = local.agent_ips[count.index]
-        gateway  = var.gateway
-        ssh_key  = data.local_sensitive_file.ssh_pub_key.content
-        k3s_config = base64gzip(templatefile("${path.module}/files/k3s-agent.yaml.tpl",
-          {
-            hostname         = local.agent_hostnames[count.index]
-            k3s_token        = random_password.k3s_token.result
-            kube_vip_address = var.cluster_vip_address
-            cluster_cidr     = var.cluster_cidr
-            service_cidr     = var.service_cidr
-        }))
-      }
-    )
+    content     = local.agent_userdata[count.index]
     destination = "/var/lib/vz/snippets/${local.agent_hostnames[count.index]}.yml"
   }
 }

@@ -43,7 +43,6 @@ write_files:
         blkio = /cgroup/blkio;
         cpuset = /cgroup/cpuset;
         cpu = /cgroup/cpu;
-
       }
   - path: /etc/rancher/k3s/config.yaml
     content: ${k3s_config}
@@ -77,15 +76,12 @@ runcmd:
   - [apk, add, --no-cache, cni-plugins, --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing]
   - [sed, -i, "/^default_kernel_opts=/ s/\"$/ cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory\"/", /etc/update-extlinux.conf]
   - update-extlinux
-  # - mount --make-shared /sys/fs/bpf
-  # - mount --make-shared /run/cilium/cgroupv2/
   - curl -sfL https://get.k3s.io | sh -
   - [touch, /etc/cloud/cloud-init.disabled]
 
 power_state:
   mode: reboot
   delay: now
-
 
 package_update: true
 package_upgrade: true

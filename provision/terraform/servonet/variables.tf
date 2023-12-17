@@ -10,10 +10,27 @@ variable "server_count" {
   default     = 3
 }
 
-variable "agent_count" {
-  type        = number
-  description = "Number of agent nodes to provision"
-  default     = 4
+# variable "agent_count" {
+#   type        = number
+#   description = "Number of agent nodes to provision"
+#   default     = 4
+# }
+
+variable "vm_agents" {
+  type        = list(string)
+  description = "List of VM templates to clone as virtual agents"
+  default = [
+    "alpine-3.18",
+    "alpine-3.18",
+    "alpine-3.18",
+    "alpine-3.18",
+  ]
+}
+
+variable "metal_agents" {
+  type        = list(string)
+  description = "List of bare-metal agents to provision. Should have a corresponding user-data template."
+  default     = ["rpi", "rpi"]
 }
 
 variable "vm_template" {

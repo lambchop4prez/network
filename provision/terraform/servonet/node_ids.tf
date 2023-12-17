@@ -5,5 +5,5 @@ resource "random_id" "server_node_id" {
 
 resource "random_id" "agent_node_id" {
   byte_length = 2
-  count       = var.agent_count
+  count       = length(var.vm_agents) + length(var.metal_agents)
 }
