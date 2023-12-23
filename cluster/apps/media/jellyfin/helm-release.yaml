@@ -1,0 +1,97 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: jellyfin
+  namespace: media
+spec:
+  dependsOn:
+    # - name: intel-gpu-plugin
+    #   namespace: kube-system
+    - name: node-feature-discovery
+      namespace: kube-system
+  chart:
+    spec:
+      # renovate: registryUrl=https://bjw-s.github.io/helm-charts
+      chart: app-template
+      version: 2.0.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 5m
+  interval: 5m
+  values:
+    controllers:
+      main:
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1001
+            fsGroup: 1001
+            supplementalGroups:
+              - 44
+              - 109
+        containers:
+          main:
+            image:
+              repository: jellyfin/jellyfin
+              tag: 10.8.13-1@sha256:095e6d410d1d27b17cc4a961a9bab9fab5ffce6e49389d8ec685f65ab5538525
+            env:
+              TZ: "America/Detroit"
+              JELLYFIN_CACHE_DIR: /config/cache
+    service:
+      main:
+        ports:
+          http:
+            port: 8096
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: "step"
+        hosts:
+          - host: &host "jellyfin.lan"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: jellyfin-cert
+    persistence:
+      config:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "gpc"
+            path: /pool/storage-0/media/config/jellyfin
+        mountPath: /config
+      media:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "gpc"
+            path: /pool/storage-0/media
+        mountPath: /media
+    # TODO: Provision a node with a gpu
+    # resources:
+    #   requests:
+    #     gpu.intel.com/i915: 1
+    #     memory: 1000Mi
+    #     cpu: 1
+    #   limits:
+    #     gpu.intel.com/i915: 1
+    #     memory: 6000Mi
+    # affinity:
+    #   nodeAffinity:
+    #     requiredDuringSchedulingIgnoredDuringExecution:
+    #       nodeSelectorTerms:
+    #         - matchExpressions:
+    #             - key: feature.node.kubernetes.io/custom-intel-gpu
+    #               operator: In
+    #               values:
+    #                 - "true"
