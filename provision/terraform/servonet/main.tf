@@ -5,8 +5,8 @@ terraform {
       version = "3.17.0"
     }
     proxmox = {
-      source  = "telmate/proxmox"
-      version = "2.9.14"
+      source  = "bpg/proxmox"
+      version = "0.40.0"
     }
     opnsense = {
       source  = "xyhhx/opnsense"
@@ -40,13 +40,19 @@ terraform {
 
   required_version = ">= 1.1.5"
 }
-
 provider "proxmox" {
-  pm_tls_insecure = data.vault_generic_secret.proxmox_auth.data["proxmox_allow_unverified_tls"]
-  pm_api_url      = "https://${data.vault_generic_secret.proxmox_auth.data["proxmox_host"]}:8006/api2/json"
-  pm_user         = data.vault_generic_secret.proxmox_auth.data["proxmox_user"]
-  pm_password     = data.vault_generic_secret.proxmox_auth.data["proxmox_password"]
+  endpoint = "https://${data.vault_generic_secret.proxmox_auth.data["proxmox_host"]}:8006"
+  username = data.vault_generic_secret.proxmox_auth.data["proxmox_user"]
+  password = data.vault_generic_secret.proxmox_auth.data["proxmox_password"]
+  insecure = data.vault_generic_secret.proxmox_auth.data["proxmox_allow_unverified_tls"]
+  tmp_dir  = "/var/tmp"
 }
+# provider "proxmox" {
+#   pm_tls_insecure = data.vault_generic_secret.proxmox_auth.data["proxmox_allow_unverified_tls"]
+#   pm_api_url      = "https://${data.vault_generic_secret.proxmox_auth.data["proxmox_host"]}:8006/api2/json"
+#   pm_user         = data.vault_generic_secret.proxmox_auth.data["proxmox_user"]
+#   pm_password     = data.vault_generic_secret.proxmox_auth.data["proxmox_password"]
+# }
 
 provider "opnsense" {
   uri                  = "https://${data.vault_generic_secret.opnsense_auth.data["opnsense_url"]}"
