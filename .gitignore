@@ -40,3 +40,5 @@ terraform.rc
 
 # NodeJS cruft
 node_modules
+
+kubeconfig

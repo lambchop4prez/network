@@ -1,0 +1,9 @@
+---
+machine:
+  network:
+    interfaces:
+      - interface: "eth0"
+        dhcp: false
+        addresses: ["${static_ip_address}/16"]
+cluster:
+  allowSchedulingOnControlPlanes: true
