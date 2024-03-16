@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - "manifests/ippool.yaml"
   - "manifests/bgppeeringpolicy.yaml"
+  - "manifests/l2announcementpolicy.yaml"
 helmCharts:
   - name: cilium
     repo: https://helm.cilium.io/

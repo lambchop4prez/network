@@ -27,7 +27,7 @@ resource "talos_machine_configuration_apply" "controlplane" {
   node                        = local.controlplane_ips[count.index]
   endpoint                    = local.controlplane_ips[count.index]
   config_patches = [
-    templatefile("configs/global.yaml", { talos_version = var.talos_version }),
+    templatefile("configs/global.yaml", { talos_version = var.talos_version, qemu_guest_agent_version = var.qemu_guest_agent_version }),
     templatefile("configs/controlplane.yaml", { static_ip_address = local.controlplane_ips[count.index], virtual_ip_address = var.virtual_ip_address }),
     file("configs/cni.yaml")
   ]
@@ -59,6 +59,7 @@ resource "opnsense_dhcp_static_map" "controlplane_static_lease" {
 # }
 
 resource "proxmox_virtual_environment_vm" "controlplane" {
+  depends_on  = [proxmox_virtual_environment_file.talos_iso]
   count       = length(random_id.controlplane_node_id)
   name        = local.controlplane_hosts[count.index]
   description = "Servonet node"
@@ -72,7 +73,8 @@ resource "proxmox_virtual_environment_vm" "controlplane" {
     timeout = "1s"
   }
 
-  bios = "seabios"
+  bios    = "seabios"
+  machine = "q35"
 
   cpu {
     cores = var.controlplane_cores
@@ -91,8 +93,9 @@ resource "proxmox_virtual_environment_vm" "controlplane" {
   }
 
   cdrom {
-    enabled = true
-    file_id = proxmox_virtual_environment_file.talos_iso.id
+    enabled   = true
+    file_id   = proxmox_virtual_environment_file.talos_iso.id
+    interface = "ide0"
   }
 
   network_device {

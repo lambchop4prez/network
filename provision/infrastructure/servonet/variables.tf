@@ -11,15 +11,24 @@ variable "common_tags" {
   description = "Common tags for all VMs"
   default     = ["talos", "servonet"]
 }
+
+###
+# Versions
+###
 variable "talos_version" {
   type        = string
   description = "Found at https://github.com/siderolabs/talos/releases"
-  default     = "v1.6.5"
+  default     = "v1.6.6"
 }
 variable "kubernetes_version" {
   type        = string
   description = "Found at https://github.com/siderolabs/kubelet/pkgs/container/kubelet"
   default     = "v1.29.2"
+}
+variable "qemu_guest_agent_version" {
+  type        = string
+  description = "Found at https://github.com/siderolabs/extensions/pkgs/container/qemu-guest-agent"
+  default     = "8.2.2"
 }
 ##
 # Networking
@@ -64,8 +73,28 @@ variable "controlplane_storage_size" {
 }
 
 ##
-# Agent
+# Workers
 ##
+variable "workers" {
+  type        = list(object({ cores : number, memory : number, storage : number, devices = list(string) }))
+  description = "Specs for worker nodes"
+  default = [{
+    cores   = 4
+    memory  = 6144
+    storage = 32
+    devices = ["nvme-1"]
+    }, {
+    cores   = 4
+    memory  = 6144
+    storage = 32
+    devices = ["nvme-2"]
+    }, {
+    cores   = 4
+    memory  = 6144
+    storage = 32
+    devices = ["tesla-p4"]
+  }]
+}
 
 ##
 # Proxmox
