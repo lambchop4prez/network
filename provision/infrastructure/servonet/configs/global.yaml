@@ -1,0 +1,11 @@
+---
+machine:
+  features:
+    kubePrism:
+      enabled: true
+      port: 7445
+  install:
+    disk: /dev/sda
+    image: ghcr.io/siderolabs/installer:${talos_version}
+    extensions:
+      - image: ghcr.io/siderolabs/qemu-guest-agent:${qemu_guest_agent_version}

@@ -1,0 +1,11 @@
+---
+machine:
+  network:
+    interfaces:
+      - interface: "eth0"
+        dhcp: false
+        addresses: ["${static_ip_address}/16"]
+        vip:
+          ip: "${virtual_ip_address}"
+cluster:
+  allowSchedulingOnControlPlanes: true
