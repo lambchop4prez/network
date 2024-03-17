@@ -1,0 +1,37 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname external-secrets
+  namespace: flux-system
+spec:
+  targetNamespace: kube-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./cluster/apps/external-secrets/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: network
+  wait: true
+---
+apiVersion: kustomize.tookit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cilium-manifests
+  namespace: flux-system
+spec:
+  targetNamespace: kube-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: external-secrets
+      app.kubernetes.io/component: manifests
+  interval: 10m
+  path: "./cluster/apps/kube-system/external-secrets/manifests"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: network
+  wait: true
