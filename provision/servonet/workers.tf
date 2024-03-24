@@ -34,7 +34,7 @@ resource "proxmox_virtual_environment_vm" "worker" {
   count       = length(random_id.worker_node_id)
   name        = local.worker_hosts[count.index]
   description = "Servonet worker"
-  tags        = concat(var.common_tags, ["worker"])
+  tags        = concat(var.common_tags, ["worker"], var.workers[count.index].devices)
 
   node_name = var.proxmox_target_node
   vm_id     = "${var.proxmox_vm_prefix}${count.index + var.controlplane_count}"
