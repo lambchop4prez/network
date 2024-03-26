@@ -1,21 +1,20 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - bitnami-charts.yaml
-  - bjw-s-charts.yaml
-  - crunchydata-charts.yaml
+  - bitnami.yaml
+  - bjw-s.yaml
+  - crunchydata.yaml
   - emqx-charts.yaml
-  - external-dns-charts.yaml
-  - external-secrets-charts.yaml
-  - grafana-charts.yaml
-  - influxdata-charts.yaml
-  - ingress-nginx-charts.yaml
-  - jetstack-charts.yaml
+  - external-dns.yaml
+  - external-secrets.yaml
+  - grafana.yaml
+  - influxdata.yaml
+  - ingress-nginx.yaml
+  - jetstack.yaml
   - k8s-gateway.yaml
-  - metallb-charts.yaml
-  - metrics-server-charts.yaml
-  - minio-charts.yaml
-  - nfs-subdir-external-provisioner-charts.yaml
-  - node-feature-discovery-charts.yaml
-  - prometheus-community-charts.yaml
-  - rook-ceph-charts.yaml
+  - metrics-server.yaml
+  - minio.yaml
+  - nfs-subdir-external-provisioner.yaml
+  - node-feature-discovery.yaml
+  - prometheus-community.yaml
+  - rook-ceph.yaml

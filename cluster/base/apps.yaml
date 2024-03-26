@@ -6,13 +6,11 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  dependsOn:
-    - name: core
   path: ./cluster/apps
   prune: true
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: network
   postBuild:
     substitute: {}
     substituteFrom:
