@@ -7,3 +7,6 @@ data "vault_generic_secret" "proxmox_auth" {
 data "vault_generic_secret" "opnsense_auth" {
   path = "secrets/opnsense/auth/terraform"
 }
+data "vault_generic_secret" "servonet" {
+  path = "secrets/servonet"
+}

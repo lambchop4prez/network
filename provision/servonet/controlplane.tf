@@ -125,13 +125,3 @@ data "talos_cluster_kubeconfig" "this" {
   # endpoint = keys(local.controlplane)[0]
   node = local.controlplane_ips[0]
 }
-
-output "kubeconfig" {
-  value     = data.talos_cluster_kubeconfig.this.kubeconfig_raw
-  sensitive = true
-}
-
-output "talosconfig" {
-  value     = data.talos_client_configuration.this.talos_config
-  sensitive = true
-}
