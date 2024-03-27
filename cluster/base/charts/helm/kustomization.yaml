@@ -4,7 +4,7 @@ resources:
   - bitnami.yaml
   - bjw-s.yaml
   - crunchydata.yaml
-  - emqx-charts.yaml
+  - emqx.yaml
   - external-dns.yaml
   - external-secrets.yaml
   - grafana.yaml
