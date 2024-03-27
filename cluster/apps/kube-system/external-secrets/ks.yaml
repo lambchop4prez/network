@@ -20,7 +20,7 @@ spec:
 apiVersion: kustomize.tookit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cilium-manifests
+  name: external-secrets-manifests
   namespace: flux-system
 spec:
   targetNamespace: kube-system
