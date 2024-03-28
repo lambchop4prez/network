@@ -30,3 +30,10 @@ spec:
   sourceRef:
     kind: GitRepository
     name: network
+  dependsOn:
+    - name: flux
+  postBuild:
+    substitute: {}
+    substituteFrom:
+      - kind: ConfigMap
+        name: cluster-config
