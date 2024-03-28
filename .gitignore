@@ -42,3 +42,8 @@ terraform.rc
 node_modules
 
 kubeconfig
+provision/servonet/charts
+identity
+identity.pub
+known_hosts
+vault.env

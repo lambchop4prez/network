@@ -1,0 +1,17 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generatorOptions:
+  disableNameSuffixHash: true
+resources:
+  - github.com/fluxcd/flux2/manifests/install?ref=v2.2.3
+secretGenerator:
+  - name: github-token
+    namespace: flux-system
+    files:
+      - identity
+      - identity.pub
+      - known_hosts
+  - name: vault-token
+    envs:
+      - vault.env

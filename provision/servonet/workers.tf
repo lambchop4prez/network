@@ -93,7 +93,7 @@ resource "proxmox_virtual_environment_vm" "worker" {
       for k, v in var.workers[count.index].devices : k => v
     }
     content {
-      device  = hostpci.key
+      device  = "hostpci${hostpci.key}"
       mapping = hostpci.value
       pcie    = true
     }
