@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./cluster/apps/external-secrets/app"
+  path: "./cluster/apps/kube-system/external-secrets/app"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -31,6 +31,8 @@ spec:
   interval: 10m
   path: "./cluster/apps/kube-system/external-secrets/manifests"
   prune: true
+  dependsOn:
+    - name: external-secrets
   sourceRef:
     kind: GitRepository
     name: network
