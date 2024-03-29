@@ -4,6 +4,6 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - pvc-nas-media.yaml
-  - sabnzbd
-  - sonarr
-  - radarr
+  - sabnzbd/ks.yaml
+  - sonarr/ks.yaml
+  - radarr/ks.yaml
