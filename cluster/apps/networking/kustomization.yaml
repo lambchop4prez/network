@@ -3,7 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - namespace.yaml
-  - ingress-nginx
-  - cert-manager
-  - k8s-gateway
-  - echo-server
+  - ingress-nginx/ks.yaml
+  - cert-manager/ks.yaml
+  - k8s-gateway/ks.yaml
+  - echo-server/ks.yaml
