@@ -4,9 +4,9 @@ kind: CiliumBGPPeeringPolicy
 metadata:
   name: default
 spec: # CiliumBGPPeeringPolicySpec
-  nodeSelector:
-    matchLabels:
-      node-role.kubernetes.io/control-plane: "true"
+  # nodeSelector:
+  #   matchLabels:
+  #     node-role.kubernetes.io/control-plane: "true"
   virtualRouters: # []CiliumBGPVirtualRouter
     - localASN: 64523
       exportPodCIDR: true
