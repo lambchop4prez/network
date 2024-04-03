@@ -4,5 +4,5 @@ resource "random_id" "controlplane_node_id" {
 }
 resource "random_id" "worker_node_id" {
   byte_length = 2
-  count       = length(var.workers)
+  count       = length(var.workers) + length(var.metal_agents)
 }

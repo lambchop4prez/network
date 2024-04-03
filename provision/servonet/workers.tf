@@ -8,8 +8,8 @@ data "talos_machine_configuration" "worker" {
   kubernetes_version = var.kubernetes_version
 }
 
-resource "talos_machine_configuration_apply" "workers" {
-  count                = length((random_id.worker_node_id))
+resource "talos_machine_configuration_apply" "virtual_workers" {
+  count                = length(var.workers)
   depends_on           = [proxmox_virtual_environment_vm.worker]
   client_configuration = talos_machine_secrets.this.client_configuration
 
@@ -17,21 +17,44 @@ resource "talos_machine_configuration_apply" "workers" {
   node                        = local.worker_ips[count.index]
   endpoint                    = local.worker_ips[count.index]
   config_patches = [
-    templatefile("configs/global.yaml", { talos_version = var.talos_version, qemu_guest_agent_version = var.qemu_guest_agent_version })
+    templatefile("configs/global.yaml", { talos_version = var.talos_version, disk = "/dev/sda" }),
+    templatefile("configs/qemu-guest.yaml", { qemu_guest_agent_version = var.qemu_guest_agent_version }),
+    var.workers[count.index].config != null ? file("configs/${var.workers[count.index].config}.yaml") : ""
+  ]
+}
+
+resource "talos_machine_configuration_apply" "metal_workers" {
+  count                = length(var.metal_agents)
+  depends_on           = [proxmox_virtual_environment_vm.worker]
+  client_configuration = talos_machine_secrets.this.client_configuration
+
+  machine_configuration_input = data.talos_machine_configuration.worker.machine_configuration
+  node                        = local.worker_ips[length(var.workers) + count.index]
+  endpoint                    = local.worker_ips[length(var.workers) + count.index]
+  config_patches = [
+    templatefile("configs/global.yaml", { talos_version = var.talos_version, disk = var.metal_agents[count.index].disk })
   ]
 }
 
 resource "opnsense_dhcp_static_map" "worker_static_lease" {
-  count     = length(random_id.worker_node_id)
+  count     = length(var.workers)
   interface = "lan"
   mac       = local.worker_macs[count.index]
   ipaddr    = local.worker_ips[count.index]
   hostname  = local.worker_hosts[count.index]
 }
 
+resource "opnsense_dhcp_static_map" "metal_worker_static_lease" {
+  count     = length(var.metal_agents)
+  interface = "lan"
+  mac       = var.metal_agents[count.index].mac
+  ipaddr    = local.worker_ips[length(var.workers) + count.index]
+  hostname  = local.worker_hosts[length(var.workers) + count.index]
+}
+
 resource "proxmox_virtual_environment_vm" "worker" {
   depends_on  = [proxmox_virtual_environment_file.talos_iso]
-  count       = length(random_id.worker_node_id)
+  count       = length(var.workers)
   name        = local.worker_hosts[count.index]
   description = "Servonet worker"
   tags        = concat(var.common_tags, ["worker"], var.workers[count.index].devices)

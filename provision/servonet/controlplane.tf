@@ -8,10 +8,6 @@ data "talos_machine_configuration" "controlplane" {
   kubernetes_version = var.kubernetes_version
 }
 
-# data "talos_machone_configuration" "worker" {
-#   cluster_name = "servonet.lan"
-# }
-
 data "talos_client_configuration" "this" {
   cluster_name         = "servonet.lan"
   client_configuration = talos_machine_secrets.this.client_configuration
@@ -27,7 +23,8 @@ resource "talos_machine_configuration_apply" "controlplane" {
   node                        = local.controlplane_ips[count.index]
   endpoint                    = local.controlplane_ips[count.index]
   config_patches = [
-    templatefile("configs/global.yaml", { talos_version = var.talos_version, qemu_guest_agent_version = var.qemu_guest_agent_version }),
+    templatefile("configs/global.yaml", { talos_version = var.talos_version, disk = "/dev/sda" }),
+    templatefile("configs/qemu-guest.yaml", { qemu_guest_agent_version = var.qemu_guest_agent_version }),
     templatefile("configs/controlplane.yaml", { static_ip_address = local.controlplane_ips[count.index], virtual_ip_address = var.virtual_ip_address }),
     file("configs/cni.yaml")
   ]
@@ -47,16 +44,6 @@ resource "opnsense_dhcp_static_map" "controlplane_static_lease" {
   ipaddr    = local.controlplane_ips[count.index]
   hostname  = local.controlplane_hosts[count.index]
 }
-
-# resource "proxmox_virtual_environment_file" "userdata_controlplane" {
-#   node_name = "gpc"
-#   content_type = "snippets"
-#   datastore_id = "local"
-#   source_raw {
-#     data = templatefile("./init/user-data-controlplane.yaml.tpl", {cilium_manifest = base64gzip(file("./configs/manifests/cilium.yaml"))})
-#     file_name = "user-data-controlplane.yaml"
-#   }
-# }
 
 resource "proxmox_virtual_environment_vm" "controlplane" {
   depends_on  = [proxmox_virtual_environment_file.talos_iso]

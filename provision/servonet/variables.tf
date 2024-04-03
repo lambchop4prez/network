@@ -76,23 +76,26 @@ variable "controlplane_storage_size" {
 # Workers
 ##
 variable "workers" {
-  type        = list(object({ cores : number, memory : number, storage : number, devices = list(string) }))
+  type        = list(object({ cores : number, memory : number, storage : number, devices = list(string), config = string }))
   description = "Specs for worker nodes"
   default = [{
     cores   = 4
     memory  = 6144
     storage = 32
     devices = ["nvme-1"]
+    config  = null
     }, {
     cores   = 4
     memory  = 6144
     storage = 32
     devices = ["nvme-2"]
+    config  = null
     }, {
     cores   = 4
     memory  = 6144
     storage = 32
     devices = ["tesla-p4"]
+    config  = "gpu-worker"
   }]
 }
 
@@ -120,4 +123,16 @@ variable "proxmox_vm_prefix" {
   type        = number
   description = "First three digits of the cluster's vmid"
   default     = 800
+}
+
+###
+# Bare-metal workers
+variable "metal_agents" {
+  description = "List of mac addresses for bare-metal agents"
+  type        = list(object({ mac : string, disk : string }))
+  default = [
+    { mac = "dc:a6:32:bb:36:4c", disk = "/dev/sda" },    # Pi 4
+    { mac = "e4:5f:01:2f:3a:11", disk = "/dev/sda" },    # Pi 4
+    { mac = "d8:3a:dd:37:3e:67", disk = "/dev/mmcblk0" } # Pi 4 Compute module /dev/mmcblk0
+  ]
 }
