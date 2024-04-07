@@ -24,7 +24,7 @@ spec:
     ingress:
       dashboard:
         enabled: true
-        ingressClassName: "traefik"
+        ingressClassName: "nginx"
         annotations:
           cert-manager.io/cluster-issuer: "step"
         host:
