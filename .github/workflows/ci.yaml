@@ -11,5 +11,5 @@ jobs:
       - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       - uses: actions/setup-python@61a6322f88396a6271a6ee3565807d608ecaddd1 # v4.7.0
       - uses: terraform-linters/setup-tflint@19a52fbac37dacb22a09518e4ef6ee234f2d4987 # v4.0.0
-      - uses: pre-commit-ci/lite-action@2529d76d2c5ffdf2a85aa090c38949eada94d39d # v1.0.1
+      - uses: pre-commit-ci/lite-action@9d882e7a565f7008d4faf128f27d1cb6503d4ebf # v1.0.2
         if: always()
