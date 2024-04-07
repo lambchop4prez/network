@@ -4,4 +4,5 @@ kind: Kustomization
 resources:
   - crunchy-postgres-operator
   # - emqx-operator
+  - rook-ceph/namespace.yaml
   - rook-ceph/ks.yaml
