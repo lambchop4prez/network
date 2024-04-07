@@ -71,11 +71,9 @@ spec:
             requests:
               storage: 1Mi
           volumeMode: Filesystem
+          storageClassName: rook-ceph
           accessModes:
             - ReadWriteMany
-          nfs:
-            server: "gpc"
-            path: /pool/storage-0/media/config/sonarr
         mountPath: /config
       media:
         existingClaim: nas-media
