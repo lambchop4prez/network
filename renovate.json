@@ -1,16 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    ":enablePreCommit"
-  ],
+  "extends": ["config:recommended", ":enablePreCommit"],
   "flux": {
-    "fileMatch": ["^cluster/.+\\.ya?ml$"],
+    "fileMatch": ["^cluster/.+\\.ya?ml$"]
   },
   "helm-values": {
-    "fileMatch": ["^cluster/.+\\.ya?ml$"],
+    "fileMatch": ["^cluster/.+\\.ya?ml$"]
   },
   "kubernetes": {
-    "fileMatch": ["^cluster/.+\\.ya?ml$"],
-  },
+    "fileMatch": ["^cluster/.+\\.ya?ml$"]
+  }
 }
