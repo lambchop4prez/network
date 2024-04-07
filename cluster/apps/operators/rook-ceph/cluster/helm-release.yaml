@@ -44,8 +44,19 @@ spec:
       network:
         provider: host
       storage:
-        useAllNodes: true
-        useAllDevices: true
+        useAllNodes: false
+        useAllDevices: false
+        nodes:
+          - name: "10.4.32.60"
+            devices:
+              - name: "nvme0n1"
+                config:
+                  osdsPerDevice: "5"
+          - name: "10.4.32.61"
+            devices:
+              - name: "nvme0n1"
+                config:
+                  osdsPerDevice: "5"
         config:
           osdsPerDevice: "1"
     cephBlockPools:
