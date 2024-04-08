@@ -43,13 +43,14 @@ spec:
                 memory: 1500Mi
     service:
       main:
+        controller: main
         ports:
           http:
             port: *port
     ingress:
       main:
         enabled: true
-        ingressClassName: "nginx"
+        className: "nginx"
         annotations:
           cert-manager.io/cluster-issuer: "step"
         hosts:
