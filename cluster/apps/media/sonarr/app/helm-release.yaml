@@ -72,7 +72,7 @@ spec:
             requests:
               storage: 1Mi
           volumeMode: Filesystem
-          storageClassName: rook-ceph
+          storageClassName: ceph-block
           accessModes:
             - ReadWriteMany
         mountPath: /config
