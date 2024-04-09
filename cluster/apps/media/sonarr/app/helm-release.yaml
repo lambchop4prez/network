@@ -76,7 +76,5 @@ spec:
           storageClassName: ceph-block
           accessModes:
             - ReadWriteMany
-        globalMounts:
-          - path: /config
       media:
         existingClaim: nas-media
