@@ -58,7 +58,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: main
                   port: http
         tls:
           - hosts:
@@ -78,6 +78,7 @@ spec:
           nfs:
             server: "gpc"
             path: /pool/storage-0/media/config/radarr
-        mountPath: /config
+        globalMounts:
+          - path: /config
       media:
         existingClaim: nas-media
