@@ -54,12 +54,12 @@ spec:
         useAllNodes: false
         useAllDevices: false
         nodes:
-          - name: "10.4.32.60"
+          - name: "tom-16da"
             devices:
               - name: "nvme0n1"
                 config:
                   osdsPerDevice: "5"
-          - name: "10.4.32.61"
+          - name: "tom-fde8"
             devices:
               - name: "nvme0n1"
                 config:
