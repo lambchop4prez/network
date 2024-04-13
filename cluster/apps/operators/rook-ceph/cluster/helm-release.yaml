@@ -58,12 +58,12 @@ spec:
             devices:
               - name: "nvme0n1"
                 config:
-                  osdsPerDevice: "5"
+                  osdsPerDevice: "3"
           - name: "tom-fde8"
             devices:
               - name: "nvme0n1"
                 config:
-                  osdsPerDevice: "5"
+                  osdsPerDevice: "3"
         config:
           osdsPerDevice: "1"
     cephBlockPools:
