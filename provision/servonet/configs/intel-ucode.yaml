@@ -1,0 +1,6 @@
+---
+machine:
+  install:
+    extensions:
+      - image: ghcr.io/siderolabs/intel-ucode:8f50ddc110c5da0a49be73e5599e4abd6f3c3f5cca6207b6799dc8a346a085f2
+      - image: ghcr.io/siderolabs/i915-ucode:f03609df93532c97873a091119fbe9017fb09245de0f17fdcb64d3b0d055e5f2

@@ -1,5 +1,14 @@
 ---
 machine:
+  features:
+    kubernetesTalosAPIAccess:
+      enabled: true # Enable Talos API access from Kubernetes pods.
+      # The list of Talos API roles which can be granted for access from Kubernetes pods.
+      allowedRoles:
+        - os:reader
+      # The list of Kubernetes namespaces Talos API access is available from.
+      allowedKubernetesNamespaces:
+        - kube-system
   network:
     interfaces:
       - interface: "eth0"
@@ -8,4 +17,5 @@ machine:
         vip:
           ip: "${virtual_ip_address}"
 cluster:
+  clusterName: servonet.lan
   allowSchedulingOnControlPlanes: true

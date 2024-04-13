@@ -19,6 +19,7 @@ resource "talos_machine_configuration_apply" "virtual_workers" {
   config_patches = [
     templatefile("configs/global.yaml", { talos_version = var.talos_version, disk = "/dev/sda" }),
     templatefile("configs/qemu-guest.yaml", { qemu_guest_agent_version = var.qemu_guest_agent_version }),
+    # file("configs/intel-ucode.yaml"),
     var.workers[count.index].config != null ? file("configs/${var.workers[count.index].config}.yaml") : ""
   ]
 }

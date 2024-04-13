@@ -130,9 +130,9 @@ variable "proxmox_vm_prefix" {
 variable "metal_agents" {
   description = "List of mac addresses for bare-metal agents"
   type        = list(object({ mac : string, disk : string }))
-  default = [
-    { mac = "dc:a6:32:bb:36:4c", disk = "/dev/sda" },    # Pi 4
-    { mac = "e4:5f:01:2f:3a:11", disk = "/dev/sda" },    # Pi 4
-    { mac = "d8:3a:dd:37:3e:67", disk = "/dev/mmcblk0" } # Pi 4 Compute module /dev/mmcblk0
-  ]
+  default     = []
+  #   { mac = "dc:a6:32:bb:36:4c", disk = "/dev/sda" },    # Pi 4
+  #   { mac = "e4:5f:01:2f:3a:11", disk = "/dev/sda" },    # Pi 4
+  #   { mac = "d8:3a:dd:37:3e:67", disk = "/dev/mmcblk0" } # Pi 4 Compute module /dev/mmcblk0
+  # ]
 }

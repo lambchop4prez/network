@@ -26,7 +26,8 @@ resource "talos_machine_configuration_apply" "controlplane" {
     templatefile("configs/global.yaml", { talos_version = var.talos_version, disk = "/dev/sda" }),
     templatefile("configs/qemu-guest.yaml", { qemu_guest_agent_version = var.qemu_guest_agent_version }),
     templatefile("configs/controlplane.yaml", { static_ip_address = local.controlplane_ips[count.index], virtual_ip_address = var.virtual_ip_address }),
-    file("configs/cni.yaml")
+    file("configs/cni.yaml"),
+    # file("configs/intel-ucode.yaml")
   ]
 }
 
