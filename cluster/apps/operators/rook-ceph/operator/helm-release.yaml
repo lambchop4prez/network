@@ -16,6 +16,8 @@ spec:
         name: rook-ceph
         namespace: flux-system
   values:
+    monitoring:
+      enabled: true
     crds:
       enabled: true
     csi:
