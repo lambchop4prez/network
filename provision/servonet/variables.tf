@@ -63,7 +63,7 @@ variable "controlplane_cores" {
 variable "controlplane_memory" {
   type        = number
   description = "Amount of memory for controlplane nodes"
-  default     = 6144
+  default     = 8192
 }
 
 variable "controlplane_storage_size" {
@@ -80,19 +80,19 @@ variable "workers" {
   description = "Specs for worker nodes"
   default = [{
     cores   = 4
-    memory  = 6144
+    memory  = 16384
     storage = 32
     devices = ["nvme-1"]
     config  = null
     }, {
     cores   = 4
-    memory  = 6144
+    memory  = 16384
     storage = 32
     devices = ["nvme-2"]
     config  = null
     }, {
     cores   = 4
-    memory  = 6144
+    memory  = 16384
     storage = 32
     devices = ["tesla-p4"]
     config  = "gpu-worker"
