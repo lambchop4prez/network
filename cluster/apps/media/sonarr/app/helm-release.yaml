@@ -73,8 +73,10 @@ spec:
             requests:
               storage: 1Mi
           volumeMode: Filesystem
-          storageClassName: ceph-block
           accessModes:
             - ReadWriteMany
+          nfs:
+            server: "gpc"
+            path: /pool/storage-0/media/config/sonarr
       media:
         existingClaim: nas-media
