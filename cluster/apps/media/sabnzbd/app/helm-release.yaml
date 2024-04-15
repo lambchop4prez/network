@@ -39,7 +39,7 @@ spec:
                 sabnzbd.media.svc.servonet.lan
             resources:
               requests:
-                cpu: 1
+                cpu: 5m
                 memory: "250Mi"
               limits:
                 memory: "1500Mi"
