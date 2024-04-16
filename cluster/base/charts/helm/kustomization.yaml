@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - bitnami.yaml
   - bjw-s.yaml
+  - cilium.yaml
   - crunchydata.yaml
   - emqx.yaml
   - external-dns.yaml
