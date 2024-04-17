@@ -59,7 +59,7 @@ spec:
             any: true
       resources:
         requests:
-          cpu: 20m
+          cpu: 100m
           memory: 250Mi
         limits:
           memory: 500Mi
