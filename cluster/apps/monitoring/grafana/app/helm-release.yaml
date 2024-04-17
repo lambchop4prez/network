@@ -59,12 +59,14 @@ spec:
             type: prometheus
             access: proxy
             url: "https://prometheus.lan"
-            tlsSkipVerify: true
+            jsonData:
+              tlsSkipVerify: true
           - name: Loki
             type: loki
             access: proxy
             url: https://loki.lan
-            tlsSkipVerify: true
+            jsonData:
+              tlsSkipVerify: true
     dashboards:
       default:
         flux-cluster:
