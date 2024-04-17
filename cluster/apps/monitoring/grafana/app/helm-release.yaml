@@ -85,7 +85,7 @@ spec:
           gnetId: 13665
           revision: 1
           datasource: Prometheus
-      nginx:
+        # nginx:
         nginx:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
           datasource: Prometheus
