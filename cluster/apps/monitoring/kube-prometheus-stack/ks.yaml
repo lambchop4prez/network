@@ -17,4 +17,4 @@ spec:
     name: network
   wait: true
   dependsOn:
-    - name: ceph-cluster
+    - name: rook-cluster
