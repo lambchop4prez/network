@@ -6,4 +6,6 @@ resources:
 configMapGenerator:
   - name: cilium-values
     files:
-      - values.yaml=./cluster/apps/kube-system/cilium/app/values.yaml
+      - values.yaml=./values.yaml
+configurations:
+  - kustomizeconfig.yaml
