@@ -26,12 +26,14 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      replicas: 2
-      strategy: RollingUpdate
-    image:
-      repository: docker.io/jmalloc/echo-server
-      tag: 0.3.6
+    controllers:
+      main:
+        replicas: 2
+        strategy: RollingUpdate
+        containers:
+          image:
+            repository: docker.io/jmalloc/echo-server
+            tag: 0.3.6
     service:
       main:
         ports:
@@ -50,7 +52,7 @@ spec:
                 pathType: Prefix
         tls:
           - hosts:
-              - "echo.lan"
+              - *host
             secretName: "echo-server-cert"
     resources:
       requests:
