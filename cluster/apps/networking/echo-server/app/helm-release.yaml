@@ -36,13 +36,14 @@ spec:
             tag: 0.3.6
     service:
       main:
+        controller: main
         ports:
           http:
             port: &port 8080
     ingress:
       main:
         enabled: true
-        ingressClassName: nginx
+        className: nginx
         annotations:
           cert-manager.io/cluster-issuer: "step"
         hosts:
@@ -50,6 +51,9 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  identifier: main
+                  port: http
         tls:
           - hosts:
               - *host
