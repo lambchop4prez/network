@@ -31,7 +31,7 @@ bandwidthManager:
   bbr: true
 bpf:
   masquerade: true
-  tproxy: true
+  # tproxy: true
   hostLegacyRouting: true
 
 l7Proxy: true
