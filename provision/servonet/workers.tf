@@ -17,8 +17,8 @@ resource "talos_machine_configuration_apply" "virtual_workers" {
   node                        = local.worker_ips[count.index]
   endpoint                    = local.worker_ips[count.index]
   config_patches = [
-    templatefile("configs/global.yaml", { talos_version = var.talos_version, disk = "/dev/sda" }),
-    templatefile("configs/qemu-guest.yaml", { qemu_guest_agent_version = var.qemu_guest_agent_version }),
+    templatefile("configs/global.yaml", { talos_version = var.talos_version, disk = "/dev/sda", qemu_guest_agent_version = var.qemu_guest_agent_version }),
+    # templatefile("configs/qemu-guest.yaml", { qemu_guest_agent_version = var.qemu_guest_agent_version }),
     # file("configs/intel-ucode.yaml"),
     var.workers[count.index].config != null ? file("configs/${var.workers[count.index].config}.yaml") : ""
   ]
@@ -33,7 +33,7 @@ resource "talos_machine_configuration_apply" "metal_workers" {
   node                        = local.worker_ips[length(var.workers) + count.index]
   endpoint                    = local.worker_ips[length(var.workers) + count.index]
   config_patches = [
-    templatefile("configs/global.yaml", { talos_version = var.talos_version, disk = var.metal_agents[count.index].disk })
+    # templatefile("configs/global.yaml", { talos_version = var.talos_version, disk = var.metal_agents[count.index].disk })
   ]
 }
 

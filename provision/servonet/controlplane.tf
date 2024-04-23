@@ -23,8 +23,8 @@ resource "talos_machine_configuration_apply" "controlplane" {
   node                        = local.controlplane_ips[count.index]
   endpoint                    = local.controlplane_ips[count.index]
   config_patches = [
-    templatefile("configs/global.yaml", { talos_version = var.talos_version, disk = "/dev/sda" }),
-    templatefile("configs/qemu-guest.yaml", { qemu_guest_agent_version = var.qemu_guest_agent_version }),
+    templatefile("configs/global.yaml", { talos_version = var.talos_version, disk = "/dev/sda", qemu_guest_agent_version = var.qemu_guest_agent_version }),
+    # templatefile("configs/qemu-guest.yaml", { qemu_guest_agent_version = var.qemu_guest_agent_version }),
     templatefile("configs/controlplane.yaml", { static_ip_address = local.controlplane_ips[count.index], virtual_ip_address = var.virtual_ip_address }),
     file("configs/cni.yaml"),
     # file("configs/intel-ucode.yaml")
@@ -103,7 +103,6 @@ resource "proxmox_virtual_environment_vm" "controlplane" {
         gateway = var.cluster_gateway
       }
     }
-    # user_data_file_id = proxmox_virtual_environment_file.userdata_controlplane.id
   }
 }
 
