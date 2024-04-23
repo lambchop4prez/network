@@ -3,5 +3,5 @@ kind: Kustomization
 resources:
   - bgppeeringpolicy.yaml
   - ippool.yaml
-  - l2announcementpolicy.yaml
+  # - l2announcementpolicy.yaml
   - service-vip.yaml
