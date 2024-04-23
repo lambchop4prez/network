@@ -15,7 +15,7 @@ spec: # CiliumBGPPeeringPolicySpec
         matchExpressions:
           - { key: somekey, operator: NotIn, values: ["never-used-value"] }
       neighbors: # []CiliumBGPNeighbor
-        - peerAddress: "${BGP_ROUTER_ADDR}/16"
+        - peerAddress: "${BGP_ROUTER_ADDR}/32"
           peerASN: ${BGP_ROUTER_ASN}
           eBGPMultihopTTL: 10
           connectRetryTimeSeconds: 120
