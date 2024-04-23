@@ -32,6 +32,7 @@ bandwidthManager:
 bpf:
   masquerade: true
   tproxy: true
+  hostLegacyRouting: true
 
 l7Proxy: true
 
