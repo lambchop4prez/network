@@ -7,5 +7,5 @@ resources:
   - kube-prometheus-stack/ks.yaml
   - speedtest-exporter/ks.yaml
   - promtail/ks.yaml
-  # - loki/ks.yaml
+  - loki/ks.yaml
   - node-exporter/ks.yaml
