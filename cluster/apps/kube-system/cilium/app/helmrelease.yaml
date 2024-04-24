@@ -41,6 +41,7 @@ spec:
           tls:
             - hosts:
                 - *host
+              secretName: hubble-cert
     prometheus:
       serviceMonitor:
         enabled: true
