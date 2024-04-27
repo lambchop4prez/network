@@ -4,6 +4,6 @@ metadata:
   name: cilium
 spec:
   interfaces:
-    - enx+
+    - bond0
   externalIPs: true
   loadBalancerIPs: true
