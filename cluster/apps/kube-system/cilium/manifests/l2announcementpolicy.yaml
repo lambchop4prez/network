@@ -7,3 +7,6 @@ spec:
     - ^enx[a-f0-9]+
   externalIPs: true
   loadBalancerIPs: true
+  nodeSelector:
+    matchLabels:
+      kubernetes.io/os: linux
