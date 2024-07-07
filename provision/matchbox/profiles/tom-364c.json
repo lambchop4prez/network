@@ -1,0 +1,20 @@
+{
+  "id": "tom-364c",
+  "name": "pi-control-plane",
+  "boot": {
+    "kernel": "/assets/talos/v1.7.5/rpi/kernel-arm64",
+    "initrd": ["/assets/talos/v1.7.5/rpi/initramfs-metal-arm64.xz"],
+    "args": [
+      "initrd=initramfs-metal-arm64.xz",
+      "init_on_alloc=1",
+      "slab_nomerge",
+      "pti=on",
+      "console=tty0",
+      "console=ttyS0",
+      "printk.devkmsg=on",
+      "net.ifnames=0",
+      "talos.platform=metal",
+      "talos.config=http://matchbox.lan:8080/assets/clusterconfig/servonet-tom-364c.yaml"
+    ]
+  }
+}
