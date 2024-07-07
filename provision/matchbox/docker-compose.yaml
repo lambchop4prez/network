@@ -1,0 +1,67 @@
+---
+version: "3.9"
+services:
+  qemu_kernel:
+    image: ghcr.io/siderolabs/imager:${TALOS_VERSION}
+    command:
+      - iso
+      - --arch
+      - amd64
+      - --output-kind
+      - kernel
+    platform: linux/arm64
+    privileged: true
+    volumes:
+      - "$PWD/assets/talos/${TALOS_VERSION}/qemu:/out:rw"
+      - "/dev:/dev:rw"
+  qemu:
+    image: ghcr.io/siderolabs/imager:${TALOS_VERSION}
+    command:
+      - iso
+      - --arch
+      - amd64
+      - --system-extension-image
+      - ghcr.io/siderolabs/intel-ucode:20240514@sha256:c487778190d4a39014798e70d52a5cc31038d60542cbb228b67ee63b7ce68ae3
+      - --system-extension-image
+      - ghcr.io/siderolabs/qemu-guest-agent:8.2.2@sha256:b2446505f3d5095fd4b46ac966c1db661a41b6ec707a9e1811787e6c90bc1c9c
+      - --output-kind
+      - initramfs
+    platform: linux/arm64
+    privileged: true
+    volumes:
+      - "$PWD/assets/talos/${TALOS_VERSION}/qemu:/out:rw"
+      - "/dev:/dev:rw"
+  rpi-kernel:
+    image: ghcr.io/siderolabs/imager:${TALOS_VERSION}
+    command:
+      - iso
+      - --arch
+      - arm64
+      - --overlay-image
+      - ghcr.io/siderolabs/sbc-raspberrypi:v0.1.0-beta.0@sha256:47c6b7dc1cf697fc1ced0928eb4e8a37e83e99898289f59aaa49f8ed97249352
+      - --overlay-name
+      - rpi_generic
+      - --output-kind
+      - kernel
+    platform: linux/arm64
+    privileged: true
+    volumes:
+      - "$PWD/assets/talos/${TALOS_VERSION}/rpi:/out:rw"
+      - "/dev:/dev:rw"
+  rpi:
+    image: ghcr.io/siderolabs/imager:${TALOS_VERSION}
+    command:
+      - iso
+      - --arch
+      - arm64
+      - --overlay-image
+      - ghcr.io/siderolabs/sbc-raspberrypi:v0.1.0-beta.0@sha256:47c6b7dc1cf697fc1ced0928eb4e8a37e83e99898289f59aaa49f8ed97249352
+      - --overlay-name
+      - rpi_generic
+      - --output-kind
+      - initramfs
+    platform: linux/arm64
+    privileged: true
+    volumes:
+      - "$PWD/assets/talos/${TALOS_VERSION}/rpi:/out:rw"
+      - "/dev:/dev:rw"
