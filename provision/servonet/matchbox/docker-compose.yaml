@@ -65,3 +65,41 @@ services:
     volumes:
       - "$PWD/assets/talos/${TALOS_VERSION}/rpi:/out:rw"
       - "/dev:/dev:rw"
+  jetson-kernel:
+    image: ghcr.io/siderolabs/imager:${TALOS_VERSION}
+    command:
+      - iso
+      - --arch
+      - arm64
+      - --overlay-image
+      - ghcr.io/siderolabs/sbc-jetson:v0.1.0-beta.0@sha256:6016709654521f9a038f168651995b8c68fe73044c15ef7dadc9af72f1c8c4fb
+      - --overlay-name
+      - jetson_nano
+      - --output-kind
+      - kernel
+    platform: linux/arm64
+    privileged: true
+    volumes:
+      - "$PWD/assets/talos/${TALOS_VERSION}/jetson:/out:rw"
+      - "/dev:/dev:rw"
+  jetson:
+    image: ghcr.io/siderolabs/imager:${TALOS_VERSION}
+    command:
+      - iso
+      - --arch
+      - arm64
+      - --overlay-image
+      - ghcr.io/siderolabs/sbc-jetson:v0.1.0-beta.0@sha256:6016709654521f9a038f168651995b8c68fe73044c15ef7dadc9af72f1c8c4fb
+      - --overlay-name
+      - jetson_nano
+      - --system-extension-image
+      - ghcr.io/siderolabs/nvidia-container-toolkit:535.129.03-v1.14.6@sha256:21e7421ca1d7140fe40f60931a28bb60d0d0eaa7dd204d244888b8a791f80309
+      # - --system-extension-image
+      # - ghcr.io/siderolabs/nvidia-open-gpu-kernel-modules:535.129.03-v1.7.0@sha256:18e8fa5925fcec86f26f4f5f6f3e57f9cdb3c5eef3b7100a24e6ac4c9977cade
+      - --output-kind
+      - initramfs
+    platform: linux/arm64
+    privileged: true
+    volumes:
+      - "$PWD/assets/talos/${TALOS_VERSION}/jetson:/out:rw"
+      - "/dev:/dev:rw"

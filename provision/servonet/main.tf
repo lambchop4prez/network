@@ -56,7 +56,6 @@ provider "talos" {}
 
 provider "github" {
   owner = "lambchop4prez"
-  token = data.vault_generic_secret.servonet.data["github_access_token"]
 }
 
 provider "kustomization" {

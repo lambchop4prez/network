@@ -94,8 +94,8 @@ variable "workers" {
     cores   = 4
     memory  = 16384
     storage = 32
-    devices = ["tesla-p4"]
-    config  = "gpu-worker"
+    devices = []
+    config  = null
   }]
 }
 

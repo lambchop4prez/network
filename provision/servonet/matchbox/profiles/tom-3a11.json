@@ -1,5 +1,5 @@
 {
-  "id": "tom-3e67",
+  "id": "tom-3a11",
   "name": "pi-control-plane",
   "boot": {
     "kernel": "/assets/talos/v1.7.5/rpi/kernel-arm64",
@@ -14,7 +14,7 @@
       "printk.devkmsg=on",
       "net.ifnames=0",
       "talos.platform=metal",
-      "talos.config=http://matchbox.lan:8080/assets/clusterconfig/servonet-tom-3e67.yaml"
+      "talos.config=http://matchbox.lan:8080/assets/servonet-tom-3a11.yaml"
     ]
   }
 }
