@@ -9,5 +9,12 @@
   },
   "kubernetes": {
     "fileMatch": ["^cluster/.+\\.ya?ml$"]
-  }
+  },
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    }
+  ]
 }
