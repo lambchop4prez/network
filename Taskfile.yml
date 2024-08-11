@@ -11,7 +11,7 @@ vars:
 
 includes:
   gpc: .taskfiles/gpc.yaml
-  # servonet: .taskfiles/servonet.yaml
+  servonet: .taskfiles/servonet.yaml
 
 tasks:
   ping:

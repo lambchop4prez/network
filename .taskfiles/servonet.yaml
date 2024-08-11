@@ -1,0 +1,34 @@
+---
+version: "3"
+
+vars:
+  SERVONET_DIR: "{{.PROJECT_DIR}}/provision/servonet"
+  MATCHBOX_DIR: "{{.SERVONET_DIR}}/matchbox"
+  TALOS_VERSION: "v1.7.6"
+
+tasks:
+  assets:generate:
+    desc: Creates kernel images and talos configs
+    cmds:
+      - task: assets:generate:kernels
+      - task: assets:generate:talconfig
+
+  assets:generate:kernels:
+    desc: Creates kernel images via docker-compose
+    dir: "{{.MATCHBOX_DIR}}"
+    env:
+      TALOS_VERSION: "{{.TALOS_VERSION}}"
+    cmds:
+      - docker compose up
+
+  assets:generate:talconfig:
+    desc: Creates talconfig files.
+    dir: "{{.MATCHBOX_DIR}}"
+    cmds:
+      - talhelper genconfig -o ./assets
+
+  assets:upload:
+    desc: Uploads assets to matchbox server
+    dir: "{{.MATCHBOX_DIR}}"
+    cmds:
+      - scp ./* matchbox@matchbox.lan:/var/lib/matchbox
