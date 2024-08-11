@@ -9,4 +9,4 @@ releases:
     version: 1.15.6
     wait: true
     values:
-      - ../../../../cluster/apps/kube-system/cilium/app/values.yaml
+      - ../../../cluster/apps/kube-system/cilium/app/values.yaml

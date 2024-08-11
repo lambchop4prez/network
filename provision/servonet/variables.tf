@@ -117,7 +117,7 @@ variable "proxmox_bridge_interface" {
 variable "proxmox_storage_pool" {
   type        = string
   description = "Storage pool for all disk images"
-  default     = "local-lvm"
+  default     = "fio"
 }
 variable "proxmox_vm_prefix" {
   type        = number

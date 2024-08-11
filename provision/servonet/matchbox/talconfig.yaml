@@ -59,6 +59,19 @@ nodes:
             metric: 1024 # The optional metric for the route.
         vip:
           ip: "10.4.3.1"
+  - hostname: tom-3bc9
+    ipAddress: "10.4.3.35"
+    controlPlane: false
+    installDisk: /dev/sda
+    networkInterfaces:
+      - interface: eth0
+        dhcp: true
+        addresses:
+          - 10.4.3.34
+        routes:
+          - network: 0.0.0.0/0 # The route's network (destination).
+            gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
+            metric: 1024 # The optional metric for the route.
 patches:
   # Enable kubePrism
   - |-
@@ -67,91 +80,3 @@ patches:
         kubePrism:
           enabled: true
           port: 7445
-  # Install cillium
-  - |-
-    cluster:
-      inlineManifests:
-        - name: cilium-install
-          contents: |
-            ---
-            apiVersion: rbac.authorization.k8s.io/v1
-            kind: ClusterRoleBinding
-            metadata:
-              name: cilium-install
-            roleRef:
-              apiGroup: rbac.authorization.k8s.io
-              kind: ClusterRole
-              name: cluster-admin
-            subjects:
-            - kind: ServiceAccount
-              name: cilium-install
-              namespace: kube-system
-            ---
-            apiVersion: v1
-            kind: ServiceAccount
-            metadata:
-              name: cilium-install
-              namespace: kube-system
-            ---
-            apiVersion: batch/v1
-            kind: Job
-            metadata:
-              name: cilium-install
-              namespace: kube-system
-            spec:
-              backoffLimit: 10
-              template:
-                metadata:
-                  labels:
-                    app: cilium-install
-                spec:
-                  restartPolicy: OnFailure
-                  tolerations:
-                    - operator: Exists
-                    - effect: NoSchedule
-                      operator: Exists
-                    - effect: NoExecute
-                      operator: Exists
-                    - effect: PreferNoSchedule
-                      operator: Exists
-                    - key: node-role.kubernetes.io/control-plane
-                      operator: Exists
-                      effect: NoSchedule
-                    - key: node-role.kubernetes.io/control-plane
-                      operator: Exists
-                      effect: NoExecute
-                    - key: node-role.kubernetes.io/control-plane
-                      operator: Exists
-                      effect: PreferNoSchedule
-                  affinity:
-                    nodeAffinity:
-                      requiredDuringSchedulingIgnoredDuringExecution:
-                        nodeSelectorTerms:
-                          - matchExpressions:
-                              - key: node-role.kubernetes.io/control-plane
-                                operator: Exists
-                  serviceAccount: cilium-install
-                  serviceAccountName: cilium-install
-                  hostNetwork: true
-                  containers:
-                  - name: cilium-install
-                    image: quay.io/cilium/cilium-cli-ci:latest
-                    env:
-                    - name: KUBERNETES_SERVICE_HOST
-                      valueFrom:
-                        fieldRef:
-                          apiVersion: v1
-                          fieldPath: status.podIP
-                    - name: KUBERNETES_SERVICE_PORT
-                      value: "6443"
-                    command:
-                      - cilium
-                      - install
-                      - --set ipam.mode=kubernetes
-                      - --set kubeProxyReplacement=true
-                      - --set securityContext.capabilities.ciliumAgent="{CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}"
-                      - --set securityContext.capabilities.cleanCiliumState="{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}"
-                      - --set cgroup.autoMount.enabled=false
-                      - --set cgroup.hostRoot=/sys/fs/cgroup
-                      - --set k8sServiceHost=localhost
-                      - --set k8sServicePort=7445

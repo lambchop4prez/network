@@ -23,13 +23,43 @@ services:
       - --system-extension-image
       - ghcr.io/siderolabs/intel-ucode:20240514@sha256:c487778190d4a39014798e70d52a5cc31038d60542cbb228b67ee63b7ce68ae3
       - --system-extension-image
-      - ghcr.io/siderolabs/qemu-guest-agent:8.2.2@sha256:b2446505f3d5095fd4b46ac966c1db661a41b6ec707a9e1811787e6c90bc1c9c
+      - ghcr.io/siderolabs/qemu-guest-agent:8.2.2@sha256:e8020f513f891896fd3bb506c7af8a763a3c70b063e4901caaad073b5e6e0815
       - --output-kind
       - initramfs
     platform: linux/arm64
     privileged: true
     volumes:
       - "$PWD/assets/talos/${TALOS_VERSION}/qemu:/out:rw"
+      - "/dev:/dev:rw"
+  intel_kernel:
+    image: ghcr.io/siderolabs/imager:${TALOS_VERSION}
+    command:
+      - iso
+      - --arch
+      - amd64
+      - --output-kind
+      - kernel
+    platform: linux/arm64
+    privileged: true
+    volumes:
+      - "$PWD/assets/talos/${TALOS_VERSION}/intel:/out:rw"
+      - "/dev:/dev:rw"
+  intel:
+    image: ghcr.io/siderolabs/imager:${TALOS_VERSION}
+    command:
+      - iso
+      - --arch
+      - amd64
+      - --system-extension-image
+      - ghcr.io/siderolabs/intel-ucode:20240514@sha256:c487778190d4a39014798e70d52a5cc31038d60542cbb228b67ee63b7ce68ae3
+      - --system-extension-image
+      - ghcr.io/siderolabs/i915-ucode:20240513@sha256:b704bee87216b4adc54a111d6a9ec46aca9dd51c857c3fcc802c27b3fcf6052c
+      - --output-kind
+      - initramfs
+    platform: linux/arm64
+    privileged: true
+    volumes:
+      - "$PWD/assets/talos/${TALOS_VERSION}/intel:/out:rw"
       - "/dev:/dev:rw"
   rpi-kernel:
     image: ghcr.io/siderolabs/imager:${TALOS_VERSION}
@@ -64,42 +94,4 @@ services:
     privileged: true
     volumes:
       - "$PWD/assets/talos/${TALOS_VERSION}/rpi:/out:rw"
-      - "/dev:/dev:rw"
-  jetson-kernel:
-    image: ghcr.io/siderolabs/imager:${TALOS_VERSION}
-    command:
-      - iso
-      - --arch
-      - arm64
-      - --overlay-image
-      - ghcr.io/siderolabs/sbc-jetson:v0.1.0-beta.0@sha256:6016709654521f9a038f168651995b8c68fe73044c15ef7dadc9af72f1c8c4fb
-      - --overlay-name
-      - jetson_nano
-      - --output-kind
-      - kernel
-    platform: linux/arm64
-    privileged: true
-    volumes:
-      - "$PWD/assets/talos/${TALOS_VERSION}/jetson:/out:rw"
-      - "/dev:/dev:rw"
-  jetson:
-    image: ghcr.io/siderolabs/imager:${TALOS_VERSION}
-    command:
-      - iso
-      - --arch
-      - arm64
-      - --overlay-image
-      - ghcr.io/siderolabs/sbc-jetson:v0.1.0-beta.0@sha256:6016709654521f9a038f168651995b8c68fe73044c15ef7dadc9af72f1c8c4fb
-      - --overlay-name
-      - jetson_nano
-      - --system-extension-image
-      - ghcr.io/siderolabs/nvidia-container-toolkit:535.129.03-v1.14.6@sha256:21e7421ca1d7140fe40f60931a28bb60d0d0eaa7dd204d244888b8a791f80309
-      # - --system-extension-image
-      # - ghcr.io/siderolabs/nvidia-open-gpu-kernel-modules:535.129.03-v1.7.0@sha256:18e8fa5925fcec86f26f4f5f6f3e57f9cdb3c5eef3b7100a24e6ac4c9977cade
-      - --output-kind
-      - initramfs
-    platform: linux/arm64
-    privileged: true
-    volumes:
-      - "$PWD/assets/talos/${TALOS_VERSION}/jetson:/out:rw"
       - "/dev:/dev:rw"
