@@ -1,15 +1,20 @@
 ---
 clusterName: servonet
 endpoint: https://10.4.3.1:6443
-domain: servonet.lan
+# domain: servonet.lan
 
 talosVersion: v1.7.6
-kubernetesVersion: v1.30.5
+kubernetesVersion: v1.30.3
 
 allowSchedulingOnControlPlanes: true
 
 cniConfig:
   name: none
+
+additionalMachineCertSans: &san
+  - servonet.lan
+  - 127.0.0.1
+additionalApiServerCertSans: *san
 
 nodes:
   - hostname: tom-364c.servonet.lan
@@ -30,6 +35,8 @@ nodes:
         vip:
           ip: "10.4.3.1"
   - hostname: tom-3a11.servonet.lan
+    nameservers:
+      - 10.4.1.1
     ipAddress: "10.4.3.33"
     controlPlane: true
     installDisk: /dev/sda
@@ -41,9 +48,12 @@ nodes:
           - network: 0.0.0.0/0 # The route's network (destination).
             gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
             metric: 1024 # The optional metric for the route.
+        mtu: 1500
         vip:
           ip: "10.4.3.1"
   - hostname: tom-3e67.servonet.lan
+    nameservers:
+      - 10.4.1.1
     ipAddress: "10.4.3.34"
     controlPlane: true
     installDisk: /dev/mmcblk1
@@ -54,6 +64,8 @@ nodes:
         routes:
           - network: 0.0.0.0/0 # The route's network (destination).
             gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
+            metric: 1024 # The optional metric for the route.
+        mtu: 1500
         vip:
           ip: "10.4.3.1"
 
@@ -65,3 +77,8 @@ patches:
         kubePrism:
           enabled: true
           port: 7445
+  - |-
+    cluster:
+      allowSchedulingOnControlPlanes: true
+      proxy:
+        disabled: true

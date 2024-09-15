@@ -14,7 +14,7 @@
       "printk.devkmsg=on",
       "net.ifnames=0",
       "talos.platform=metal",
-      "talos.config=http://matchbox.lan:8080/assets/servonet-tom-3a11.yaml"
+      "talos.config=http://matchbox.lan:8080/assets/servonet-tom-3a11.servonet.lan.yaml"
     ]
   }
 }
