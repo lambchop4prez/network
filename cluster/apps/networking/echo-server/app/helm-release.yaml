@@ -1,5 +1,4 @@
 ---
----
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -31,9 +30,10 @@ spec:
         replicas: 2
         strategy: RollingUpdate
         containers:
-          image:
-            repository: docker.io/jmalloc/echo-server
-            tag: v0.3.7
+          app:
+            image:
+              repository: docker.io/jmalloc/echo-server
+              tag: v0.3.7
     service:
       main:
         controller: main
