@@ -1,6 +1,26 @@
 ##
 # Cluster
 ##
+# variable "cluster" {
+#   default = {
+#     name    = "servonet"
+#     domain  = "lan"
+#     gateway = "10.4.1.1"
+#     nodes = {
+#       "tom-1" : {
+#         platform     = "virt"
+#         controlPlane = true
+#       },
+#       "tom-2" : {
+#         platform     = "virt"
+#         controlPlane = true
+#       }
+#       "tom-3" : {
+
+#       }
+#     }
+#   }
+# }
 variable "cluster_name" {
   type        = string
   description = "Name of the cluster"
@@ -54,23 +74,7 @@ variable "controlplane_count" {
   default     = 3
 }
 
-variable "controlplane_cores" {
-  type        = number
-  description = "Number of vCPU cores to give to controlplane nodes"
-  default     = 4
-}
 
-variable "controlplane_memory" {
-  type        = number
-  description = "Amount of memory for controlplane nodes"
-  default     = 8192
-}
-
-variable "controlplane_storage_size" {
-  type        = number
-  description = "Disk size (in GB) for controlplane nodes"
-  default     = 32
-}
 
 ##
 # Workers
