@@ -2,8 +2,6 @@ autoDirectNodeRoutes: true
 bandwidthManager:
   enabled: true
   bbr: true
-# bgpControlPlane:
-#   enabled: true
 bpf:
   masquerade: true
   tproxy: true
@@ -14,13 +12,10 @@ cgroup:
 cluster:
   name: servonet
   id: 1
-
 cni:
   exclusive: false
-
 containerRuntime:
   integration: containerd
-
 enableCnpStatusUpdates: true
 endpointRoutes:
   enabled: true
@@ -65,23 +60,14 @@ l2announcements:
 loadBalancer:
   algorithm: maglev
   mode: dsr
-
+operator:
+  rollOutPods: true
 k8sClientRateLimit:
   burst: 10
   qps: 5
-
-# https://docs.cilium.io/en/latest/network/l2-announcements/
-# l2announcements:
-#   enabled: true
-#   leaseDuration: 300s
-#   leaseRenewDeadline: 60s
-#   leaseRetryPeriod: 10s
-
 ingressController:
   enabled: false
   loadbalancerMode: shared
-operator:
-  rollOutPods: true
 routingMode: native
 
 securityContext:
