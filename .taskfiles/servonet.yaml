@@ -4,6 +4,7 @@ version: "3"
 vars:
   SERVONET_DIR: "{{.PROJECT_DIR}}/provision/servonet"
   MATCHBOX_DIR: "{{.SERVONET_DIR}}/matchbox"
+  BOOTSTRAP_DIR: "{{.SERVONET_DIR}}/bootstrap"
   TALOS_VERSION: "v1.7.6"
 
 tasks:
@@ -31,4 +32,33 @@ tasks:
     desc: Uploads assets to matchbox server
     dir: "{{.MATCHBOX_DIR}}"
     cmds:
-      - scp ./* matchbox@matchbox.lan:/var/lib/matchbox
+      - scp -r . matchbox@matchbox.lan:/var/lib/matchbox
+
+  talos:bootstrap:
+    desc: Bootstrap talos
+    env:
+      TALOSCONFIG: "{{.MATCHBOX_DIR}}/assets/talosconfig"
+    cmds:
+      - talosctl bootstrap -n 10.4.3.32 -e 10.4.3.32
+
+  talos:kubeconfig:
+    desc: Extract kubeconfig
+    env:
+      TALOSCONFIG: "{{.MATCHBOX_DIR}}/assets/talosconfig"
+    cmds:
+      - talosctl -e 10.4.3.32 -n 10.4.3.32 kubeconfig {{.PROJECT_DIR}}/kubeconfig
+
+  k8s:bootstrap:
+    desc: Bootstrap kubernetes
+    dir: "{{.BOOTSTRAP_DIR}}"
+    env:
+      KUBECONFIG: "{{.PROJECT_DIR}}/kubeconfig"
+    cmds:
+      - KUBECONFIG={{.PROJECT_DIR}}/kubeconfig helmfile apply
+
+  k8s:bootstrap:flux:
+    env:
+      KUBECONFIG: "{{.PROJECT_DIR}}/kubeconfig"
+    cmds:
+      - kubectl apply -k {{.BOOTSTRAP_DIR}}/flux
+      - kubectl apply -k {{.PROJECT_DIR}}/cluster/base/flux
