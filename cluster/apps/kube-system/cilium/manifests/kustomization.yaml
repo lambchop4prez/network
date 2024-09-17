@@ -4,4 +4,3 @@ resources:
   # - bgppeeringpolicy.yaml
   - ippool.yaml
   - l2announcementpolicy.yaml
-  # - service-vip.yaml
