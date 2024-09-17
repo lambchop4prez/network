@@ -22,6 +22,8 @@ endpointRoutes:
 endpointStatus:
   enabled: true
   status: "policy"
+externalIPs:
+  enabled: true
 hubble:
   enabled: true
   serviceMonitor:
