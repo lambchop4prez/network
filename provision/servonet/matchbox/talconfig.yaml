@@ -69,6 +69,38 @@ nodes:
         vip:
           ip: "10.4.3.1"
 
+  - hostname: tom-c342.servonet.lan
+    nameservers:
+      - 10.4.1.1
+    ipAddress: "10.4.3.35"
+    controlPlane: false
+    installDisk: /dev/sda
+    networkInterfaces:
+      - interface: eth0
+        addresses:
+          - 10.4.3.35/16
+        routes:
+          - network: 0.0.0.0/0 # The route's network (destination).
+            gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
+            metric: 1024 # The optional metric for the route.
+        mtu: 1500
+
+  - hostname: tom-c469.servonet.lan
+    nameservers:
+      - 10.4.1.1
+    ipAddress: "10.4.3.36"
+    controlPlane: false
+    installDisk: /dev/sda
+    networkInterfaces:
+      - interface: eth0
+        addresses:
+          - 10.4.3.36/16
+        routes:
+          - network: 0.0.0.0/0 # The route's network (destination).
+            gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
+            metric: 1024 # The optional metric for the route.
+        mtu: 1500
+
 patches:
   # Enable kubePrism
   - |-

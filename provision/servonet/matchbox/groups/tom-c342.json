@@ -1,0 +1,11 @@
+{
+  "id": "tom-c342",
+  "name": "tom-c342",
+  "profile": "tom-c342",
+  "selector": {
+    "mac": "DE:AD:BE:EF:C3:42"
+  },
+  "metadata": {
+    "device": "qemu"
+  }
+}

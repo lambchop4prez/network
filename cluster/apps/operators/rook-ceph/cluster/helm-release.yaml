@@ -98,12 +98,12 @@ spec:
         useAllNodes: false
         useAllDevices: false
         nodes:
-          - name: "tom-0d2b"
+          - name: "tom-c342"
             devices:
               - name: "nvme0n1"
                 config:
                   osdsPerDevice: "3"
-          - name: "tom-8503"
+          - name: "tom-c469"
             devices:
               - name: "nvme0n1"
                 config:
