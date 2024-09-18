@@ -36,7 +36,7 @@ spec:
               SABNZBD__HOST_WHITELIST_ENTRIES: >-
                 sabnzbd,
                 sabnzbd.lan,
-                sabnzbd.media.svc.servonet.lan
+                sabnzbd.media.svc.cluster.local
             resources:
               requests:
                 cpu: 5m
