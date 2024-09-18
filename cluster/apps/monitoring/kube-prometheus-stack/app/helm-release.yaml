@@ -72,9 +72,9 @@ spec:
     kubeControllerManager:
       enabled: true
       endpoints:
-        - 10.4.32.50
-        - 10.4.32.51
-        - 10.4.32.52
+        - 10.4.3.32
+        - 10.4.3.33
+        - 10.4.3.34
       service:
         enabled: true
         port: 10257
@@ -86,9 +86,9 @@ spec:
     kubeScheduler:
       enabled: true
       endpoints:
-        - 10.4.32.50
-        - 10.4.32.51
-        - 10.4.32.52
+        - 10.4.3.32
+        - 10.4.3.33
+        - 10.4.3.34
       service:
         enabled: true
         port: 10259
@@ -100,15 +100,15 @@ spec:
     kubeProxy:
       enabled: true
       endpoints:
-        - 10.4.32.50
-        - 10.4.32.51
-        - 10.4.32.52
+        - 10.4.3.32
+        - 10.4.3.33
+        - 10.4.3.34
     kubeEtcd:
       enabled: true
       endpoints:
-        - 10.4.32.50
-        - 10.4.32.51
-        - 10.4.32.52
+        - 10.4.3.32
+        - 10.4.3.33
+        - 10.4.3.34
       service:
         enabled: true
         port: 2381
