@@ -81,11 +81,11 @@ spec:
         # sonarr:
         #   url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/sonarr.json
         #   datasource: Prometheus
-        speedtest:
-          gnetId: 13665
-          revision: 1
+        node-exporter-full:
+          # renovate: dashboardName="Node Exporter Full"
+          gnetId: 1860
+          revision: 37
           datasource: Prometheus
-        # nginx:
         nginx:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
           datasource: Prometheus
