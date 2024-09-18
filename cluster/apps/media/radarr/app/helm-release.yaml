@@ -71,13 +71,11 @@ spec:
         volumeSpec:
           resources:
             requests:
-              storage: 1Mi
+              storage: 10Mi
           volumeMode: Filesystem
           accessModes:
             - ReadWriteMany
-          nfs:
-            server: "gpc"
-            path: /pool/storage-0/media/config/radarr
+          storageClassName: "ceph-block"
         globalMounts:
           - path: /config
       media:
