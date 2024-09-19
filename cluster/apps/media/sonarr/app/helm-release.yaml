@@ -70,7 +70,7 @@ spec:
         type: persistentVolumeClaim
         storageClass: "ceph-block"
         size: 10Mi
-        accessMode: ReadWriteMany
+        accessMode: ReadWriteOnce
         retain: true
       media:
         existingClaim: nas-media
