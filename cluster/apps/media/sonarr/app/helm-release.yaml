@@ -67,16 +67,10 @@ spec:
     persistence:
       config:
         enabled: true
-        type: custom
-        volumeSpec:
-          resources:
-            requests:
-              storage: 10Mi
-          volumeMode: Filesystem
-          accessModes:
-            - ReadWriteMany
-          storageClassName: "ceph-block"
-          globalMounts:
-            - path: /config
+        type: persistentVolumeClaim
+        storageClass: "ceph-block"
+        size: 10Mi
+        accessMode: ReadWriteMany
+        retain: true
       media:
         existingClaim: nas-media
