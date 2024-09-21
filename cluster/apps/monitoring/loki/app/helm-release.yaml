@@ -79,3 +79,10 @@ spec:
         enabled: false
     test:
       enabled: false
+    read:
+      replicas: 2
+    write:
+      replicas: 2
+      persistence:
+        size: 20Gi
+        storageClass: ceph-block
