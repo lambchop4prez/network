@@ -42,7 +42,6 @@ spec:
           log_level: info
           http_listen_port: 3100
           grpc_listen_port: 9095
-
           grpc_server_max_recv_msg_size: 8388608
           grpc_server_max_send_msg_size: 8388608
 
@@ -80,9 +79,14 @@ spec:
     test:
       enabled: false
     read:
-      replicas: 2
+      replicas: 3
     write:
-      replicas: 2
+      replicas: 3
+      persistence:
+        size: 20Gi
+        storageClass: ceph-block
+    backend:
+      replicas: 3
       persistence:
         size: 20Gi
         storageClass: ceph-block
