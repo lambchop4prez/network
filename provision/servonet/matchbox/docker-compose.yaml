@@ -7,6 +7,10 @@ services:
       - iso
       - --arch
       - amd64
+      - --system-extension-image
+      - ghcr.io/siderolabs/intel-ucode:20240514@sha256:c487778190d4a39014798e70d52a5cc31038d60542cbb228b67ee63b7ce68ae3
+      - --system-extension-image
+      - ghcr.io/siderolabs/qemu-guest-agent:8.2.2@sha256:e8020f513f891896fd3bb506c7af8a763a3c70b063e4901caaad073b5e6e0815
       - --output-kind
       - kernel
     platform: linux/arm64
@@ -30,6 +34,48 @@ services:
     privileged: true
     volumes:
       - "$PWD/assets/talos/${TALOS_VERSION}/qemu:/out:rw"
+      - "/dev:/dev:rw"
+  qemu_gpu_kernel:
+    image: ghcr.io/siderolabs/imager:${TALOS_VERSION}
+    command:
+      - iso
+      - --arch
+      - amd64
+      - --system-extension-image
+      - ghcr.io/siderolabs/intel-ucode:20240514@sha256:c487778190d4a39014798e70d52a5cc31038d60542cbb228b67ee63b7ce68ae3
+      - --system-extension-image
+      - ghcr.io/siderolabs/qemu-guest-agent:8.2.2@sha256:e8020f513f891896fd3bb506c7af8a763a3c70b063e4901caaad073b5e6e0815
+      - --system-extension-image
+      - ghcr.io/siderolabs/nvidia-container-toolkit:535.129.03-v1.14.6@sha256:d95b7230bb7ecdd58ce3d4cb0d5683cfbfedeed3c39a9e1b01a5090eccb4c0a8
+      - --system-extension-image
+      - ghcr.io/siderolabs/nonfree-kmod-nvidia:535.129.03-v1.7.6@sha256:2e66a828b5b15fbda30ef920ab49f830911b6850b4896a874d7769eabbf6071d
+      - --output-kind
+      - kernel
+    platform: linux/arm64
+    privileged: true
+    volumes:
+      - "$PWD/assets/talos/${TALOS_VERSION}/qemu_gpu:/out:rw"
+      - "/dev:/dev:rw"
+  qemu_gpu:
+    image: ghcr.io/siderolabs/imager:${TALOS_VERSION}
+    command:
+      - iso
+      - --arch
+      - amd64
+      - --system-extension-image
+      - ghcr.io/siderolabs/intel-ucode:20240514@sha256:c487778190d4a39014798e70d52a5cc31038d60542cbb228b67ee63b7ce68ae3
+      - --system-extension-image
+      - ghcr.io/siderolabs/qemu-guest-agent:8.2.2@sha256:e8020f513f891896fd3bb506c7af8a763a3c70b063e4901caaad073b5e6e0815
+      - --system-extension-image
+      - ghcr.io/siderolabs/nvidia-container-toolkit:535.129.03-v1.14.6@sha256:d95b7230bb7ecdd58ce3d4cb0d5683cfbfedeed3c39a9e1b01a5090eccb4c0a8
+      - --system-extension-image
+      - ghcr.io/siderolabs/nonfree-kmod-nvidia:535.129.03-v1.7.6@sha256:2e66a828b5b15fbda30ef920ab49f830911b6850b4896a874d7769eabbf6071d
+      - --output-kind
+      - initramfs
+    platform: linux/arm64
+    privileged: true
+    volumes:
+      - "$PWD/assets/talos/${TALOS_VERSION}/qemu_gpu:/out:rw"
       - "/dev:/dev:rw"
   intel_kernel:
     image: ghcr.io/siderolabs/imager:${TALOS_VERSION}

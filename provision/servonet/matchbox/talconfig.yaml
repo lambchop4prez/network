@@ -100,6 +100,17 @@ nodes:
             gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
             metric: 1024 # The optional metric for the route.
         mtu: 1500
+    patches:
+      - |-
+        machine:
+          kernel:
+            modules:
+              - name: nvidia
+              - name: nvidia_uvm
+              - name: nvidia_drm
+              - name: nvidia_modeset
+          sysctls:
+            net.core.bpf_jit_harden: 1
 
 patches:
   # Enable kubePrism

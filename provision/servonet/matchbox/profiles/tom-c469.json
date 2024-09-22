@@ -2,8 +2,8 @@
   "id": "tom-c469",
   "name": "qemu-worker",
   "boot": {
-    "kernel": "/assets/talos/v1.7.6/qemu/kernel-amd64",
-    "initrd": ["/assets/talos/v1.7.6/qemu/initramfs-metal-amd64.xz"],
+    "kernel": "/assets/talos/v1.7.6/qemu_gpu/kernel-amd64",
+    "initrd": ["/assets/talos/v1.7.6/qemu_gpu/initramfs-metal-amd64.xz"],
     "args": [
       "initrd=initramfs-metal-amd64.xz",
       "init_on_alloc=1",
