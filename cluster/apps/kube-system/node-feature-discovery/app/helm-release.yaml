@@ -23,36 +23,53 @@ spec:
   values:
     nodeFeatureRule:
       createCRD: true
+    master:
+      resources:
+        requests:
+          cpu: 23m
+          memory: 64M
+        limits:
+          memory: 64M
     worker:
-      config:
-        core:
-          labelSources:
-            - cpu
-            - custom
-            - pci
-            - usb
-        sources:
-          usb:
-            deviceClassWhitelist:
-              - "02"
-              - "03"
-              - "0e"
-              - "ef"
-              - "fe"
-              - "ff"
-            deviceLabelFields:
-              - class
-              - vendor
-              - device
-          custom:
-            - name: intel-gpu
-              matchOn:
-                - pciId:
-                    class: ["0300"]
-                    vendor: ["8086"]
-            - name: dvb-tuner
-              matchOn:
-                - usbId:
-                    class: ["ff"]
-                    vendor: ["2040"]
-                    device: ["826d"]
+      requests:
+        cpu: 15m
+        memory: 64M
+      limits:
+        cpu: 300m
+        memory: 64M
+    gc:
+      limits:
+        cpu: 100m
+    # worker:
+    #   config:
+    #     core:
+    #       labelSources:
+    #         - cpu
+    #         - custom
+    #         - pci
+    #         - usb
+    #     sources:
+    #       usb:
+    #         deviceClassWhitelist:
+    #           - "02"
+    #           - "03"
+    #           - "0e"
+    #           - "ef"
+    #           - "fe"
+    #           - "ff"
+    #         deviceLabelFields:
+    #           - class
+    #           - vendor
+    #           - device
+    #       custom:
+    #         - name: intel-gpu
+    #           matchOn:
+    #             - pciId:
+    #                 class: ["0300"]
+    #                 vendor: ["8086"]
+    #         - name: dvb-tuner
+    #           matchOn:
+    #             - usbId:
+    #                 class: ["ff"]
+    #                 vendor: ["2040"]
+    #                 device: ["826d"]
