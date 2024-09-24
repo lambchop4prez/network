@@ -17,5 +17,6 @@ resources:
   - minio.yaml
   - nfs-subdir-external-provisioner.yaml
   - node-feature-discovery.yaml
+  - nvidia-device-plugin.yaml
   - prometheus-community.yaml
   - rook-ceph.yaml
