@@ -11,7 +11,7 @@ spec:
       chart: nvidia-device-plugin
       version: 0.16.2
       sourceRef:
-        kind: HelmRelease
+        kind: HelmRepository
         name: nvidia-device-plugin
         namespace: flux-system
   values:
