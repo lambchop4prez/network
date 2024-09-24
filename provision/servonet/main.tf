@@ -11,7 +11,7 @@ terraform {
     }
     talos = {
       source  = "siderolabs/talos"
-      version = "0.5.0"
+      version = "0.6.0"
     }
     opnsense = {
       source  = "terraform.local/gxben/opnsense"
