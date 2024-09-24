@@ -14,10 +14,10 @@ spec:
         kind: HelmRelease
         name: nvidia-device-plugin
         namespace: flux-system
-    values:
-      image:
-        repository: nvcr.io/nvidia/k8s-device-plugin
-        tag: v0.16.2
-      runtimeClassName: nvidia
-      nodeSelector:
-        feature.node.kubernetes.io/custom-nvidia-gpu: "true"
+  values:
+    image:
+      repository: nvcr.io/nvidia/k8s-device-plugin
+      tag: v0.16.2
+    runtimeClassName: nvidia
+    nodeSelector:
+      feature.node.kubernetes.io/custom-nvidia-gpu: "true"
