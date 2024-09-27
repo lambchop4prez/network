@@ -53,10 +53,10 @@ spec:
               requests:
                 memory: 250Mi
                 cpu: 20m
-                nvidia.com/gpu: 1
+                # nvidia.com/gpu: 1
               limits:
                 memory: 1500Mi
-                nvidia.com/gpu: 1
+                # nvidia.com/gpu: 1
     service:
       main:
         controller: main
