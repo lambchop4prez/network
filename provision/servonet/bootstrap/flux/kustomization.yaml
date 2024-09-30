@@ -4,7 +4,7 @@ kind: Kustomization
 generatorOptions:
   disableNameSuffixHash: true
 resources:
-  - github.com/fluxcd/flux2/manifests/install?ref=v2.3.0
+  - github.com/fluxcd/flux2/manifests/install?ref=v2.4.0
 secretGenerator:
   - name: github-token
     namespace: flux-system
