@@ -100,12 +100,12 @@ spec:
         nodes:
           - name: "tom-c342"
             devices:
-              - name: "nvme0n1"
+              - name: "/dev/disk/by-id/nvme-TEAM_TM8FP6001T_TPBF2308210070101183"
                 config:
                   osdsPerDevice: "3"
           - name: "tom-c469"
             devices:
-              - name: "nvme0n1"
+              - name: "/dev/disk/by-id/nvme-TEAM_TM8FP6001T_TPBF2308210070107995"
                 config:
                   osdsPerDevice: "3"
         config:
