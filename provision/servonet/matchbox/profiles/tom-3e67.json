@@ -2,8 +2,8 @@
   "id": "tom-3e67",
   "name": "pi-control-plane",
   "boot": {
-    "kernel": "/assets/talos/v1.7.6/rpi/kernel-arm64",
-    "initrd": ["/assets/talos/v1.7.6/rpi/initramfs-metal-arm64.xz"],
+    "kernel": "/assets/talos/v1.8.1/rpi/kernel-arm64",
+    "initrd": ["/assets/talos/v1.8.1/rpi/initramfs-metal-arm64.xz"],
     "args": [
       "initrd=initramfs-metal-arm64.xz",
       "init_on_alloc=1",

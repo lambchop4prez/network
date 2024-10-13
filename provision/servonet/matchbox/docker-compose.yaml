@@ -1,5 +1,4 @@
 ---
-version: "3.9"
 services:
   qemu_kernel:
     image: ghcr.io/siderolabs/imager:${TALOS_VERSION}
@@ -8,9 +7,9 @@ services:
       - --arch
       - amd64
       - --system-extension-image
-      - ghcr.io/siderolabs/intel-ucode:20240514@sha256:c487778190d4a39014798e70d52a5cc31038d60542cbb228b67ee63b7ce68ae3
+      - ghcr.io/siderolabs/intel-ucode:20240910@sha256:998f2d9c8e810605094dccfe89259a3b6de86264d6e91a3613417ca10d7e61ab
       - --system-extension-image
-      - ghcr.io/siderolabs/qemu-guest-agent:8.2.2@sha256:e8020f513f891896fd3bb506c7af8a763a3c70b063e4901caaad073b5e6e0815
+      - ghcr.io/siderolabs/qemu-guest-agent:9.1.0@sha256:cd8154036a0711f6f0a2ec9d6ce8539219d0e46a78e0eca22598d4d884f3f52c
       - --output-kind
       - kernel
     platform: linux/arm64
@@ -25,9 +24,9 @@ services:
       - --arch
       - amd64
       - --system-extension-image
-      - ghcr.io/siderolabs/intel-ucode:20240514@sha256:c487778190d4a39014798e70d52a5cc31038d60542cbb228b67ee63b7ce68ae3
+      - ghcr.io/siderolabs/intel-ucode:20240910@sha256:998f2d9c8e810605094dccfe89259a3b6de86264d6e91a3613417ca10d7e61ab
       - --system-extension-image
-      - ghcr.io/siderolabs/qemu-guest-agent:8.2.2@sha256:e8020f513f891896fd3bb506c7af8a763a3c70b063e4901caaad073b5e6e0815
+      - ghcr.io/siderolabs/qemu-guest-agent:9.1.0@sha256:cd8154036a0711f6f0a2ec9d6ce8539219d0e46a78e0eca22598d4d884f3f52c
       - --output-kind
       - initramfs
     platform: linux/arm64
@@ -42,13 +41,13 @@ services:
       - --arch
       - amd64
       - --system-extension-image
-      - ghcr.io/siderolabs/intel-ucode:20240514@sha256:c487778190d4a39014798e70d52a5cc31038d60542cbb228b67ee63b7ce68ae3
+      - ghcr.io/siderolabs/intel-ucode:20240910@sha256:998f2d9c8e810605094dccfe89259a3b6de86264d6e91a3613417ca10d7e61ab
       - --system-extension-image
-      - ghcr.io/siderolabs/qemu-guest-agent:8.2.2@sha256:e8020f513f891896fd3bb506c7af8a763a3c70b063e4901caaad073b5e6e0815
+      - ghcr.io/siderolabs/qemu-guest-agent:9.1.0@sha256:cd8154036a0711f6f0a2ec9d6ce8539219d0e46a78e0eca22598d4d884f3f52c
       - --system-extension-image
-      - ghcr.io/siderolabs/nvidia-container-toolkit:535.129.03-v1.14.6@sha256:d95b7230bb7ecdd58ce3d4cb0d5683cfbfedeed3c39a9e1b01a5090eccb4c0a8
+      - ghcr.io/siderolabs/nvidia-container-toolkit-lts:535.183.06-v1.16.1@sha256:f5239612224d47ea081836c67abc3a609a3c9b3d984b47c901fd65c56494976f
       - --system-extension-image
-      - ghcr.io/siderolabs/nonfree-kmod-nvidia:535.129.03-v1.7.6@sha256:2e66a828b5b15fbda30ef920ab49f830911b6850b4896a874d7769eabbf6071d
+      - ghcr.io/siderolabs/nonfree-kmod-nvidia-lts:535.183.06-v1.8.1@sha256:23c3458bf1570d66a5e93236a22a5a1a7107ae9ce3e48b9e45b2cbfd41088857
       - --output-kind
       - kernel
     platform: linux/arm64
@@ -63,13 +62,13 @@ services:
       - --arch
       - amd64
       - --system-extension-image
-      - ghcr.io/siderolabs/intel-ucode:20240514@sha256:c487778190d4a39014798e70d52a5cc31038d60542cbb228b67ee63b7ce68ae3
+      - ghcr.io/siderolabs/intel-ucode:20240910@sha256:998f2d9c8e810605094dccfe89259a3b6de86264d6e91a3613417ca10d7e61ab
       - --system-extension-image
-      - ghcr.io/siderolabs/qemu-guest-agent:8.2.2@sha256:e8020f513f891896fd3bb506c7af8a763a3c70b063e4901caaad073b5e6e0815
+      - ghcr.io/siderolabs/qemu-guest-agent:9.1.0@sha256:cd8154036a0711f6f0a2ec9d6ce8539219d0e46a78e0eca22598d4d884f3f52c
       - --system-extension-image
-      - ghcr.io/siderolabs/nvidia-container-toolkit:535.129.03-v1.14.6@sha256:d95b7230bb7ecdd58ce3d4cb0d5683cfbfedeed3c39a9e1b01a5090eccb4c0a8
+      - ghcr.io/siderolabs/nvidia-container-toolkit-lts:535.183.06-v1.16.1@sha256:f5239612224d47ea081836c67abc3a609a3c9b3d984b47c901fd65c56494976f
       - --system-extension-image
-      - ghcr.io/siderolabs/nonfree-kmod-nvidia:535.129.03-v1.7.6@sha256:2e66a828b5b15fbda30ef920ab49f830911b6850b4896a874d7769eabbf6071d
+      - ghcr.io/siderolabs/nonfree-kmod-nvidia-lts:535.183.06-v1.8.1@sha256:23c3458bf1570d66a5e93236a22a5a1a7107ae9ce3e48b9e45b2cbfd41088857
       - --output-kind
       - initramfs
     platform: linux/arm64
@@ -97,9 +96,9 @@ services:
       - --arch
       - amd64
       - --system-extension-image
-      - ghcr.io/siderolabs/intel-ucode:20240514@sha256:c487778190d4a39014798e70d52a5cc31038d60542cbb228b67ee63b7ce68ae3
+      - ghcr.io/siderolabs/intel-ucode:20240910@sha256:998f2d9c8e810605094dccfe89259a3b6de86264d6e91a3613417ca10d7e61ab
       - --system-extension-image
-      - ghcr.io/siderolabs/i915-ucode:20240513@sha256:b704bee87216b4adc54a111d6a9ec46aca9dd51c857c3fcc802c27b3fcf6052c
+      - ghcr.io/siderolabs/i915-ucode:20240909@sha256:58387e3dfb505602c7bd939bee0f546e6bc6b81f8131eb2d5c59858fd3cd61da
       - --output-kind
       - initramfs
     platform: linux/arm64
@@ -114,7 +113,7 @@ services:
       - --arch
       - arm64
       - --overlay-image
-      - ghcr.io/siderolabs/sbc-raspberrypi:v0.1.0-beta.0@sha256:47c6b7dc1cf697fc1ced0928eb4e8a37e83e99898289f59aaa49f8ed97249352
+      - ghcr.io/siderolabs/sbc-raspberrypi:v0.1.0-beta.2@sha256:900bfd99ae1ed13e8fc1ba2d130c80d3c4730370fbc0f2c8330dab91471991bc
       - --overlay-name
       - rpi_generic
       - --output-kind
@@ -131,7 +130,7 @@ services:
       - --arch
       - arm64
       - --overlay-image
-      - ghcr.io/siderolabs/sbc-raspberrypi:v0.1.0-beta.0@sha256:47c6b7dc1cf697fc1ced0928eb4e8a37e83e99898289f59aaa49f8ed97249352
+      - ghcr.io/siderolabs/sbc-raspberrypi:v0.1.0-beta.2@sha256:900bfd99ae1ed13e8fc1ba2d130c80d3c4730370fbc0f2c8330dab91471991bc
       - --overlay-name
       - rpi_generic
       - --output-kind
