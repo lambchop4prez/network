@@ -101,13 +101,13 @@ spec:
           - name: "tom-c342"
             devices:
               - name: "/dev/disk/by-id/nvme-TEAM_TM8FP6001T_TPBF2308210070101183"
-                config:
-                  osdsPerDevice: "3"
           - name: "tom-c469"
             devices:
               - name: "/dev/disk/by-id/nvme-TEAM_TM8FP6001T_TPBF2308210070107995"
-                config:
-                  osdsPerDevice: "3"
+              - name: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1"
+          - name: "tom-c587"
+            devices:
+              - name: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1"
         config:
           osdsPerDevice: "1"
     cephBlockPools:

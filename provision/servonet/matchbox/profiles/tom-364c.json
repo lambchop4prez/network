@@ -12,8 +12,9 @@
       "console=tty0",
       "console=ttyS0",
       "printk.devkmsg=on",
-      "net.ifnames=0",
+      "net.ifnames=1",
       "talos.platform=metal",
+      "talos.board=raspberrypi",
       "talos.config=http://matchbox.lan:8080/assets/servonet-tom-364c.servonet.lan.yaml"
     ]
   }

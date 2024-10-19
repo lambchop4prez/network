@@ -18,12 +18,12 @@ variable "common_tags" {
 variable "talos_version" {
   type        = string
   description = "Found at https://github.com/siderolabs/talos/releases"
-  default     = "v1.6.7"
+  default     = "v1.8.1"
 }
 variable "kubernetes_version" {
   type        = string
   description = "Found at https://github.com/siderolabs/kubelet/pkgs/container/kubelet"
-  default     = "v1.29.3"
+  default     = "v1.31.1"
 }
 variable "qemu_guest_agent_version" {
   type        = string

@@ -4,7 +4,7 @@ endpoint: https://10.4.3.1:6443
 # domain: servonet.lan
 
 talosVersion: v1.8.1
-kubernetesVersion: v1.30.3
+kubernetesVersion: v1.31.1
 
 allowSchedulingOnControlPlanes: true
 
@@ -12,19 +12,77 @@ cniConfig:
   name: none
 
 additionalMachineCertSans: &san
+  - cluster.local
   - servonet.lan
   - 127.0.0.1
 additionalApiServerCertSans: *san
 
 nodes:
-  - hostname: tom-364c.servonet.lan
+  # - hostname: tom-364c.servonet.lan
+  #   nameservers:
+  #     - 10.4.1.1
+  #   ipAddress: "10.4.3.32"
+  #   controlPlane: true
+  #   installDisk: /dev/sda
+  #   networkInterfaces:
+  #     - deviceSelector:
+  #         hardwareAddr: "dc:a6:32:bb:36:4c"
+  #       addresses:
+  #         - 10.4.3.32/16
+  #       routes:
+  #         - network: 0.0.0.0/0 # The route's network (destination).
+  #           gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
+  #           metric: 1024 # The optional metric for the route.
+  #       mtu: 1500
+  #       vip:
+  #         ip: "10.4.3.1"
+
+  # - hostname: tom-3a11.servonet.lan
+  #   nameservers:
+  #     - 10.4.1.1
+  #   ipAddress: "10.4.3.33"
+  #   controlPlane: true
+  #   installDisk: /dev/sda
+  #   networkInterfaces:
+  #     - deviceSelector:
+  #         hardwareAddr: "e4:5f:01:2f:3a:11"
+  #       addresses:
+  #         - 10.4.3.33/16
+  #       routes:
+  #         - network: 0.0.0.0/0 # The route's network (destination).
+  #           gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
+  #           metric: 1024 # The optional metric for the route.
+  #       mtu: 1500
+  #       vip:
+  #         ip: "10.4.3.1"
+
+  # - hostname: tom-3e67.servonet.lan
+  #   nameservers:
+  #     - 10.4.1.1
+  #   ipAddress: "10.4.3.34"
+  #   controlPlane: true
+  #   installDisk: /dev/mmcblk1
+  #   networkInterfaces:
+  #     - interface: eth0
+  #       addresses:
+  #         - 10.4.3.34/16
+  #       routes:
+  #         - network: 0.0.0.0/0 # The route's network (destination).
+  #           gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
+  #           metric: 1024 # The optional metric for the route.
+  #       mtu: 1500
+  #       vip:
+  #         ip: "10.4.3.1"
+
+  - hostname: tom-c342.servonet.lan
     nameservers:
       - 10.4.1.1
     ipAddress: "10.4.3.32"
     controlPlane: true
     installDisk: /dev/sda
     networkInterfaces:
-      - interface: eth0
+      - deviceSelector:
+          hardwareAddr: "de:ad:be:ef:c3:42"
         addresses:
           - 10.4.3.32/16
         routes:
@@ -34,14 +92,16 @@ nodes:
         mtu: 1500
         vip:
           ip: "10.4.3.1"
-  - hostname: tom-3a11.servonet.lan
+
+  - hostname: tom-c469.servonet.lan
     nameservers:
       - 10.4.1.1
     ipAddress: "10.4.3.33"
     controlPlane: true
     installDisk: /dev/sda
     networkInterfaces:
-      - interface: eth0
+      - deviceSelector:
+          hardwareAddr: "de:ad:be:ef:c4:69"
         addresses:
           - 10.4.3.33/16
         routes:
@@ -51,55 +111,6 @@ nodes:
         mtu: 1500
         vip:
           ip: "10.4.3.1"
-  - hostname: tom-3e67.servonet.lan
-    nameservers:
-      - 10.4.1.1
-    ipAddress: "10.4.3.34"
-    controlPlane: true
-    installDisk: /dev/mmcblk1
-    networkInterfaces:
-      - interface: eth0
-        addresses:
-          - 10.4.3.34/16
-        routes:
-          - network: 0.0.0.0/0 # The route's network (destination).
-            gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
-            metric: 1024 # The optional metric for the route.
-        mtu: 1500
-        vip:
-          ip: "10.4.3.1"
-
-  - hostname: tom-c342.servonet.lan
-    nameservers:
-      - 10.4.1.1
-    ipAddress: "10.4.3.35"
-    controlPlane: false
-    installDisk: /dev/sda
-    networkInterfaces:
-      - interface: eth0
-        addresses:
-          - 10.4.3.35/16
-        routes:
-          - network: 0.0.0.0/0 # The route's network (destination).
-            gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
-            metric: 1024 # The optional metric for the route.
-        mtu: 1500
-
-  - hostname: tom-c469.servonet.lan
-    nameservers:
-      - 10.4.1.1
-    ipAddress: "10.4.3.36"
-    controlPlane: false
-    installDisk: /dev/sda
-    networkInterfaces:
-      - interface: eth0
-        addresses:
-          - 10.4.3.36/16
-        routes:
-          - network: 0.0.0.0/0 # The route's network (destination).
-            gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
-            metric: 1024 # The optional metric for the route.
-        mtu: 1500
     patches:
       - |-
         machine:
@@ -112,16 +123,55 @@ nodes:
           sysctls:
             net.core.bpf_jit_harden: 1
 
-patches:
-  # Enable kubePrism
-  - |-
-    machine:
-      features:
-        kubePrism:
-          enabled: true
-          port: 7445
-  - |-
-    cluster:
-      allowSchedulingOnControlPlanes: true
-      proxy:
-        disabled: true
+  - hostname: tom-c587.servonet.lan
+    nameservers:
+      - 10.4.1.1
+    ipAddress: "10.4.3.34"
+    controlPlane: true
+    installDisk: /dev/sda
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "de:ad:be:ef:c5:87"
+        addresses:
+          - 10.4.3.34/16
+        routes:
+          - network: 0.0.0.0/0 # The route's network (destination).
+            gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
+            metric: 1024 # The optional metric for the route.
+        mtu: 1500
+        vip:
+          ip: "10.4.3.1"
+
+controlPlane:
+  patches:
+    # Enable kubePrism
+    - |-
+      machine:
+        features:
+          kubePrism:
+            enabled: true
+            port: 7445
+    - |-
+      cluster:
+        allowSchedulingOnControlPlanes: true
+        proxy:
+          disabled: true
+    - |-
+      machine:
+        kubelet:
+          nodeIP:
+            validSubnets:
+              - 10.4.0.0/16
+
+    - |-
+      cluster:
+        etcd:
+          advertisedSubnets:
+            - 10.4.0.0/16
+    - |-
+      cluster:
+        network:
+          podSubnets:
+            - 10.244.0.0/16
+          serviceSubnets:
+            - 10.96.0.0/16
