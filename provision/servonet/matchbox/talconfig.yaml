@@ -83,12 +83,7 @@ nodes:
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "de:ad:be:ef:c3:42"
-        addresses:
-          - 10.4.3.32/16
-        routes:
-          - network: 0.0.0.0/0 # The route's network (destination).
-            gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
-            metric: 1024 # The optional metric for the route.
+        dhcp: true
         mtu: 1500
         vip:
           ip: "10.4.3.1"
@@ -102,12 +97,7 @@ nodes:
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "de:ad:be:ef:c4:69"
-        addresses:
-          - 10.4.3.33/16
-        routes:
-          - network: 0.0.0.0/0 # The route's network (destination).
-            gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
-            metric: 1024 # The optional metric for the route.
+        dhcp: true
         mtu: 1500
         vip:
           ip: "10.4.3.1"
@@ -132,12 +122,7 @@ nodes:
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "de:ad:be:ef:c5:87"
-        addresses:
-          - 10.4.3.34/16
-        routes:
-          - network: 0.0.0.0/0 # The route's network (destination).
-            gateway: 10.4.1.1 # The route's gateway (if empty, creates link scope route).
-            metric: 1024 # The optional metric for the route.
+        dhcp: true
         mtu: 1500
         vip:
           ip: "10.4.3.1"
@@ -151,11 +136,21 @@ controlPlane:
           kubePrism:
             enabled: true
             port: 7445
+
+    - |-
+      machine:
+        features:
+          hostDNS:
+            enabled: true
+            resolveMemberNames: true
+            forwardKubeDNSToHost: true
+
     - |-
       cluster:
         allowSchedulingOnControlPlanes: true
         proxy:
           disabled: true
+
     - |-
       machine:
         kubelet:
@@ -168,10 +163,3 @@ controlPlane:
         etcd:
           advertisedSubnets:
             - 10.4.0.0/16
-    - |-
-      cluster:
-        network:
-          podSubnets:
-            - 10.244.0.0/16
-          serviceSubnets:
-            - 10.96.0.0/16
