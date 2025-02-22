@@ -3,8 +3,8 @@ clusterName: servonet
 endpoint: https://10.4.3.1:6443
 # domain: servonet.lan
 
-talosVersion: v1.8.1
-kubernetesVersion: v1.31.1
+talosVersion: v1.9.4
+kubernetesVersion: v1.32.2
 
 allowSchedulingOnControlPlanes: true
 
