@@ -1,3 +1,4 @@
+# Initial config pulled from https://nixos.wiki/wiki/Proxmox_Linux_Container
 { config, modulesPath, pkgs, lib, ... }:
 {
   imports = [ (modulesPath + "/virtualisation/proxmox-lxc.nix") ];
