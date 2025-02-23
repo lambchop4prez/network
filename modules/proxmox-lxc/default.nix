@@ -17,5 +17,4 @@
         PermitEmptyPasswords = "yes";
     };
   };
-  system.stateVersion = "24.11";
 }

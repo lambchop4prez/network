@@ -8,6 +8,10 @@
   outputs = inputs@{ self, nixpkgs }:
   let
     hosts = {
+      default = {
+        system = "x86_64-linux";
+        runtime = "qemu-vm";
+      };
       ca = {
         system = "x86_64-linux";
         runtime = "proxmox-lxc";
@@ -23,7 +27,7 @@
         system = hosts.${host}.system;
         modules = [
           ./hosts/${host}
-          ./modules/${hosts.${host}.runtime}.nix
+          ./modules/${hosts.${host}.runtime}
         ];
       }
     );

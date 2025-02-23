@@ -1,5 +1,8 @@
 {pkgs, ...}:
 {
+  imports = [
+    ../default
+  ];
   environment.systemPackages = with pkgs; [
     step-cli
     step-ca
