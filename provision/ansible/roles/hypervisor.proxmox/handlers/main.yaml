@@ -1,8 +1,0 @@
----
-- name: Refresh boot
-  ansible.builtin.shell:
-    cmd: update-grub
-
-- name: Update kernel modules
-  ansible.builtin.shell:
-    cmd: update-initramfs -u -k all
