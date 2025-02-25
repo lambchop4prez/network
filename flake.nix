@@ -3,9 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    authentik-nix.url = "github:nix-community/authentik-nix";
   };
 
-  outputs = inputs@{ self, nixpkgs }:
+  outputs = inputs@{ self, nixpkgs, authentik-nix }:
   let
     darwinSystems = ["aarch64-darwin" "x86_64-darwin"];
     linuxSystems = ["aarch64-linux" "x86_64-linux"];
@@ -15,6 +16,10 @@
       #   system = "x86_64-linux";
       #   runtime = "qemu-vm";
       # };
+      auth = {
+        system = "x86_64-linux";
+        runtime = "proxmox-lxc";
+      };
       ca = {
         system = "x86_64-linux";
         runtime = "proxmox-lxc";
@@ -51,6 +56,7 @@
         modules = [
           ./hosts/${host}
           ./modules/${hosts.${host}.runtime}
+          inputs.authentik-nix.nixosModules.default
         ];
       }
     );
