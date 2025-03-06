@@ -4,9 +4,10 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     authentik-nix.url = "github:nix-community/authentik-nix";
+    agenix.url = "github:ryantm/agenix";
   };
 
-  outputs = inputs@{ self, nixpkgs, authentik-nix }:
+  outputs = inputs@{ self, nixpkgs, authentik-nix, agenix }:
   let
     darwinSystems = ["aarch64-darwin" "x86_64-darwin"];
     linuxSystems = ["aarch64-linux" "x86_64-linux"];
@@ -40,7 +41,10 @@
           packages = with pkgs; [
             nodejs
             opentofu
+            age
+            age-plugin-yubikey
             zsh
+            go-task
           ];
           shellHook = ''
             exec zsh
@@ -56,7 +60,8 @@
         modules = [
           ./hosts/${host}
           ./modules/${hosts.${host}.runtime}
-          inputs.authentik-nix.nixosModules.default
+          authentik-nix.nixosModules.default
+          agenix.nixosModules.default
         ];
       }
     );
