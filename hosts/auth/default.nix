@@ -3,6 +3,7 @@
   imports = [
     ../default
   ];
+  virtualisation.diskSize = 8 * 1024;
   services.authentik = {
     # enable = true;
     # settings = {

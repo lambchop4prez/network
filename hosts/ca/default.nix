@@ -7,6 +7,7 @@
     step-cli
     step-ca
   ];
+  virtualisation.diskSize = 8 * 1024;
   services.step-ca = {
     enable = true;
     openFirewall = true;

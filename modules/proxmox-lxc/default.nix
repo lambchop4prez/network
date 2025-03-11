@@ -1,7 +1,13 @@
 # Initial config pulled from https://nixos.wiki/wiki/Proxmox_Linux_Container
-{ config, modulesPath, pkgs, lib, ... }:
+{ config, modulesPath, pkgs, lib, nixos-generators, ... }:
 {
-  imports = [ (modulesPath + "/virtualisation/proxmox-lxc.nix") ];
+  # imports = [
+  #   nixos-generators.nixosModules.proxmox-lxc
+  # ];
+  # proxmox-lxc = {
+
+  # };
+  config.formats = ["proxmox-lxc"];
   nix.settings = { sandbox = false; };
   proxmoxLXC = {
     manageNetwork = false;

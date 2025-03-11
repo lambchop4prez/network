@@ -5,9 +5,17 @@
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     authentik-nix.url = "github:nix-community/authentik-nix";
     agenix.url = "github:ryantm/agenix";
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    secrets = {
+      url = "git+ssh://git@github.com/lambchop4prez/secrets.git";
+      flake = false;
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, authentik-nix, agenix }:
+  outputs = inputs@{ self, nixpkgs, agenix, authentik-nix, nixos-generators, secrets }:
   let
     darwinSystems = ["aarch64-darwin" "x86_64-darwin"];
     linuxSystems = ["aarch64-linux" "x86_64-linux"];
@@ -19,12 +27,16 @@
       # };
       auth = {
         system = "x86_64-linux";
-        runtime = "proxmox-lxc";
+        format = "proxmox-lxc";
       };
       ca = {
         system = "x86_64-linux";
-        runtime = "proxmox-lxc";
+        format = "proxmox-lxc";
       };
+      # netboot = {
+      #   system = "x86_64-linux";
+      #   format = "proxmox-lxc";
+      # };
     };
     hostnames = nixpkgs.lib.attrNames hosts;
   in
@@ -52,14 +64,15 @@
         };
       }
     );
-    nixosConfigurations = nixpkgs.lib.genAttrs hostnames (
-      host: nixpkgs.lib.nixosSystem {
+    packages.x86_64-linux = nixpkgs.lib.genAttrs hostnames (
+      host: nixos-generators.nixosGenerate {
         # inherit host;
         # specialargs = inputs;
         system = hosts.${host}.system;
+        format = "${hosts.${host}.format}";
         modules = [
           ./hosts/${host}
-          ./modules/${hosts.${host}.runtime}
+          # ./modules/${hosts.${host}.runtime}
           authentik-nix.nixosModules.default
           agenix.nixosModules.default
         ];

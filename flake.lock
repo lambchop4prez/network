@@ -190,6 +190,40 @@
         "type": "github"
       }
     },
+    "nixlib": {
+      "locked": {
+        "lastModified": 1736643958,
+        "narHash": "sha256-tmpqTSWVRJVhpvfSN9KXBvKEXplrwKnSZNAoNPf/S/s=",
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "rev": "1418bc28a52126761c02dd3d89b2d8ca0f521181",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "type": "github"
+      }
+    },
+    "nixos-generators": {
+      "inputs": {
+        "nixlib": "nixlib",
+        "nixpkgs": ["nixpkgs"]
+      },
+      "locked": {
+        "lastModified": 1740947705,
+        "narHash": "sha256-Co2kAD2SZalOm+5zoxmzEVZNvZ17TyafuFsD46BwSdY=",
+        "owner": "nix-community",
+        "repo": "nixos-generators",
+        "rev": "507911df8c35939050ae324caccc7cf4ffb76565",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixos-generators",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1703013332,
@@ -276,7 +310,25 @@
       "inputs": {
         "agenix": "agenix",
         "authentik-nix": "authentik-nix",
-        "nixpkgs": "nixpkgs_3"
+        "nixos-generators": "nixos-generators",
+        "nixpkgs": "nixpkgs_3",
+        "secrets": "secrets"
+      }
+    },
+    "secrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1740935162,
+        "narHash": "sha256-kW/V7MCXGfulGlf8zA2T2WXFSwzQnWZu6VlnBrNA+5c=",
+        "ref": "refs/heads/main",
+        "rev": "69400168254729701a72a098e671a1b8f5679e00",
+        "revCount": 2,
+        "type": "git",
+        "url": "ssh://git@github.com/lambchop4prez/secrets.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/lambchop4prez/secrets.git"
       }
     },
     "systems": {
