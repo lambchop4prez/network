@@ -13,10 +13,6 @@ terraform {
       source  = "siderolabs/talos"
       version = "0.7.1"
     }
-    opnsense = {
-      source  = "terraform.local/gxben/opnsense"
-      version = "0.3.2"
-    }
     random = {
       source  = "hashicorp/random"
       version = "3.7.1"
@@ -29,6 +25,10 @@ terraform {
       source  = "integrations/github"
       version = ">=5.18.0"
     }
+    opnsense = {
+      source  = "browningluke/opnsense"
+      version = "0.11.0"
+    }
     kustomization = {
       source  = "kbst/kustomization"
       version = "0.9.6"
@@ -37,27 +37,22 @@ terraform {
 }
 
 provider "proxmox" {
-  endpoint = "https://${data.vault_generic_secret.proxmox.data["proxmox_host"]}/"
-  username = data.vault_generic_secret.proxmox_auth.data["proxmox_username"]
-  password = data.vault_generic_secret.proxmox_auth.data["proxmox_password"]
-  insecure = data.vault_generic_secret.proxmox_auth.data["proxmox_allow_unverified_tls"]
+  endpoint = "https://${var.proxmox_host}:8006/"
+  username = var.proxmox_username
+  password = var.proxmox_password
+  insecure = true
   tmp_dir  = "/var/tmp"
 }
 
-
 provider "opnsense" {
-  uri                  = "https://${data.vault_generic_secret.opnsense_auth.data["opnsense_url"]}"
-  user                 = data.vault_generic_secret.opnsense_auth.data["opnsense_user"]
-  password             = data.vault_generic_secret.opnsense_auth.data["opnsense_password"]
-  allow_unverified_tls = data.vault_generic_secret.opnsense_auth.data["opnsense_allow_unverified_tls"]
+  uri            = "https://${var.opnsense_host}"
+  api_key        = var.opnsense_api_key
+  api_secret     = var.opnsense_api_secret
+  allow_insecure = var.opnsense_allow_insecure
 }
 
 provider "talos" {}
 
 provider "github" {
   owner = "lambchop4prez"
-}
-
-provider "kustomization" {
-  kubeconfig_raw = data.talos_cluster_kubeconfig.this.kubeconfig_raw
 }
