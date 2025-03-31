@@ -1,13 +1,11 @@
-###
-# Flux cluster deployment key
-resource "tls_private_key" "flux" {
-  algorithm = "ED25519"
+resource "time_sleep" "wait_10_seconds" {
+  create_duration = "10s"
 }
-
-resource "github_repository_deploy_key" "flux_deploy" {
-  title      = "Flux Deploy Key"
-  repository = "network"
-  key        = tls_private_key.flux.public_key_openssh
-  read_only  = "false"
+module "bootstrap" {
+  source                          = "./modules/bootstrap"
+  kubernetes_client_configuration = module.cluster.kubernetes_client_configuration
+  cluster_domain                  = var.cluster_name
+  deploy_key                      = tls_private_key.flux.public_key_openssh
+  deploy_private_key              = tls_private_key.flux.private_key_pem
+  depends_on                      = [time_sleep.wait_10_seconds]
 }
-data "github_ssh_keys" "this" {}

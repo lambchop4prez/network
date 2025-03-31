@@ -13,10 +13,6 @@ terraform {
       source  = "siderolabs/talos"
       version = "0.7.1"
     }
-    opnsense = {
-      source  = "terraform.local/gxben/opnsense"
-      version = "0.3.2"
-    }
     random = {
       source  = "hashicorp/random"
       version = "3.7.1"
@@ -29,27 +25,46 @@ terraform {
       source  = "integrations/github"
       version = ">=5.18.0"
     }
+    opnsense = {
+      source  = "browningluke/opnsense"
+      version = "0.11.0"
+    }
     kustomization = {
       source  = "kbst/kustomization"
       version = "0.9.6"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "2.17.0"
+    }
+    flux = {
+      source  = "fluxcd/flux"
+      version = "1.5.1"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.27"
+    }
+    time = {
+      source  = "hashicorp/time"
+      version = "0.13.0"
     }
   }
 }
 
 provider "proxmox" {
-  endpoint = "https://${data.vault_generic_secret.proxmox.data["proxmox_host"]}/"
-  username = data.vault_generic_secret.proxmox_auth.data["proxmox_username"]
-  password = data.vault_generic_secret.proxmox_auth.data["proxmox_password"]
-  insecure = data.vault_generic_secret.proxmox_auth.data["proxmox_allow_unverified_tls"]
+  endpoint = "https://${var.proxmox_host}:8006/"
+  username = var.proxmox_username
+  password = var.proxmox_password
+  insecure = true
   tmp_dir  = "/var/tmp"
 }
 
-
 provider "opnsense" {
-  uri                  = "https://${data.vault_generic_secret.opnsense_auth.data["opnsense_url"]}"
-  user                 = data.vault_generic_secret.opnsense_auth.data["opnsense_user"]
-  password             = data.vault_generic_secret.opnsense_auth.data["opnsense_password"]
-  allow_unverified_tls = data.vault_generic_secret.opnsense_auth.data["opnsense_allow_unverified_tls"]
+  uri            = "https://${var.opnsense_host}"
+  api_key        = var.opnsense_api_key
+  api_secret     = var.opnsense_api_secret
+  allow_insecure = var.opnsense_allow_insecure
 }
 
 provider "talos" {}
@@ -58,6 +73,38 @@ provider "github" {
   owner = "lambchop4prez"
 }
 
-provider "kustomization" {
-  kubeconfig_raw = data.talos_cluster_kubeconfig.this.kubeconfig_raw
+provider "kubernetes" {
+  host                   = module.cluster.kubernetes_client_configuration.host
+  client_certificate     = base64decode(module.cluster.kubernetes_client_configuration.client_certificate)
+  client_key             = base64decode(module.cluster.kubernetes_client_configuration.client_key)
+  cluster_ca_certificate = base64decode(module.cluster.kubernetes_client_configuration.ca_certificate)
+}
+
+resource "tls_private_key" "flux" {
+  algorithm = "ED25519"
+}
+
+provider "flux" {
+  kubernetes = {
+    host                   = module.cluster.kubernetes_client_configuration.host
+    client_certificate     = base64decode(module.cluster.kubernetes_client_configuration.client_certificate)
+    client_key             = base64decode(module.cluster.kubernetes_client_configuration.client_key)
+    cluster_ca_certificate = base64decode(module.cluster.kubernetes_client_configuration.ca_certificate)
+  }
+  git = {
+    url = "ssh://git@github.com/lambchop4prez/network.git"
+    ssh = {
+      username    = "git"
+      private_key = tls_private_key.flux.private_key_pem
+    }
+  }
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = module.cluster.kubernetes_client_configuration.host
+    client_certificate     = base64decode(module.cluster.kubernetes_client_configuration.client_certificate)
+    client_key             = base64decode(module.cluster.kubernetes_client_configuration.client_key)
+    cluster_ca_certificate = base64decode(module.cluster.kubernetes_client_configuration.ca_certificate)
+  }
 }
