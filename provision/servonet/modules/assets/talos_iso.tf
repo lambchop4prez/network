@@ -1,5 +1,4 @@
 data "talos_image_factory_extensions_versions" "vm" {
-  # get the latest talos version
   talos_version = var.talos_version
   filters = {
     names = [
@@ -10,7 +9,6 @@ data "talos_image_factory_extensions_versions" "vm" {
   }
 }
 data "talos_image_factory_overlays_versions" "pi" {
-  # get the latest talos version
   talos_version = var.talos_version
   filters = {
     name = "rpi_generic"

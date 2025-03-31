@@ -11,7 +11,7 @@ resource "kubernetes_namespace" "flux_system" {
 
 resource "kubernetes_secret" "ssh_keypair" {
   metadata {
-    name      = "flux-system"
+    name      = "github-token"
     namespace = "flux-system"
   }
 

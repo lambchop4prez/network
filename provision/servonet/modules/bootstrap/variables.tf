@@ -1,12 +1,3 @@
-# variable "kubernetes_client_configuration" {
-#   type = object({
-#     host               = string
-#     ca_certificate     = string
-#     client_certificate = string
-#     client_key         = string
-#   })
-# }
-
 variable "cluster_domain" {
   type = string
 }
