@@ -10,4 +10,5 @@ resource "helm_release" "cilium" {
   namespace = "kube-system"
   version   = "1.17.2"
   values    = [data.github_repository_file.config.content]
+
 }

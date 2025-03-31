@@ -26,6 +26,10 @@ resource "talos_machine_configuration_apply" "controlplane" {
         proxy = {
           disabled = true
         }
+        allowSchedulingOnControlPlanes = true
+        etcd = {
+          advertisedSubnets = ["10.4.0.0/16"]
+        }
       }
 
       machine = {
@@ -33,6 +37,11 @@ resource "talos_machine_configuration_apply" "controlplane" {
           kubePrism = {
             enabled = true
             port    = 7445
+          }
+          hostDNS = {
+            enabled              = true
+            resolveMemberNames   = true
+            forwardKubeDNSToHost = false
           }
         }
         network = {
@@ -51,6 +60,11 @@ resource "talos_machine_configuration_apply" "controlplane" {
         install = {
           disk  = "/dev/sda"
           image = "factory.talos.dev/installer/${var.schematic}:${var.talos_version}"
+        }
+        kubelet = {
+          nodeIP = {
+            validSubnets = ["10.4.0.0/16"]
+          }
         }
       }
     })

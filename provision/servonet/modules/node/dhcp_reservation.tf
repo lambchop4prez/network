@@ -2,7 +2,7 @@ data "opnsense_kea_subnet" "lan" {
   id = var.opnsense_lan_subnet
 }
 
-resource "opnsense_kea_reservation" "test" {
+resource "opnsense_kea_reservation" "this" {
   subnet_id = data.opnsense_kea_subnet.lan.id
 
   ip_address  = var.ipv4_address

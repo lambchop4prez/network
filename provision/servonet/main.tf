@@ -33,6 +33,22 @@ terraform {
       source  = "kbst/kustomization"
       version = "0.9.6"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "2.17.0"
+    }
+    flux = {
+      source  = "fluxcd/flux"
+      version = "1.5.1"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.27"
+    }
+    time = {
+      source  = "hashicorp/time"
+      version = "0.13.0"
+    }
   }
 }
 
@@ -55,4 +71,40 @@ provider "talos" {}
 
 provider "github" {
   owner = "lambchop4prez"
+}
+
+provider "kubernetes" {
+  host                   = module.cluster.kubernetes_client_configuration.host
+  client_certificate     = base64decode(module.cluster.kubernetes_client_configuration.client_certificate)
+  client_key             = base64decode(module.cluster.kubernetes_client_configuration.client_key)
+  cluster_ca_certificate = base64decode(module.cluster.kubernetes_client_configuration.ca_certificate)
+}
+
+resource "tls_private_key" "flux" {
+  algorithm = "ED25519"
+}
+
+provider "flux" {
+  kubernetes = {
+    host                   = module.cluster.kubernetes_client_configuration.host
+    client_certificate     = base64decode(module.cluster.kubernetes_client_configuration.client_certificate)
+    client_key             = base64decode(module.cluster.kubernetes_client_configuration.client_key)
+    cluster_ca_certificate = base64decode(module.cluster.kubernetes_client_configuration.ca_certificate)
+  }
+  git = {
+    url = "ssh://git@github.com/lambchop4prez/network.git"
+    ssh = {
+      username    = "git"
+      private_key = tls_private_key.flux.private_key_pem
+    }
+  }
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = module.cluster.kubernetes_client_configuration.host
+    client_certificate     = base64decode(module.cluster.kubernetes_client_configuration.client_certificate)
+    client_key             = base64decode(module.cluster.kubernetes_client_configuration.client_key)
+    cluster_ca_certificate = base64decode(module.cluster.kubernetes_client_configuration.ca_certificate)
+  }
 }
