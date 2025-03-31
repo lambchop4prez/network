@@ -25,11 +25,7 @@ variable "kubernetes_version" {
   description = "Found at https://github.com/siderolabs/kubelet/pkgs/container/kubelet"
   default     = "v1.31.1"
 }
-# variable "qemu_guest_agent_version" {
-#   type        = string
-#   description = "Found at https://github.com/siderolabs/extensions/pkgs/container/qemu-guest-agent"
-#   default     = "8.2.2"
-# }
+
 ##
 # Networking
 ##
@@ -136,15 +132,3 @@ variable "opnsense_lan_subnet" {
   type        = string
   description = "OPNSense LAN subnet id"
 }
-
-###
-# Bare-metal workers
-# variable "metal_agents" {
-#   description = "List of mac addresses for bare-metal agents"
-#   type        = list(object({ mac : string, disk : string }))
-#   default     = []
-#   #   { mac = "dc:a6:32:bb:36:4c", disk = "/dev/sda" },    # Pi 4
-#   #   { mac = "e4:5f:01:2f:3a:11", disk = "/dev/sda" },    # Pi 4
-#   #   { mac = "d8:3a:dd:37:3e:67", disk = "/dev/mmcblk0" } # Pi 4 Compute module /dev/mmcblk0
-#   # ]
-# }
