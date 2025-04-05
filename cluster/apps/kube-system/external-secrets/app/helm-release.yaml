@@ -19,6 +19,8 @@ spec:
     installCRDs: true
     replicaCount: 3
     leaderElect: true
+    bitwarden-sdk-server:
+      enabled: true
     grafana:
       enabled: true
     serviceMonitor:

@@ -108,3 +108,7 @@ provider "helm" {
     cluster_ca_certificate = base64decode(module.cluster.kubernetes_client_configuration.ca_certificate)
   }
 }
+
+provider "kustomization" {
+  kubeconfig_raw = module.cluster.kubernetes_client_configuration.kubeconfig
+}
