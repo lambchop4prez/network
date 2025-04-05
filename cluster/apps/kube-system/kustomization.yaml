@@ -3,5 +3,5 @@ kind: Kustomization
 resources:
   - cilium/ks.yaml
   - node-feature-discovery/ks.yaml
-  - nvidia-device-plugin/ks.yaml
+  # - nvidia-device-plugin/ks.yaml
   - external-secrets/ks.yaml
