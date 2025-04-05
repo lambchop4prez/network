@@ -110,5 +110,5 @@ provider "helm" {
 }
 
 provider "kustomization" {
-  kubeconfig_raw = module.cluster.kubernetes_client_configuration.kubeconfig
+  kubeconfig_raw = module.cluster.kubeconfig
 }

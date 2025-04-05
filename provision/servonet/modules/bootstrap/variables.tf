@@ -1,6 +1,6 @@
-# variable "cluster_domain" {
-#   type = string
-# }
+variable "cluster_domain" {
+  type = string
+}
 
 variable "deploy_key" {
   type        = string

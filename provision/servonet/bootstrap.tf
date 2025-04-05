@@ -1,5 +1,6 @@
 resource "time_sleep" "wait_10_seconds" {
   create_duration = "10s"
+  depends_on      = [module.cluster]
 }
 module "bootstrap" {
   source             = "./modules/bootstrap"
