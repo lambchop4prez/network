@@ -29,7 +29,7 @@ resource "kubernetes_secret" "ssh_keypair" {
 resource "helm_release" "flux2" {
   repository = "https://fluxcd-community.github.io/helm-charts"
   chart      = "flux2"
-  version    = "2.12.4"
+  version    = "2.15.0"
 
   name      = "flux2"
   namespace = "flux-system"
