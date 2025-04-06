@@ -1,0 +1,37 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname flux-operator
+  namespace: &namespace flux-system
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./cluster/apps/flux-system/flux-operator/app"
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: network
+  wait: true
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname flux-instance
+  namespace: &namespace flux-system
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./cluster/apps/flux-system/flux-operator/instance"
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: network
+  wait: true
