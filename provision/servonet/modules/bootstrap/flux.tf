@@ -22,7 +22,7 @@ resource "kubernetes_secret" "ssh_keypair" {
     "known_hosts"  = join("\n", formatlist("github.com %s", data.github_ssh_keys.this.keys))
   }
 
-  depends_on = [kubernetes_namespace.flux_system]
+  depends_on = [kubernetes_namespace.flux_system, helm_release.cilium]
 }
 
 data "github_repository_file" "flux_operator_values" {
