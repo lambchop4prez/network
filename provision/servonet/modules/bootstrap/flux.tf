@@ -5,7 +5,6 @@ resource "kubernetes_namespace" "flux_system" {
 
   lifecycle {
     ignore_changes = [metadata]
-
   }
 }
 
@@ -26,18 +25,32 @@ resource "kubernetes_secret" "ssh_keypair" {
   depends_on = [kubernetes_namespace.flux_system]
 }
 
-resource "helm_release" "flux2" {
-  repository = "https://fluxcd-community.github.io/helm-charts"
-  chart      = "flux2"
-  version    = "2.15.0"
+data "github_repository_file" "flux_operator_values" {
+  repository = "network"
+  branch     = "main"
+  file       = "cluster/apps/flux-system/flux-operator/app/values.yaml"
+}
 
-  name      = "flux2"
-  namespace = "flux-system"
-
-  set {
-    name  = "clusterDomain"
-    value = var.cluster_domain
-  }
-
+resource "helm_release" "flux_operator" {
+  chart      = "oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator"
+  version    = "0.18.0"
+  name       = "flux-operator"
+  values     = [data.github_repository_file.flux_operator_values.content]
   depends_on = [kubernetes_namespace.flux_system]
+}
+
+
+data "github_repository_file" "flux_instance_values" {
+  repository = "network"
+  branch     = "main"
+  file       = "cluster/apps/flux-system/flux-operator/instance/values.yaml"
+}
+
+resource "helm_release" "flux_instance" {
+  chart      = "oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance"
+  verify     = "0.18.0"
+  name       = "flux-instance"
+  namespace  = "flux-system"
+  values     = [data.github_repository_file.flux_instance_values.content]
+  depends_on = [helm_release.flux_operator, kubernetes_secret.ssh_keypair]
 }
