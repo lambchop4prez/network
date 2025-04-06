@@ -39,8 +39,8 @@ instance:
             path: /spec/template/spec/containers/0/args/-
             value: --requeue-dependency=5s
         target:
-        kind: Deployment
-        name: "(kustomize-controller|helm-controller|source-controller)"
+          kind: Deployment
+          name: "(kustomize-controller|helm-controller|source-controller)"
       - patch: |
           apiVersion: apps/v1
           kind: Deployment
