@@ -35,8 +35,9 @@ resource "helm_release" "flux_operator" {
   chart      = "oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator"
   version    = "0.18.0"
   name       = "flux-operator"
+  namespace  = "flux-system"
   values     = [data.github_repository_file.flux_operator_values.content]
-  depends_on = [kubernetes_namespace.flux_system]
+  depends_on = [kubernetes_namespace.flux_system, helm_release.cilium]
 }
 
 
@@ -48,7 +49,7 @@ data "github_repository_file" "flux_instance_values" {
 
 resource "helm_release" "flux_instance" {
   chart      = "oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance"
-  verify     = "0.18.0"
+  version    = "0.18.0"
   name       = "flux-instance"
   namespace  = "flux-system"
   values     = [data.github_repository_file.flux_instance_values.content]

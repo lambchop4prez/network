@@ -17,6 +17,7 @@ instance:
     ref: refs/heads/main
     path: cluster/base
     interval: 1h
+    pullSecret: github-token
   commonMetadata:
     labels:
       app.kubernetes.io/name: flux

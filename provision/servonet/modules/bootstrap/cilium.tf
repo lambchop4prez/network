@@ -5,9 +5,10 @@ data "github_repository_file" "config" {
 }
 
 resource "helm_release" "cilium" {
-  chart     = "cilium/cilium"
-  name      = "cilium"
-  namespace = "kube-system"
-  version   = "1.17.2"
-  values    = [data.github_repository_file.config.content]
+  chart      = "cilium/cilium"
+  name       = "cilium"
+  namespace  = "kube-system"
+  version    = "1.17.2"
+  values     = [data.github_repository_file.config.content]
+  depends_on = [helm_release.prometheus_crds]
 }
