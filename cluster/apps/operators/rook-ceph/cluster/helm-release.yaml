@@ -95,19 +95,8 @@ spec:
       network:
         provider: host
       storage:
-        useAllNodes: false
-        useAllDevices: false
-        nodes:
-          - name: "tom-c342"
-            devices:
-              - name: "/dev/disk/by-id/nvme-TEAM_TM8FP6001T_TPBF2308210070101183"
-          - name: "tom-c469"
-            devices:
-              - name: "/dev/disk/by-id/nvme-TEAM_TM8FP6001T_TPBF2308210070107995"
-              - name: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1"
-          - name: "tom-c587"
-            devices:
-              - name: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1"
+        useAllNodes: true
+        useAllDevices: true
         config:
           osdsPerDevice: "1"
     cephBlockPools:
