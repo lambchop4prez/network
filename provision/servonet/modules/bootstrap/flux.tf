@@ -33,7 +33,7 @@ data "github_repository_file" "flux_operator_values" {
 
 resource "helm_release" "flux_operator" {
   chart      = "oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator"
-  version    = "0.18.0"
+  version    = "0.19.0"
   name       = "flux-operator"
   namespace  = "flux-system"
   values     = [data.github_repository_file.flux_operator_values.content]
