@@ -72,5 +72,7 @@ spec:
         size: 1Gi
         accessMode: ReadWriteOnce
         retain: true
-      media:
-        existingClaim: nas-media
+      downloads:
+        existingClaim: nas-downloads
+      movies:
+        existingClaim: nas-movies

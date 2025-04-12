@@ -26,17 +26,17 @@ spec:
             runAsGroup: 1001
             fsGroup: 1001
             fsGroupChangePolicy: OnRootMismatch
-          nodeSelector:
-            nvidia.feature.node.kubernetes.io/gpu: "true"
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: nvidia.feature.node.kubernetes.io/gpu
-                        operator: In
-                        values:
-                          - "true"
+          # nodeSelector:
+          #   nvidia.feature.node.kubernetes.io/gpu: "true"
+          # affinity:
+          #   nodeAffinity:
+          #     requiredDuringSchedulingIgnoredDuringExecution:
+          #       nodeSelectorTerms:
+          #         - matchExpressions:
+          #             - key: nvidia.feature.node.kubernetes.io/gpu
+          #               operator: In
+          #               values:
+          #                 - "true"
         containers:
           main:
             image:
@@ -47,8 +47,8 @@ spec:
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
               JELLYFIN_FFmpeg__probesize: 50000000
               JELLYFIN_FFmpeg__analyzeduration: 500000000
-              NVIDIA_VISIBLE_DEVICES: all
-              NVIDIA_DRIVER_CAPABILITIES: all
+              # NVIDIA_VISIBLE_DEVICES: all
+              # NVIDIA_DRIVER_CAPABILITIES: all
             resources:
               requests:
                 memory: 250Mi
@@ -88,8 +88,10 @@ spec:
         size: 1Gi
         accessMode: ReadWriteOnce
         retain: true
-      media:
-        existingClaim: nas-media
+      movies:
+        existingClaim: nas-movies
+      tv:
+        existingClaim: nas-tv
       cache:
         enabled: true
         type: emptyDir

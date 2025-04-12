@@ -1,0 +1,128 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nas-dataset
+provisioner: nfs
+parameters:
+  archiveOnDelete: "false"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nas-downloads
+spec:
+  capacity:
+    storage: 1Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  claimRef:
+    name: nas-downloads
+    namespace: media
+  mountOptions:
+    - nfsvers=4.1
+    - nconnect=8
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
+  nfs:
+    path: /mnt/storage/media/downloads
+    server: nas.lan
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nas-downloads
+  namespace: media
+spec:
+  resources:
+    requests:
+      storage: 1Mi
+  volumeMode: Filesystem
+  storageClassName: nas-dataset
+  accessModes:
+    - ReadWriteMany
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nas-tv
+spec:
+  capacity:
+    storage: 1Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  claimRef:
+    name: nas-tv
+    namespace: media
+  mountOptions:
+    - nfsvers=4.1
+    - nconnect=8
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
+  nfs:
+    path: /mnt/storage/media/tv
+    server: nas.lan
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nas-tv
+  namespace: media
+spec:
+  resources:
+    requests:
+      storage: 1Mi
+  volumeMode: Filesystem
+  storageClassName: nas-dataset
+  accessModes:
+    - ReadWriteMany
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nas-tv
+spec:
+  capacity:
+    storage: 1Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  claimRef:
+    name: nas-movies
+    namespace: media
+  mountOptions:
+    - nfsvers=4.1
+    - nconnect=8
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
+  nfs:
+    path: /mnt/storage/media/movies
+    server: nas.lan
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nas-movies
+  namespace: media
+spec:
+  resources:
+    requests:
+      storage: 1Mi
+  volumeMode: Filesystem
+  storageClassName: nas-dataset
+  accessModes:
+    - ReadWriteMany

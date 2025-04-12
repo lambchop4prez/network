@@ -1,0 +1,19 @@
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: step
+spec:
+  acme:
+    email: tom@servonet.lan
+    server: https://ca.lan/acme/acme/directory
+    caBundle:
+      secretRef:
+        name: step-ca
+        key: caBundle
+    privateKeySecretsRef:
+      name: acme-issuer-account-key
+    solvers:
+      - http01:
+          ingress:
+            ingressClassName: nginx
