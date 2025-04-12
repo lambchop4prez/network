@@ -22,6 +22,7 @@ resource "proxmox_virtual_environment_vm" "this" {
 
   memory {
     dedicated = var.memory
+    floating  = var.memory
   }
 
   cdrom {

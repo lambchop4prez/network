@@ -16,3 +16,7 @@ variable "virtual_ip_address" {
 variable "schematic" {
   type = string
 }
+variable "step_ca_cert" {
+  type      = string
+  sensitive = true
+}

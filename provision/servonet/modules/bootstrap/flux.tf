@@ -13,9 +13,7 @@ resource "kubernetes_secret" "ssh_keypair" {
     name      = "github-token"
     namespace = "flux-system"
   }
-
   type = "Opaque"
-
   data = {
     "identity.pub" = var.deploy_key
     "identity"     = var.deploy_private_key

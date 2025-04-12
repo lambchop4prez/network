@@ -132,3 +132,8 @@ variable "opnsense_lan_subnet" {
   type        = string
   description = "OPNSense LAN subnet id"
 }
+variable "bitwarden_token" {
+  type        = string
+  description = "Bitwarden Auth token"
+  sensitive   = true
+}
