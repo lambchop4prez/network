@@ -7,11 +7,7 @@ spec:
   acme:
     email: tom@servonet.lan
     server: https://ca.lan/acme/acme/directory
-    caBundle:
-      secretRef:
-        name: step-ca
-        key: caBundle
-    privateKeySecretsRef:
+    privateKeySecretRef:
       name: acme-issuer-account-key
     solvers:
       - http01:
