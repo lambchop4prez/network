@@ -36,6 +36,10 @@ resource "helm_release" "flux_operator" {
   namespace  = "flux-system"
   values     = [data.github_repository_file.flux_operator_values.content]
   depends_on = [kubernetes_namespace.flux_system, helm_release.cilium]
+
+  lifecycle {
+    ignore_changes = [version]
+  }
 }
 
 
@@ -52,4 +56,8 @@ resource "helm_release" "flux_instance" {
   namespace  = "flux-system"
   values     = [data.github_repository_file.flux_instance_values.content]
   depends_on = [helm_release.flux_operator, kubernetes_secret.ssh_keypair]
+
+  lifecycle {
+    ignore_changes = [version]
+  }
 }
