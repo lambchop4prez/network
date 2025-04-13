@@ -16,6 +16,8 @@ spec:
     kind: GitRepository
     name: network
   wait: true
+  dependsOn:
+    - name: cert-manager-manifests
   postBuild:
     substitute: {}
     substituteFrom:
