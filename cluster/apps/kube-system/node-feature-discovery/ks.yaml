@@ -30,6 +30,8 @@ spec:
   interval: 10m
   path: "./cluster/apps/kube-system/node-feature-discovery/rules"
   prune: true
+  dependsOn:
+    - name: node-feature-discovery
   sourceRef:
     kind: GitRepository
     name: network

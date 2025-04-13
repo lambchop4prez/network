@@ -16,8 +16,6 @@ spec:
     kind: GitRepository
     name: network
   wait: true
-  dependsOn:
-    - name: kube-prometheus-stack
   postBuild:
     substitute: {}
     substituteFrom:

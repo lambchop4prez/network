@@ -30,6 +30,8 @@ spec:
   interval: 10m
   path: "./cluster/apps/networking/cert-manager/manifests"
   prune: true
+  dependsOn:
+    - name: cert-manager
   sourceRef:
     kind: GitRepository
     name: network
