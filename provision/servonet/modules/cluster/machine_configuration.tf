@@ -69,7 +69,7 @@ resource "talos_machine_configuration_apply" "controlplane" {
       }
     }),
     yamlencode({
-      apiVersion   = "v1alpha"
+      apiVersion   = "v1alpha1"
       kind         = "TrustedRootsConfig"
       name         = "step-ca"
       certificates = var.step_ca_cert

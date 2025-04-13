@@ -5,6 +5,7 @@ data "github_repository_file" "config" {
 }
 
 resource "helm_release" "cilium" {
+  repository = "https://helm.cilium.io/"
   chart      = "cilium/cilium"
   name       = "cilium"
   namespace  = "kube-system"
