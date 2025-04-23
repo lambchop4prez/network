@@ -7,7 +7,7 @@ module "cluster" {
   schematic          = module.assets.schematics.vm
   talos_version      = var.talos_version
   virtual_ip_address = var.virtual_ip_address
-  step_ca_cert       = data.tls_certificate.step.certificates[0].cert_pem
+  step_ca_cert       = data.tls_certificate.step.certificates[*].cert_pem
 }
 
 output "talosconfig" {

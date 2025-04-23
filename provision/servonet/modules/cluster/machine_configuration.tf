@@ -72,7 +72,7 @@ resource "talos_machine_configuration_apply" "controlplane" {
       apiVersion   = "v1alpha1"
       kind         = "TrustedRootsConfig"
       name         = "step-ca"
-      certificates = var.step_ca_cert
+      certificates = join("\n", var.step_ca_cert)
     })
   ]
 }

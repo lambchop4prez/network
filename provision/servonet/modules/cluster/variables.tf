@@ -17,6 +17,6 @@ variable "schematic" {
   type = string
 }
 variable "step_ca_cert" {
-  type      = string
+  type      = list(string)
   sensitive = true
 }

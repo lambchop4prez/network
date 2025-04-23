@@ -35,6 +35,13 @@ resource "proxmox_virtual_environment_vm" "this" {
     file_format  = "raw"
     size         = var.storage_size
   }
+  
+  disk {
+    datastore_id = "fio"
+    interface = "scsi1"
+    file_format = "raw"
+    size = 900
+  }
 
   efi_disk {
     datastore_id = var.proxmox_storage_pool
