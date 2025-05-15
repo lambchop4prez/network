@@ -11,7 +11,7 @@ terraform {
     }
     talos = {
       source  = "siderolabs/talos"
-      version = "0.8.0"
+      version = "0.8.1"
     }
     random = {
       source  = "hashicorp/random"
