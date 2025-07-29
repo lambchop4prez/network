@@ -9,7 +9,7 @@ resource "helm_release" "cilium" {
   chart      = "cilium"
   name       = "cilium"
   namespace  = "kube-system"
-  version    = "1.17.6"
+  version    = "1.18.0"
   values     = [data.github_repository_file.config.content]
   wait       = true
   depends_on = [helm_release.prometheus_crds]
