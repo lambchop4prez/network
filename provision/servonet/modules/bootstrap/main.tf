@@ -11,11 +11,11 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "2.17.0"
+      version = "3.0.2"
     }
     flux = {
       source  = "fluxcd/flux"
-      version = "1.6.2"
+      version = "1.7.1"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"

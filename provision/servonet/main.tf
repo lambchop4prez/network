@@ -3,15 +3,15 @@ terraform {
   required_providers {
     vault = {
       source  = "hashicorp/vault"
-      version = "4.8.0"
+      version = "5.3.0"
     }
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.78.2"
+      version = "0.84.1"
     }
     talos = {
       source  = "siderolabs/talos"
-      version = "0.8.1"
+      version = "0.9.0"
     }
     random = {
       source  = "hashicorp/random"
@@ -27,7 +27,7 @@ terraform {
     }
     opnsense = {
       source  = "browningluke/opnsense"
-      version = "0.11.0"
+      version = "0.13.0"
     }
     kustomization = {
       source  = "kbst/kustomization"
@@ -35,11 +35,11 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "2.17.0"
+      version = "3.0.2"
     }
     flux = {
       source  = "fluxcd/flux"
-      version = "1.6.2"
+      version = "1.7.1"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
