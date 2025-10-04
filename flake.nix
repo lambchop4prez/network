@@ -21,10 +21,6 @@
     linuxSystems = ["aarch64-linux" "x86_64-linux"];
     allSystems = darwinSystems ++ linuxSystems;
     hosts = {
-      # default = {
-      #   system = "x86_64-linux";
-      #   runtime = "qemu-vm";
-      # };
       auth = {
         system = "x86_64-linux";
         format = "proxmox-lxc";
@@ -33,10 +29,10 @@
         system = "x86_64-linux";
         format = "proxmox-lxc";
       };
-      # netboot = {
-      #   system = "x86_64-linux";
-      #   format = "proxmox-lxc";
-      # };
+      netboot = {
+        system = "x86_64-linux";
+        format = "proxmox-lxc";
+      };
     };
     hostnames = nixpkgs.lib.attrNames hosts;
   in
@@ -64,7 +60,7 @@
         };
       }
     );
-    packages.x86_64-linux = nixpkgs.lib.genAttrs hostnames (
+    hosts = nixpkgs.lib.genAttrs hostnames (
       host: nixos-generators.nixosGenerate {
         # inherit host;
         # specialargs = inputs;
