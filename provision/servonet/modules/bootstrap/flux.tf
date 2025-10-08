@@ -51,7 +51,7 @@ data "github_repository_file" "flux_instance_values" {
 
 resource "helm_release" "flux_instance" {
   chart      = "oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance"
-  version    = "0.31.0"
+  version    = "0.32.0"
   name       = "flux-instance"
   namespace  = "flux-system"
   values     = [data.github_repository_file.flux_instance_values.content]
