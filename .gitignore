@@ -47,3 +47,4 @@ identity
 identity.pub
 known_hosts
 vault.env
+.direnv
