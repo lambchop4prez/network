@@ -95,10 +95,22 @@ spec:
       network:
         provider: host
       storage:
-        useAllNodes: true
-        useAllDevices: true
+        useAllNodes: false
+        useAllDevices: false
         config:
           osdsPerDevice: "1"
+        nodes:
+          - name: "tom-7aff"
+            devices:
+              - "sdb"
+
+          - name: "tom-d464"
+            devices:
+              - "sdb"
+
+          - name: "tom-64c4"
+            devices:
+              - "sdb"
     cephBlockPools:
       - name: ceph-blockpool
         spec:
