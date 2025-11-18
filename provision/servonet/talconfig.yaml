@@ -1,0 +1,237 @@
+---
+clusterName: servonet
+endpoint: https://10.4.3.1:6443
+domain: servonet.lan
+
+talosVersion: v1.11.5 # https://github.com/siderolabs/talos/releases
+kubernetesVersion: v1.34.1 # https://github.com/siderolabs/kubelet/releases
+
+allowSchedulingOnControlPlanes: true
+
+cniConfig:
+  name: none
+
+additionalMachineCertSans: &san
+  - cluster.local
+  - servonet.lan
+  - 127.0.0.1
+additionalApiServerCertSans: *san
+
+nodes:
+  - hostname: tom-3a11
+    nameservers:
+      - 10.4.1.1
+    ipAddress: "10.4.3.32"
+    controlPlane: true
+    installDisk: /dev/sda
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "e4:5f:01:2f:3a:11"
+        dhcp: true
+        mtu: 1500
+        vip:
+          ip: "10.4.3.1"
+    schematic: &rpi-schematic
+      overlay:
+        image: siderolabs/sbc-raspberrypi
+        name: rpi_generic
+
+  - hostname: tom-364c
+    nameservers:
+      - 10.4.1.1
+    ipAddress: "10.4.3.33"
+    controlPlane: true
+    installDisk: /dev/sda
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "dc:a6:32:bb:36:4c"
+        dhcp: true
+        mtu: 1500
+        vip:
+          ip: "10.4.3.1"
+    schematic: *rpi-schematic
+
+  - hostname: tom-3e67
+    nameservers:
+      - 10.4.1.1
+    ipAddress: "10.4.3.34"
+    controlPlane: true
+    installDisk: /dev/mmcblk0
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "d8:3a:dd:37:3e:67"
+        dhcp: true
+        mtu: 1500
+        vip:
+          ip: "10.4.3.1"
+    schematic: *rpi-schematic
+  - hostname: tom-7aff
+    nameservers:
+      - 10.4.1.1
+    ipAddress: "10.4.3.35"
+    controlPlane: false
+    installDisk: /dev/sda
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "BC:24:11:47:7A:FF"
+        dhcp: true
+        mtu: 1500
+    schematic: &amd-vm-schematic
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/amd-ucode
+            - siderolabs/qemu-guest-agent
+  - hostname: tom-d464
+    nameservers:
+      - 10.4.1.1
+    ipAddress: "10.4.3.36"
+    controlPlane: false
+    installDisk: /dev/sda
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "BC:24:11:E2:D4:64"
+        dhcp: true
+        mtu: 1500
+    schematic: *amd-vm-schematic
+  - hostname: tom-64c4
+    nameservers:
+      - 10.4.1.1
+    ipAddress: "10.4.3.37"
+    controlPlane: false
+    installDisk: /dev/sda
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "BC:24:11:71:64:4C"
+        dhcp: true
+        mtu: 1500
+    schematic: *amd-vm-schematic
+
+  # - hostname: tom-4.servonet.lan
+  #   ipAddress: "10.4.3.35"
+  #   installDisk: /dev/mmcblk0
+  #   schematic:
+  #     overlay:
+  #       image: lambchop4prez/sbc-rockchip
+  #       name: soquartz-cm4
+
+controlPlane:
+  patches:
+    # Disable search domain everywhere
+    - &disableSearchDomainPatch |-
+      machine:
+        network:
+          disableSearchDomain: true
+
+    # Force nameserver
+    - &nameServersPatch |-
+      machine:
+        network:
+          nameservers:
+            - 10.4.1.1
+
+    # Configure NTP
+    - &timeServersPatch |-
+      machine:
+        time:
+          disabled: false
+          servers:
+            - 10.4.1.1
+    # Enable kubePrism
+    - |-
+      machine:
+        features:
+          kubePrism:
+            enabled: true
+            port: 7445
+
+    # Enable K8s Talos API Access
+    - |-
+      machine:
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - kube-system
+
+    # Cluster config
+    - |-
+      cluster:
+        allowSchedulingOnControlPlanes: true
+        proxy:
+          disabled: true
+        etcd:
+          advertisedSubnets:
+            - 10.4.0.0/16
+
+    # Use discovery-service.
+    # The previous Kubernetes discovery service is deprecated due to security changes in Kubernetes.
+    # https://www.talos.dev/v1.10/talos-guides/discovery/#registries
+    # https://github.com/siderolabs/talos/issues/9980
+    - &clusterDiscovery |-
+      cluster:
+        discovery:
+          enabled: true
+          registries:
+            kubernetes:
+              disabled: true
+            service:
+              disabled: false
+
+    - &hostDns |-
+      machine:
+        features:
+          hostDNS:
+            enabled: true
+            resolveMemberNames: true
+            # Incompatible with Cilium bpf masquerade. https://github.com/siderolabs/talos/issues/8836
+            forwardKubeDNSToHost: false
+
+    # Disable default API server admission plugins.
+    - |-
+      - op: remove
+        path: /cluster/apiServer/admissionControl
+
+    # Kubelet configuration
+    - &kubeletPatch |-
+      machine:
+        kubelet:
+          extraArgs:
+            image-gc-high-threshold: 70
+            image-gc-low-threshold: 65
+          extraConfig:
+            maxParallelImagePulls: 10
+            maxPods: 200
+            serializeImagePulls: false
+          nodeIP:
+            validSubnets:
+                - 10.4.0.0/16
+
+    # Custom sysctls
+    - &sysctlsPatch |-
+      machine:
+        sysctls:
+          fs.inotify.max_user_instances: "8192"      # Watchdog
+          fs.inotify.max_user_watches: "1048576"     # Watchdog
+          net.core.rmem_max: "67108864"              # Cloudflared / QUIC
+          net.core.wmem_max: "67108864"              # Cloudflared / QUIC
+          net.ipv4.neigh.default.gc_thresh1: "4096"  # Prevent ARP cache overflows
+          net.ipv4.neigh.default.gc_thresh2: "8192"  # Prevent ARP cache overflows
+          net.ipv4.neigh.default.gc_thresh3: "16384" # Prevent ARP cache overflows
+          net.ipv4.tcp_fastopen: "3"                 # Send and accept data in the opening SYN packet
+          user.max_user_namespaces: "11255"          # User namespaces
+
+    # Configure containerd
+    - &containerdPatch |-
+      machine:
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.cri.v1.images"]
+                  discard_unpacked_layers = false
+              [plugins."io.containerd.cri.v1.runtime"]
+                device_ownership_from_security_context = true
