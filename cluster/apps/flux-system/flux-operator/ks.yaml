@@ -29,7 +29,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./cluster/apps/flux-system/flux-operator/instance"
+  path: "./cluster/apps/flux-system/flux-instance/app"
   prune: false
   sourceRef:
     kind: GitRepository
