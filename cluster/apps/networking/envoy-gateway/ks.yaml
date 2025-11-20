@@ -14,7 +14,7 @@ spec:
       name: envoy-gateway
       namespace: networking
   interval: 1h
-  path: "./cluster/networking/envoy-gateway/app"
+  path: "./cluster/apps/networking/envoy-gateway/app"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -36,7 +36,7 @@ spec:
     - name: envoy-gateway
       namespace: flux-system
   interval: 1h
-  path: "./cluster/networking/envoy-gateway/config"
+  path: "./cluster/apps/networking/envoy-gateway/config"
   prune: true
   sourceRef:
     kind: GitRepository
