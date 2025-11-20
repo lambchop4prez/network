@@ -115,6 +115,45 @@ nodes:
   #       image: lambchop4prez/sbc-rockchip
   #       name: soquartz-cm4
 
+inlineManifests:
+  - name: trustd-cert
+    contents: |
+      apiVersion: v1alpha1
+      kind: TrustedRootsConfig
+      name: step-ca # Name of the config document.
+      certificates: | # List of additional trusted certificate authorities (as PEM-encoded certificates).
+          -----BEGIN CERTIFICATE-----
+          MIIFXTCCA0WgAwIBAgIUEBHABloUL4dqE9fRDw/tNgsvKWQwDQYJKoZIhvcNAQEL
+          BQAwNTEUMBIGA1UEAwwLSG9tZWxhYiBMYW4xCzAJBgNVBAYTAlVTMRAwDgYDVQQK
+          DAdIb21lbGFiMCAXDTI1MDQwOTAzNTUyNFoYDzIwOTQwNDA5MDM1NTI0WjA1MRQw
+          EgYDVQQDDAtIb21lbGFiIExhbjELMAkGA1UEBhMCVVMxEDAOBgNVBAoMB0hvbWVs
+          YWIwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQC8PeMMx9J2lkMq6AgZ
+          dZA36JACAiStIpQc8OB60PThGw7pEe5SC+NSEG3laV8IUWXklr10abukdr0eSZrO
+          6ahfEcJHwEnQofpIynZPKKGykmInTDp52Tzxg+2zXNQm5JZ9v5Nq2pV7clbyXCh6
+          oQSVV7FtJ2fnJCGW2cnZo8wa5FRhVQuLttQ5evp9ea3PkMRVNnFVkNxHpcmz8P8/
+          yTVKkInLCrloAG8ym9zNdkdFAc++Ek/7krhAjouuW6dGF4CnJBStZR24NT3Iw0yg
+          m3jbMR/1oE2v8v/wETNV6mygUUBQS1cM12QWoSdyuS6x+5dt3ZUnuXJ1BALfosv+
+          pyk4rgIPnuDvq+/mz+HOenBoPsc/QzooTLLUOf4GdNzH1aUKeM8LPN/x2Tek4ZOm
+          XYpsO+YW+gWTNc/MCnG6FuIUfWjccrGc09Z2vB3qrnexG+fymG2LgcKrrJA5U+Ny
+          YtzKMuWz+M7OJAa9tlz1FhyFcwi1A1zuxGtP8/uGboGSRXqh6tKiGIbGWcsu143Y
+          VkxRMIjQrZlAarVw5DD4TnLcXp7LP6zb21EstyfTCue9gMVtVpWIxaoHHrp9oN5t
+          NuPgpe+LfxRmrp1OzLzezuJWKSwUhRUqfl3VrALW7rNDjbDKgpnxLgS0jekdmGgT
+          nregpwXrtfTkVxX3VfynOZUtDwIDAQABo2MwYTAdBgNVHQ4EFgQUsaW+6Ugy4mfu
+          sAM7FfmiJgnDL7YwHwYDVR0jBBgwFoAUsaW+6Ugy4mfusAM7FfmiJgnDL7YwDwYD
+          VR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAYYwDQYJKoZIhvcNAQELBQADggIB
+          ALHHq20za5oRMgOiw2ZCDeiFCESYuugcNX8Ux96RHEvB49SM7GVSZjf4aMbqE+Ec
+          JDER0jb0O3TSke74/1lOzvTky/dmunNQjlHr7Phi5G8F90+RzeB67ukyxhrFJUbv
+          ExIo7OWIHBxkZigYb7ofL8TQZLvhV07Exfdsia1QDvkdZ5c6G9SUjEDGtvRs2Q5d
+          yuC4Im8hJKak9u4Nlbt6nDlkfuAs9aYh2bNFitq1J5Ho8gpqTnw2Nu1Du3kyrv0s
+          R80Lkz0izyd3fz+nfxond2sww2nfOkBZIoAeNKwz0OHTTyy1YUBpeS7OOve3PfFk
+          hcIUhcvLcCWm+QhqvQWMJMljYUm/yjo3WBhGMSDebpt3eBeFANkV9uRlVe7ENVa7
+          EZM+eZcWRE1RSZPz6EZJxM80AeIdfAq0IX8EBongB19ydx1wjaayGaAw/mEbIu4e
+          PZuN0FtAgdn/O3pA9SO1pX/9PBTx/fsyKVgGCUcvKd/hT39vWnU5IHFvl/jvYr7Z
+          C6hS2xsMm/u8bFpasLxsO4/rjZPZ8sJKyt2duhuN801hzgihZ4iiX1nJPX7v3tE0
+          6oqEA/P0pPE2spXeQZa4jIIB+2BHum+cqRTC19MSVUvfr+MLp4IoubOJ6QvNYLQl
+          uv8Tbwmxtdc/NNpzNGFFbWLuIZ7RLKLvEtX2UDzYe397
+          -----END CERTIFICATE-----
+
 controlPlane:
   patches:
     # Disable search domain everywhere
@@ -235,3 +274,14 @@ controlPlane:
                   discard_unpacked_layers = false
               [plugins."io.containerd.cri.v1.runtime"]
                 device_ownership_from_security_context = true
+
+worker:
+  patches:
+    - *disableSearchDomainPatch
+    - *nameServersPatch
+    - *timeServersPatch
+    - *clusterDiscovery
+    - *hostDns
+    - *kubeletPatch
+    - *sysctlsPatch
+    - *containerdPatch

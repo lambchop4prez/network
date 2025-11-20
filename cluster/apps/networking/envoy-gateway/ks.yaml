@@ -1,0 +1,44 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: envoy-gateway
+spec:
+  commonMetadata:
+    app.kubernetes.io/name: envoy-gateway
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: envoy-gateway
+      namespace: networking
+  interval: 1h
+  path: "./cluster/networking/envoy-gateway/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: network
+    namespace: flux-system
+  targetNamespace: networking
+  timeout: 5m
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: envoy-gateway-config
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: envoy-gateway
+  dependsOn:
+    - name: envoy-gateway
+      namespace: networking
+  interval: 1h
+  path: "./cluster/networking/envoy-gateway/config"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: network
+    namespace: flux-system
+  targetNamespace: networking
+  timeout: 5m
