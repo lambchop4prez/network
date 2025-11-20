@@ -95,7 +95,7 @@ spec:
       network:
         provider: host
       storage:
-        useAllNodes: false
+        useAllNodes: true
         useAllDevices: false
         config:
           osdsPerDevice: "1"
