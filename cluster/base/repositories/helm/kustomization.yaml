@@ -12,7 +12,7 @@ resources:
   - influxdata.yaml
   - ingress-nginx.yaml
   - jetstack.yaml
-  - k8s-gateway.yaml
+  # - k8s-gateway.yaml
   - metrics-server.yaml
   - minio.yaml
   - nfs-subdir-external-provisioner.yaml
