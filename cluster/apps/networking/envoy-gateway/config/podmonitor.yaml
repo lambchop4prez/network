@@ -8,7 +8,7 @@ spec:
   namespaceSelector:
     matchNames:
       - networking
-  podMetricsEndpoint:
+  podMetricsEndpoints:
     - port: metrics
       path: /stats/prometheus
       honorLabels: true
