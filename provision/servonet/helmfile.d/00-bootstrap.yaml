@@ -18,6 +18,11 @@ releases:
     chart: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
     version: 79.6.1
 
+  - name: envoy-gateway
+    namespace: networking
+    chart: oci://docker.io/envoyproxy/gateway-helm
+    version: 1.6.0
+
   - name: cilium
     namespace: kube-system
     chart: oci://ghcr.io/home-operations/charts-mirror/cilium
