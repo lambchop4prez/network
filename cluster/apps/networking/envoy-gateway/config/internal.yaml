@@ -20,7 +20,7 @@ spec:
       port: 443
       allowedRoutes:
         namespaces:
-          from: ALL
+          from: All
       tls:
         certificateRefs:
           - kind: Secret
