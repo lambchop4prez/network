@@ -47,7 +47,6 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: networking
-            secretName: "echo-server-cert"
     resources:
       requests:
         cpu: 5m
