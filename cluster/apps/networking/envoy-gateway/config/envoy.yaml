@@ -101,9 +101,9 @@ spec:
     - name: envoy-internal
       namespace: networking
       sectionName: http
-    - name: envoy-internal
-      namespace: networking
-      sectionName: http
+    # - name: envoy-internal
+    #   namespace: networking
+    #   sectionName: http
   rules:
     - filters:
         - type: RequestRedirect
