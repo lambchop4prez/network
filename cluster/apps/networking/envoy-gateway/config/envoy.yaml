@@ -5,7 +5,7 @@ metadata:
   name: envoy
 spec:
   logging:
-    levels:
+    level:
       default: info
   provider:
     type: Kubernetes
