@@ -19,7 +19,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: network
-    namespace: flux-system
   targetNamespace: networking
   timeout: 5m
 
@@ -35,13 +34,12 @@ spec:
       app.kubernetes.io/name: envoy-gateway
   dependsOn:
     - name: envoy-gateway
-      namespace: networking
+      namespace: flux-system
   interval: 1h
   path: "./cluster/networking/envoy-gateway/config"
   prune: true
   sourceRef:
     kind: GitRepository
     name: network
-    namespace: flux-system
   targetNamespace: networking
   timeout: 5m
