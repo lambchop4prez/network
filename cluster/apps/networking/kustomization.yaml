@@ -7,3 +7,4 @@ resources:
   - cert-manager/ks.yaml
   - k8s-gateway/ks.yaml
   - echo-server/ks.yaml
+  - envoy-proxy/ks.yaml
