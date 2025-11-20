@@ -5,7 +5,7 @@ metadata:
   name: envoy-proxy
 spec:
   jobLabel: envoy-proxy
-  namespaceSelctor:
+  namespaceSelector:
     matchNames:
       - networking
   podMetricsEndpoint:
