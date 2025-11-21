@@ -5,12 +5,12 @@ metadata:
   name: &appname cert-manager
   namespace: flux-system
 spec:
-  targetNamespace: networking
+  targetNamespace: kube-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./cluster/apps/networking/cert-manager/app"
+  path: "./cluster/apps/kube-system/cert-manager/app"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -23,12 +23,12 @@ metadata:
   name: &appname cert-manager-manifests
   namespace: flux-system
 spec:
-  targetNamespace: networking
+  targetNamespace: kube-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./cluster/apps/networking/cert-manager/manifests"
+  path: "./cluster/apps/kube-system/cert-manager/manifests"
   prune: true
   dependsOn:
     - name: cert-manager
