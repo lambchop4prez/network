@@ -24,7 +24,7 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: servonet-internal
+            name: servonet-internal-tls
 
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
