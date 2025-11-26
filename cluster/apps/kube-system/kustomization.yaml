@@ -6,4 +6,3 @@ resources:
   - ./node-feature-discovery/ks.yaml
   # - nvidia-device-plugin/ks.yaml
   - ./external-secrets/ks.yaml
-  - ./step-issuer/ks.yaml
