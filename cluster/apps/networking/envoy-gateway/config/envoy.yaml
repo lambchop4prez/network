@@ -105,6 +105,15 @@ spec:
     #   namespace: networking
     #   sectionName: http
   rules:
+    - matches:
+        - path:
+            value: "/.well-known"
+      filters:
+        - type: RequestHeaderModifier
+          requestHeaderModifier:
+            add:
+              - name: "x-acme-challenge"
+                value: "true"
     - filters:
         - type: RequestRedirect
           requestRedirect:
