@@ -11,4 +11,4 @@ spec:
   commonName: "servonet.lan"
   dnsNames:
     - "servonet.lan"
-    - "*.servonet.lan"
+    - "echo.servonet.lan"
