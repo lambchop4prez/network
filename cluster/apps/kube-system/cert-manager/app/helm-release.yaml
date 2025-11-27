@@ -18,3 +18,5 @@ spec:
   values:
     installCRDs: true
     replicaCount: 1
+    extraArgs:
+      - --enable-gateway-api
