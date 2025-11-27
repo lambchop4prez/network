@@ -12,5 +12,8 @@ spec:
       name: acme-issuer-account-key
     solvers:
       - http01:
-          ingress:
-            ingressClassName: nginx
+          gatewayHTTPRoute:
+            parentRefs:
+              - name: envoy-challenge
+                namespace: networking
+                kind: Gateway
