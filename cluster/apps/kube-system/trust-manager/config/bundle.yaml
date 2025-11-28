@@ -6,7 +6,7 @@ metadata:
 spec:
   sources:
     - useDefaultCAs: true
-    - inline: |
+    - inLine: |
         -----BEGIN CERTIFICATE-----
         MIIFXTCCA0WgAwIBAgIUEBHABloUL4dqE9fRDw/tNgsvKWQwDQYJKoZIhvcNAQEL
         BQAwNTEUMBIGA1UEAwwLSG9tZWxhYiBMYW4xCzAJBgNVBAYTAlVTMRAwDgYDVQQK
