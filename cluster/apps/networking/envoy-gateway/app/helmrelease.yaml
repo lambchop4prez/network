@@ -15,7 +15,7 @@ spec:
   values:
     config:
       envoyGateway:
-        extensionsApis:
+        extensionApis:
           enableEnvoyPatchPolicy: true
         provider:
           type: Kubernetes
