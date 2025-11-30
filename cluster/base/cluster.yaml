@@ -21,6 +21,8 @@ metadata:
   name: apps
   namespace: flux-system
 spec:
+  decryption:
+    provider: sops
   interval: 10m0s
   path: ./cluster/apps
   prune: true
