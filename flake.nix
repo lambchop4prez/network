@@ -46,7 +46,7 @@
               mkShell {
                 packages = [
                   age
-
+                  minijinja
                   helmfile
                   kubectl
                   kubernetes-helm

@@ -1,0 +1,22 @@
+---
+keys:
+  - &user_key age10tgyjaw5a7smf72m44k5g725wnyt9zt2crhq8ta5zcsc79n9jvasmxn2kx
+  - &flux_key age120w7753mv7dkmg78uu9lsjlplxprpy4kfgr8rx9vfkdckmtttees75m003
+creation_rules:
+  - path_regex: provision/servonet/.*\.sops.ya?ml$
+    key_groups:
+      - age:
+          - *user_key
+          - *flux_key
+
+  - path_regex: cluster/.*\.sops\.ya?ml$
+    encrypted_regex: "^(data|stringData)$"
+    key_groups:
+      - age:
+          - *user_key
+          - *flux_key
+
+  - path_regex: .*\.sops\.ya?ml$
+    key_groups:
+      - age:
+          - *user_key
