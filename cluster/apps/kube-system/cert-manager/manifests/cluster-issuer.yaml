@@ -33,7 +33,6 @@ spec:
           cloudflare:
             apiTokenSecretRef:
               name: cluster-secrets
-              namespace: flux-system
               key: CLOUDFLARE_API_KEY
         selector:
           dnsZones:
