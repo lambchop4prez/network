@@ -17,3 +17,24 @@ spec:
               - name: envoy-internal
                 namespace: networking
                 kind: Gateway
+
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-production
+    solvers:
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: cluster-secrets
+              namespace: flux-system
+              key: CLOUDFLARE_API_KEY
+        selector:
+          dnsZones:
+            - ${ EXTERNAL_DOMAIN }
