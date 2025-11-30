@@ -36,4 +36,4 @@ spec:
               key: CLOUDFLARE_API_KEY
         selector:
           dnsZones:
-            - ${ EXTERNAL_DOMAIN }
+            - ${EXTERNAL_DOMAIN}

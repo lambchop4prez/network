@@ -6,9 +6,9 @@ metadata:
 spec:
   secretName: servonet-internal-tls
   issuerRef:
-    name: step
+    name: letsencrypt
     kind: ClusterIssuer
-  commonName: "servonet.lan"
+  commonName: "${EXTERNAL_DOMAIN}"
   dnsNames:
-    - "servonet.lan"
-    - "echo.servonet.lan"
+    - "${EXTERNAL_DOMAIN}"
+    - "*.${EXTERNAL_DOMAIN}"
