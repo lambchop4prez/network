@@ -23,6 +23,8 @@ metadata:
 spec:
   decryption:
     provider: sops
+    secretRef:
+      name: sops-age
   interval: 10m0s
   path: ./cluster/apps
   prune: true
