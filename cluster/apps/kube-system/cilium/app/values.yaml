@@ -53,7 +53,6 @@ k8sServiceHost: localhost
 k8sServicePort: 7445
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-rollOutCiliumPods: true
 localRedirectPolicy: true
 l2announcements:
   enabled: true
@@ -68,6 +67,7 @@ k8sClientRateLimit:
 ingressController:
   enabled: false
   loadbalancerMode: shared
+rollOutCiliumPods: true
 routingMode: native
 
 securityContext:
@@ -88,3 +88,6 @@ securityContext:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
+socketLB:
+  enabled: true
+  hostNamespaceOnly: true
