@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.envoyproxy.io/envoyproxy_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
 metadata:
@@ -29,6 +30,7 @@ spec:
         compression:
           type: Zstd
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/gatewayclass_v1.json
 apiVersion: gateway.networking.k8s.io/v1
 kind: GatewayClass
 metadata:
@@ -40,8 +42,8 @@ spec:
     kind: EnvoyProxy
     name: envoy
     namespace: networking
-
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.envoyproxy.io/backendtrafficpolicy_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: BackendTrafficPolicy
 metadata:
@@ -52,7 +54,7 @@ spec:
     - type: Gzip
     - type: Zstd
   connection:
-    bufferLimit: 64Mi
+    bufferLimit: 8Mi
   targetSelectors:
     - group: gateway.networking.k8s.io
       kind: Gateway
@@ -60,8 +62,8 @@ spec:
   timeout:
     http:
       requestTimeout: 0s
-
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.envoyproxy.io/clienttrafficpolicy_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
@@ -92,6 +94,7 @@ spec:
       - http/1.1
 
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
