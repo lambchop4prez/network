@@ -4,7 +4,8 @@ bandwidthManager:
   bbr: true
 bpf:
   masquerade: true
-  tproxy: true
+  # Ref: https://github.com/siderolabs/talos/issues/10002
+  hostLegacyRouting: true
 cgroup:
   autoMount:
     enabled: false
