@@ -17,7 +17,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: network
     namespace: flux-system
   targetNamespace: kube-system
   wait: false
