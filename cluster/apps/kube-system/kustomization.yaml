@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - ./cert-manager/ks.yaml
   - ./cilium/ks.yaml
+  - ./coredns/ks.yaml
   - ./node-feature-discovery/ks.yaml
   # - nvidia-device-plugin/ks.yaml
   - ./external-secrets/ks.yaml
