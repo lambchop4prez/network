@@ -2,9 +2,9 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: servonet-internal
+  name: servonet-external
 spec:
-  secretName: servonet-internal-tls
+  secretName: servonet-external-tls
   issuerRef:
     name: letsencrypt
     kind: ClusterIssuer
@@ -12,3 +12,17 @@ spec:
   dnsNames:
     - "${EXTERNAL_DOMAIN}"
     - "*.${EXTERNAL_DOMAIN}"
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: servonet-internal
+spec:
+  secretName: servonet-internal-tls
+  issuerRef:
+    name: step
+    kind: ClusterIssuer
+  commonName: "servonet.lan"
+  dnsNames:
+    - "servonet.lan"
+    - "echo.servonet.lan"
