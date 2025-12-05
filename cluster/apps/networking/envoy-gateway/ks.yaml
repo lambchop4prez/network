@@ -35,6 +35,8 @@ spec:
   dependsOn:
     - name: envoy-gateway
       namespace: flux-system
+    - name: cert-manager-manifests
+      namespace: flux-system
   interval: 1h
   path: "./cluster/apps/networking/envoy-gateway/config"
   prune: true
