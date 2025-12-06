@@ -23,6 +23,9 @@ spec:
   values:
     fullnameOverride: k8s-gateway
     domain: "servonet.lan"
+    dnsChallenge:
+      enabled: true
+      domain: "servonet.lan"
     ttl: 1
     service:
       type: LoadBalancer
