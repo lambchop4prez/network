@@ -21,3 +21,5 @@ spec:
     extraArgs:
       - --enable-gateway-api
       - --acme-http01-solver-nameservers="10.4.1.1:53"
+      - --dns01-recursive-nameservers-only
+      - --dns01-recursive-nameservers="10.4.1.1:53"

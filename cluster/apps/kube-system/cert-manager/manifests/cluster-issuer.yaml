@@ -11,12 +11,14 @@ spec:
     privateKeySecretRef:
       name: acme-issuer-account-key
     solvers:
-      - http01:
-          gatewayHTTPRoute:
-            parentRefs:
-              - name: envoy-internal
-                namespace: networking
-                kind: Gateway
+      - dns01:
+
+      # - http01:
+      #     gatewayHTTPRoute:
+      #       parentRefs:
+      #         - name: envoy-internal
+      #           namespace: networking
+      #           kind: Gateway
 
 ---
 apiVersion: cert-manager.io/v1
