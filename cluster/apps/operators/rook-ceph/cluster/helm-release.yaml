@@ -35,6 +35,8 @@ spec:
             namespace: networking
 
     cephClusterSpec:
+      cleanupPolicy:
+        wipeDevicesFromOtherClusters: true
       resources:
         mgr:
           requests:
