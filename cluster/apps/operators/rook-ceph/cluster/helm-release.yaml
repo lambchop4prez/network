@@ -102,7 +102,7 @@ spec:
         nodes:
           - name: "tom-7aff"
             devices:
-              - name: "sdb"
+              - name: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1"
 
           - name: "tom-d464"
             devices:
