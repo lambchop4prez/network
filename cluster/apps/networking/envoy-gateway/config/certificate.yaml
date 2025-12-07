@@ -28,3 +28,4 @@ spec:
     - "echo.servonet.lan"
     - "prometheus.servonet.lan"
     - "rook.servonet.lan"
+    - "grafana.servonet.lan"
