@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HttpRoute
+metadata:
+  name: grafana
+spec:
+  hostnames:
+    - grafana.servonet.lan
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy-internal
+      namespace: networking
+  rules:
+    - backendRefs:
+        - kind: Service
+          name: grafana
+          port: 3000

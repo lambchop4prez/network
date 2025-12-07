@@ -58,7 +58,7 @@ spec:
           - name: Prometheus
             type: prometheus
             access: proxy
-            url: "https://prometheus.lan"
+            url: "https://prometheus.servonet.lan"
             jsonData:
               tlsSkipVerify: true
           - name: Loki
@@ -85,12 +85,6 @@ spec:
           # renovate: dashboardName="Node Exporter Full"
           gnetId: 1860
           revision: 37
-          datasource: Prometheus
-        nginx:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
-          datasource: Prometheus
-        nginx-request-handling-performance:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
           datasource: Prometheus
     sidecar:
       dashboards:
