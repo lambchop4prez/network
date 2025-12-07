@@ -6,14 +6,9 @@ metadata:
   namespace: networking
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: app-template
-      version: 3.7.3
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: echo
   maxHistory: 2
   install:
     remediation:
@@ -32,14 +27,16 @@ spec:
         containers:
           app:
             image:
-              repository: docker.io/jmalloc/echo-server
-              tag: v0.3.7
+              repository: ghcr.io/mendhak/http-https-echo
+              tag: 38
+            env:
+              HTTP_PORT: &port 80
     service:
       main:
         controller: main
         ports:
           http:
-            port: &port 8080
+            port: *port
     route:
       main:
         hostnames:
