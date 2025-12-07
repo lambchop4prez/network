@@ -50,7 +50,7 @@ spec:
             namespace: networking
         rules:
           - backendRefs:
-              - identifier: app
+              - identifier: main
                 port: *port
     resources:
       requests:
