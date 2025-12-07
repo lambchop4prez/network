@@ -80,18 +80,14 @@ spec:
     prometheusOperator:
       configReloaderCpu: 0
     prometheus:
-      # ingress:
-      #   enabled: true
-      #   pathType: Prefix
-      #   ingressClassName: "nginx"
-      #   annotations:
-      #     cert-manager.io/cluster-issuer: "step"
-      #   hosts:
-      #     - "prometheus.lan"
-      #   tls:
-      #     - hosts:
-      #         - "prometheus.lan"
-      #       secretName: prometheus-cert
+      route:
+        main:
+          enabled: true
+          hostnames:
+            - prometheus.servonet.lan
+          parentRefs:
+            - name: envoy-internal
+              namespace: networking
       prometheusSpec:
         replicas: 1
         replicaExternalLabelName: "replica"

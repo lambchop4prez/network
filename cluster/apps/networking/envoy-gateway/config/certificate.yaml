@@ -26,3 +26,5 @@ spec:
   dnsNames:
     - "servonet.lan"
     - "echo.servonet.lan"
+    - "prometheus.servonet.lan"
+    - "rook.servonet.lan"
