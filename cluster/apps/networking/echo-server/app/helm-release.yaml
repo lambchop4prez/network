@@ -48,6 +48,10 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: networking
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
     resources:
       requests:
         cpu: 5m
