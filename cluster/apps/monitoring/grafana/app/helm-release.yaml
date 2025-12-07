@@ -104,18 +104,18 @@ spec:
       - grafana-clock-panel
     serviceMonitor:
       enabled: true
-    ingress:
-      enabled: true
-      pathType: Prefix
-      ingressClassName: "nginx"
-      annotations:
-        cert-manager.io/cluster-issuer: "step"
-      hosts:
-        - "grafana.lan"
-      tls:
-        - hosts:
-            - "grafana.lan"
-          secretName: grafana-cert
+    # ingress:
+    #   enabled: true
+    #   pathType: Prefix
+    #   ingressClassName: "nginx"
+    #   annotations:
+    #     cert-manager.io/cluster-issuer: "step"
+    #   hosts:
+    #     - "grafana.lan"
+    #   tls:
+    #     - hosts:
+    #         - "grafana.lan"
+    #       secretName: grafana-cert
     serviceAccount:
       create: true
       autoMount: true

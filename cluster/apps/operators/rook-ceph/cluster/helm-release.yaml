@@ -23,19 +23,19 @@ spec:
       enabled: true
     monitoring:
       enabled: true
-    ingress:
-      dashboard:
-        enabled: true
-        ingressClassName: "nginx"
-        annotations:
-          cert-manager.io/cluster-issuer: "step"
-        host:
-          name: "rook.lan"
-          path: "/"
-        tls:
-          - hosts:
-              - "rook.lan"
-            secretName: rook-cert
+    # ingress:
+    #   dashboard:
+    #     enabled: true
+    #     ingressClassName: "nginx"
+    #     annotations:
+    #       cert-manager.io/cluster-issuer: "step"
+    #     host:
+    #       name: "rook.lan"
+    #       path: "/"
+    #     tls:
+    #       - hosts:
+    #           - "rook.lan"
+    #         secretName: rook-cert
     cephClusterSpec:
       resources:
         mgr:

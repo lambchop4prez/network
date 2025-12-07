@@ -25,18 +25,18 @@ spec:
       config:
         global:
           resolve_timeout: 5m
-      ingress:
-        enabled: true
-        pathType: Prefix
-        ingressClassName: "nginx"
-        annotations:
-          cert-manager.io/cluster-issuer: "step"
-        hosts:
-          - "alert-manager.lan"
-        tls:
-          - hosts:
-              - "alert-manager.lan"
-            secretName: "alert-manager-cert"
+      # ingress:
+      #   enabled: true
+      #   pathType: Prefix
+      #   ingressClassName: "nginx"
+      #   annotations:
+      #     cert-manager.io/cluster-issuer: "step"
+      #   hosts:
+      #     - "alert-manager.lan"
+      #   tls:
+      #     - hosts:
+      #         - "alert-manager.lan"
+      #       secretName: "alert-manager-cert"
       alertmanagerSpec:
         storage:
           volumeClaimTemplate:
@@ -80,18 +80,18 @@ spec:
     prometheusOperator:
       configReloaderCpu: 0
     prometheus:
-      ingress:
-        enabled: true
-        pathType: Prefix
-        ingressClassName: "nginx"
-        annotations:
-          cert-manager.io/cluster-issuer: "step"
-        hosts:
-          - "prometheus.lan"
-        tls:
-          - hosts:
-              - "prometheus.lan"
-            secretName: prometheus-cert
+      # ingress:
+      #   enabled: true
+      #   pathType: Prefix
+      #   ingressClassName: "nginx"
+      #   annotations:
+      #     cert-manager.io/cluster-issuer: "step"
+      #   hosts:
+      #     - "prometheus.lan"
+      #   tls:
+      #     - hosts:
+      #         - "prometheus.lan"
+      #       secretName: prometheus-cert
       prometheusSpec:
         replicas: 1
         replicaExternalLabelName: "replica"
