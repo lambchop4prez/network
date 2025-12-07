@@ -16,4 +16,4 @@ spec:
     - backendRefs:
         - kind: Service
           name: grafana
-          port: 3000
+          port: 80
