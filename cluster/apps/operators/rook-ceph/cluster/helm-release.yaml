@@ -102,15 +102,15 @@ spec:
         nodes:
           - name: "tom-7aff"
             devices:
-              - name: "/dev/sdb"
+              - name: "sdb"
 
           - name: "tom-d464"
             devices:
-              - name: "/dev/sdb"
+              - name: "sdb"
 
           - name: "tom-64c4"
             devices:
-              - name: "/dev/sdb"
+              - name: "sdb"
     cephBlockPools:
       - name: ceph-blockpool
         spec:
