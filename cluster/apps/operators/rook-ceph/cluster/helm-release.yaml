@@ -102,15 +102,15 @@ spec:
         nodes:
           - name: "tom-7aff"
             devices:
-              - name: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1"
+              - name: "/dev/sdb"
 
           - name: "tom-d464"
             devices:
-              - name: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1"
+              - name: "/dev/sdb"
 
           - name: "tom-64c4"
             devices:
-              - name: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1"
+              - name: "/dev/sdb"
     cephBlockPools:
       - name: ceph-blockpool
         spec:

@@ -45,3 +45,4 @@ resources:
 cluster:
     just log info 'Bootstrap cluster'
     helmfile sync
+    sops exec-file "{{ cluster_dir }}/components/sops/secrets.sops.yaml" "kubectl --namespace flux-system apply --server-side --filename {}"

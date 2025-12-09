@@ -30,7 +30,7 @@ releases:
     wait: true
     values:
       - templates/values.yaml.gotmpl
-  
+
   - name: coredns
     namespace: kube-system
     chart: oci://ghcr.io/coredns/charts/coredns
@@ -56,3 +56,4 @@ releases:
       - templates/values.yaml.gotmpl
     needs:
       - flux-system/flux-operator
+      - monitoring/kube-prometheus-stack
