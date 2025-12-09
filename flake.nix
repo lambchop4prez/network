@@ -46,10 +46,12 @@
               mkShell {
                 packages = [
                   age
-                  minijinja
+                  gum
                   helmfile
+                  just
                   kubectl
                   kubernetes-helm
+                  minijinja
                   sops
                   talosctl
                   talhelper

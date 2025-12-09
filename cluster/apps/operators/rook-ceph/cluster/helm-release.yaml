@@ -106,11 +106,11 @@ spec:
 
           - name: "tom-d464"
             devices:
-              - name: "sdb"
+              - name: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1"
 
           - name: "tom-64c4"
             devices:
-              - name: "sdb"
+              - name: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1"
     cephBlockPools:
       - name: ceph-blockpool
         spec:

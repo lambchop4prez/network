@@ -8,6 +8,87 @@ spec:
     kind: OCIRepository
     name: flux-instance
   interval: 30m
-  valuesFrom:
-    - kind: ConfigMap
-      name: flux-instance-values
+  values:
+    instance:
+      distribution:
+        artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.33.0
+        version: 2.7.3
+      cluster:
+        domain: "servonet.lan"
+        networkPolicy: false
+      components:
+        - source-controller
+        - kustomize-controller
+        - helm-controller
+        - notification-controller
+      sync:
+        name: network
+        kind: GitRepository
+        url: https://github.com/lambchop4prez/network.git
+        ref: refs/heads/main
+        path: cluster/base
+        interval: 1h
+        pullSecret: github-token
+      commonMetadata:
+        labels:
+          app.kubernetes.io/name: flux
+      kustomize:
+        patches:
+          # Increase the number of reconciliations that can be performed in parallel and bump the resources limits
+          # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#increase-the-number-of-workers-and-limits
+          - patch: |
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --concurrent=12
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --kube-api-qps=500
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --kube-api-burst=1000
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --requeue-dependency=5s
+            target:
+              kind: Deployment
+              name: "(kustomize-controller|helm-controller|source-controller)"
+          - patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: all
+              spec:
+                template:
+                  spec:
+                    containers:
+                      - name: manager
+                        resources:
+                          limits:
+                            memory: 2Gi
+            target:
+              kind: Deployment
+              name: "(kustomize-controller|helm-controller|source-controller)"
+          # Enable in-memory kustomize builds
+          # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#enable-in-memory-kustomize-builds
+          - patch: |
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --concurrent=20
+              - op: replace
+                path: /spec/template/spec/volumes/0
+                value:
+                  name: temp
+                  emptyDir:
+                    medium: Memory
+            target:
+              kind: Deployment
+              name: kustomize-controller
+
+          - # Controller-level SOPS decryption
+            patch: |-
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --sops-age-secret=sops-age
+            target:
+              kind: Deployment
+              name: kustomize-controller
