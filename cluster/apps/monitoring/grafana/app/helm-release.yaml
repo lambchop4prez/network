@@ -58,15 +58,7 @@ spec:
           - name: Prometheus
             type: prometheus
             access: proxy
-            url: "https://prometheus.servonet.lan"
-            jsonData:
-              tlsSkipVerify: true
-          - name: Loki
-            type: loki
-            access: proxy
-            url: https://loki.lan
-            jsonData:
-              tlsSkipVerify: true
+            url: "http://prometheus-prometheus.monitoring.svc.servonet.lan:9090"
     dashboards:
       default:
         flux-cluster:
