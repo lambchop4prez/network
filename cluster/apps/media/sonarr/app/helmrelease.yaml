@@ -7,16 +7,9 @@ metadata:
   namespace: media
 spec:
   interval: 5m
-  chart:
-    spec:
-      # renovate: registryUrl=https://bjw-s.github.io/helm-charts
-      chart: app-template
-      version: 3.7.3
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s
-        namespace: flux-system
-      interval: 5m
+  chartSpec:
+    kind: OCIRepository
+    name: sonarr
   values:
     controllers:
       main:
@@ -49,23 +42,13 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
+    route:
       main:
-        enabled: true
-        className: "nginx"
-        annotations:
-          cert-manager.io/cluster-issuer: "step"
-        hosts:
-          - host: &host "sonarr.lan"
-            paths:
-              - path: /
-                service:
-                  identifier: main
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: sonarr-cert
+        hostnames:
+          - sonarr.servonet.lan
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
     persistence:
       config:
         enabled: true
