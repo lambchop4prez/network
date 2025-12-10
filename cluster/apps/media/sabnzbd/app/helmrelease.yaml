@@ -5,21 +5,13 @@ metadata:
   name: sabnzbd
   namespace: media
 spec:
-  interval: 5m
-  chart:
-    spec:
-      # renovate: registryUrl=https://bjw-s.github.io/helm-charts
-      chart: app-template
-      version: 3.7.3
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s
-        namespace: flux-system
-      interval: 5m
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: sabnzbd
   values:
     controllers:
       main:
-        type: statefulset
         pod:
           securityContext:
             runAsUser: 1000
@@ -35,7 +27,7 @@ spec:
               SABNZBD__PORT: &port 8080
               SABNZBD__HOST_WHITELIST_ENTRIES: >-
                 sabnzbd,
-                sabnzbd.lan,
+                sabnzbd.servonet.lan,
                 sabnzbd.media.svc.cluster.local
             resources:
               requests:
@@ -50,24 +42,13 @@ spec:
         ports:
           http:
             port: *port
-
-    ingress:
+    route:
       main:
-        enabled: true
-        className: "nginx"
-        annotations:
-          cert-manager.io/cluster-issuer: "step"
-        hosts:
-          - host: &host "sabnzbd.lan"
-            paths:
-              - path: /
-                service:
-                  identifier: main
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: "sabnzbd-cert"
+        hostnames:
+          - sabnzbd.servonet.lan
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
 
     persistence:
       config:

@@ -29,3 +29,7 @@ spec:
     - "prometheus.servonet.lan"
     - "rook.servonet.lan"
     - "grafana.servonet.lan"
+    - "sabnzbd.servonet.lan"
+    - "sonarr.servonet.lan"
+    - "radarr.servonet.lan"
+    - "jellyfin.servonet.lan"

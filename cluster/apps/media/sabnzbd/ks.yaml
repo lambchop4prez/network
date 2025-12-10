@@ -16,3 +16,5 @@ spec:
     kind: GitRepository
     name: network
   wait: true
+  dependsOn:
+    - name: rook-cluster
