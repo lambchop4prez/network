@@ -8,6 +8,10 @@ spec:
   secretName: *name
   dnsNames:
     - bitwarden-sdk-server.kube-system.svc.servonet.lan
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS8
+    size: 2048
   issuerRef:
     name: step
     kind: ClusterIssuer
