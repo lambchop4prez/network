@@ -9,5 +9,5 @@ spec:
   dnsNames:
     - bitwarden-sdk-server.kube-system.svc.servonet.lan
   issuerRef:
-    name: step-ca
+    name: step
     kind: ClusterIssuer
