@@ -12,6 +12,8 @@ spec:
   interval: 10m
   path: "./cluster/apps/kube-system/external-secrets/app"
   prune: true
+  dependsOn:
+    - name: cert-manager-manifests
   sourceRef:
     kind: GitRepository
     name: network
