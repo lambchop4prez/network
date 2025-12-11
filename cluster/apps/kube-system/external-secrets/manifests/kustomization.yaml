@@ -6,4 +6,3 @@ metadata:
   namespace: flux-system
 resources:
   - ./clustersecretstore.yaml
-  - ./certificate.yaml
