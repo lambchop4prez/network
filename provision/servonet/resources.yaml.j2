@@ -9,6 +9,14 @@ type: Opaque
 stringData:
   age.agekey: {{ ENV.SOPS_AGE_KEY }}
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: bitwarden-access-token
+  namespace: kube-system
+stringData:
+  token: ENV.BITWARDEN_ACCESS_TOKEN
+---
 # https://kubernetes.io/docs/concepts/configuration/secret/
 apiVersion: v1
 kind: Secret

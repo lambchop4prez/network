@@ -6,22 +6,18 @@ metadata:
   namespace: kube-system
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: external-secrets
-      version: 1.1.1
-      interval: 30m
-      sourceRef:
-        kind: HelmRepository
-        name: external-secrets
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: external-secrets
   values:
     installCRDs: true
     replicaCount: 3
     leaderElect: true
     bitwarden-sdk-server:
       enabled: true
-    grafana:
+      podAnnotations:
+        secret.reloader.stakater.com/reload: bitwarden, bitwarden-tls-certs
+    grafanaDashboard:
       enabled: true
     serviceMonitor:
       enabled: true
@@ -38,3 +34,5 @@ spec:
       serviceMonitor:
         enabled: true
         interval: 1m
+    webhook:
+      replicaCount: 2

@@ -5,4 +5,5 @@ metadata:
   name: external-secrets
   namespace: flux-system
 resources:
-  - helm-release.yaml
+  - ./ocirepository.yaml
+  - ./helmrelease.yaml

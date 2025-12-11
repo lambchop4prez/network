@@ -5,4 +5,5 @@ metadata:
   name: external-secrets-config
   namespace: flux-system
 resources:
-  - clustersecretstore.yaml
+  - ./clustersecretstore.yaml
+  - ./certificate.yaml
