@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./cluster/apps/kube-system/external-secrets/app"
+  path: "./cluster/apps/external-secrets/external-secrets/app"
   prune: true
   dependsOn:
     - name: cert-manager-manifests
@@ -31,7 +31,7 @@ spec:
       app.kubernetes.io/name: external-secrets
       app.kubernetes.io/component: manifests
   interval: 10m
-  path: "./cluster/apps/kube-system/external-secrets/manifests"
+  path: "./cluster/apps/external-secrets/external-secrets/manifests"
   prune: true
   dependsOn:
     - name: external-secrets
