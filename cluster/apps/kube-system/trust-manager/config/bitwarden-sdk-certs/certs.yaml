@@ -19,8 +19,8 @@ spec:
     organizations:
       - external-secrets.io
   dnsNames:
-    - external-secrets-bitwarden-sdk-server.external-secrets.svc.cluster.local
-    - bitwarden-sdk-server.external-secrets.svc.cluster.local
+    - external-secrets-bitwarden-sdk-server.external-secrets.svc.servonet.lan
+    - bitwarden-sdk-server.external-secrets.svc.servonet.lan
     - localhost
   ipAddresses:
     - 127.0.0.1
