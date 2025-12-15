@@ -7,7 +7,7 @@ metadata:
 spec:
   secretName: *name
   dnsNames:
-    - bitwarden-sdk-server.kube-system.svc.servonet.lan
+    - bitwarden-sdk-server.external-secrets.svc.servonet.lan
   privateKey:
     algorithm: RSA
     encoding: PKCS8
