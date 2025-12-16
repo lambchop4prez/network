@@ -15,7 +15,7 @@ metadata:
   name: bitwarden-access-token
   namespace: external-secrets
 stringData:
-  token: ENV.BITWARDEN_ACCESS_TOKEN
+  token: {{ ENV.BITWARDEN_ACCESS_TOKEN }}
 ---
 # https://kubernetes.io/docs/concepts/configuration/secret/
 apiVersion: v1
