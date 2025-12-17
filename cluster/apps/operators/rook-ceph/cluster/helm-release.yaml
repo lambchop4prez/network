@@ -31,7 +31,7 @@ spec:
           path: /
           pathType: PathPrefix
         parentRefs:
-          - name: envoy-gateway
+          - name: envoy-internal
             namespace: networking
 
     cephClusterSpec:
