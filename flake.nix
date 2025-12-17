@@ -46,6 +46,7 @@
               mkShell {
                 packages = [
                   age
+                  cmctl
                   fluxcd
                   gum
                   helmfile
