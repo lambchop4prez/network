@@ -15,6 +15,7 @@ spec:
 
       - http01:
           gatewayHTTPRoute:
+            serviceType: ClusterIP
             parentRefs:
               - name: envoy-internal
                 namespace: networking
