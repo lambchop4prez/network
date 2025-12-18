@@ -10,7 +10,7 @@ spec:
   replicas: 3
   env:
     - name: DEBUG
-      value: true
+      value: "true"
     - name: MAX_MEMORY
       valueFrom:
         resourceFieldRef:
