@@ -10,8 +10,8 @@ spec:
     labels:
       app.kubernetes.io: *appname
   interval: 10m
-  path: "./cluster/apps/operators/rook-ceph/operator"
-  prune: true
+  path: "./cluster/apps/rook-ceph/rook-ceph/operator"
+  prkune: true
   sourceRef:
     kind: GitRepository
     name: network
@@ -28,7 +28,7 @@ spec:
     labels:
       app.kubernetes.io: *appname
   interval: 10m
-  path: "./cluster/apps/operators/rook-ceph/cluster"
+  path: "./cluster/apps/rook-ceph/rook-ceph/cluster"
   prune: true
   sourceRef:
     kind: GitRepository
