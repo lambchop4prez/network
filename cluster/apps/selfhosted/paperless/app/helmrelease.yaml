@@ -102,10 +102,12 @@ spec:
 
     persistence:
       data:
+        enabled: true
+        type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: 10Gi
         nameOverride: paperless-data
-        storageClass: ceph-block
+        storageClass: "ceph-block"
         retain: true
         advancedMounts:
           paperless:
