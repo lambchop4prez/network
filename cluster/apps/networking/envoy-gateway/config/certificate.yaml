@@ -33,3 +33,4 @@ spec:
     - "sonarr.servonet.lan"
     - "radarr.servonet.lan"
     - "jellyfin.servonet.lan"
+    - "paperless.servonet.lan"

@@ -54,6 +54,7 @@
                   kubectl
                   kubernetes-helm
                   minijinja
+                  redis
                   sops
                   talosctl
                   talhelper

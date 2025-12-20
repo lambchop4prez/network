@@ -48,3 +48,4 @@ identity.pub
 known_hosts
 vault.env
 .direnv
+.secrets.env

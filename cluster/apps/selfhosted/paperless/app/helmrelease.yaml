@@ -1,0 +1,130 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: paperless
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: paperless
+  interval: 30m
+  values:
+    controllers:
+      paperless:
+        forceRename: paperless
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/paperless-ngx/paperless-ngx
+              tag: 2.20.2
+            env:
+              # Configure application
+              PAPERLESS_SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-secret
+                    key: PAPERLESS_SECRET_KEY
+              PAPERLESS_URL: https://paperless.servonet.lan
+              PAPERLESS_PORT: "8000"
+              PAPERLESS_TIME_ZONE: "America/Detroit"
+              PAPERLESS_WEBSERVER_WORKERS: "2"
+              PAPERLESS_TASK_WORKERS: "2"
+              # Configure folders
+              PAPERLESS_CONSUMPTION_DIR: /data/nas/incoming
+              PAPERLESS_DATA_DIR: /data/local/data
+              PAPERLESS_EXPORT_DIR: /data/nas/export
+              PAPERLESS_MEDIA_ROOT: /data/local/media
+              # Configure folder importer
+              PAPERLESS_CONSUMER_POLLING: "60"
+              PAPERLESS_CONSUMER_RECURSIVE: "true"
+              PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
+              # Configure OCR
+              PAPERLESS_OCR_LANGUAGES: eng
+              PAPERLESS_OCR_LANGUAGE: eng
+              # Configure database
+              PAPERLESS_DBHOST: postgres17-rw.data-ops.svc.servonet.lan
+              PAPERLESS_DBNAME: paperless
+              PAPERLESS_DBUSER:
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-secret
+                    key: PAPERLESS_DBUSER
+              PAPERLESS_DBPASS:
+                valueFrom:
+                secretKeyRef:
+                  name: paperless-secret
+                  key: PAPERLESS_DBPASS
+              # Configure redis integration
+              PAPERLESS_REDIS: redis://dragonfly.data-ops.svc.servonet.lan:6379
+              # Configure user permissions
+              USERMAP_UID: "3004"
+              USERMAP_GID: "3001"
+              # Configure admin user
+              PAPERLESS_ADMIN_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-secret
+                    key: PAPERLESS_ADMIN_USER
+              PAPERLESS_ADMIN_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-secret
+                    key: PAPERLESS_ADMIN_PASSWORD
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            resources:
+              requests:
+                cpu: 25m
+                memory: 2Gi
+              limits:
+                memory: 6G
+
+    service:
+      app:
+        forceRename: paperless
+        primary: true
+        controller: paperless
+        ports:
+          http:
+            port: &port 8000
+
+    persistence:
+      data:
+        existingClaim: paperless-data
+        advancedMounts:
+          paperless:
+            app:
+              - path: /data/local
+      nas:
+        type: nfs
+        path: /mnt/storage/apps/paperless
+        server: nas.lan
+        advancedMounts:
+          paperless:
+            app:
+              - path: /data/nas
+
+    route:
+      app:
+        hostnames:
+          - paperless.servonet.lan
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
