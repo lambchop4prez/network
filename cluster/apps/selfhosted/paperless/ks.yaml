@@ -6,7 +6,7 @@ metadata:
   name: &app paperless
   namespace: flux-system
 spec:
-  targetNamespace: data-ops
+  targetNamespace: selfhosted
   dependsOn:
     - name: external-secrets-manifests
   commonMetadata:
