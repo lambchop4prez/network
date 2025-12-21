@@ -11,6 +11,8 @@ spec:
   env:
     - name: DEBUG
       value: "true"
+    - name: VERBOSE
+      value: "true"
     - name: MAX_MEMORY
       valueFrom:
         resourceFieldRef:
