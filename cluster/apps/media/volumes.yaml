@@ -126,3 +126,43 @@ spec:
   storageClassName: nas-dataset
   accessModes:
     - ReadWriteMany
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nas-music
+spec:
+  capacity:
+    storage: 1Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  claimRef:
+    name: nas-music
+    namespace: media
+  mountOptions:
+    - nfsvers=4.1
+    - nconnect=8
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
+  nfs:
+    path: /mnt/storage/media/music
+    server: nas.lan
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nas-music
+  namespace: media
+spec:
+  resources:
+    requests:
+      storage: 1Mi
+  volumeMode: Filesystem
+  storageClassName: nas-dataset
+  accessModes:
+    - ReadWriteMany

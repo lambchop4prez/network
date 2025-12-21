@@ -34,3 +34,4 @@ spec:
     - "radarr.servonet.lan"
     - "jellyfin.servonet.lan"
     - "paperless.servonet.lan"
+    - "lidarr.servonet.lan"
