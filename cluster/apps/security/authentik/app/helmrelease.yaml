@@ -24,7 +24,7 @@ spec:
       #   port: 587
       #   use_tls: false
       #   from: "no-reply@servonet.lan"
-      secret_key: file://secrets/secret_key
+      secret_key: file:///secrets/secret_key
       error_reporting:
         enable: true
         send_pii: false
@@ -34,8 +34,8 @@ spec:
       postgresql:
         host: "postgres17-rw.data-ops.svc.servonet.lan"
         name: "authentik"
-        user: file://secrets/pguser
-        password: file://secrets/pgpass
+        user: file:///secrets/pguser
+        password: file:///secrets/pgpass
       redis:
         host: "dragonfly.data-ops.svc.servonet.lan"
 
