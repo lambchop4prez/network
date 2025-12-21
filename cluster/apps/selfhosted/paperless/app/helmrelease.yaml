@@ -127,7 +127,7 @@ spec:
           - paperless.servonet.lan
         parentRefs:
           - name: envoy-internal
-            namespace: network
+            namespace: networking
 
         rules:
           - backendRefs:
