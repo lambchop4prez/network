@@ -24,7 +24,11 @@ spec:
       #   port: 587
       #   use_tls: false
       #   from: "no-reply@servonet.lan"
-      secret_key: file:///secrets/secret_key
+      secret_key: 
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secret
+            key: secret_key
       error_reporting:
         enable: true
         send_pii: false
