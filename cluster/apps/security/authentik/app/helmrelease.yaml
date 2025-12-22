@@ -24,11 +24,7 @@ spec:
       #   port: 587
       #   use_tls: false
       #   from: "no-reply@servonet.lan"
-      secret_key: 
-        valueFrom:
-          secretKeyRef:
-            name: authentik-secret
-            key: secret_key
+      secret_key: file:///secrets/secret_key
       error_reporting:
         enable: true
         send_pii: false
@@ -78,6 +74,14 @@ spec:
           memory: 512Mi
         limits:
           memory: 2Gi
+      volumes:
+        - name: secrets
+          secret:
+            secretName: authentik-secret
+      volumeMounts:
+        - name: secrets
+          mountPath: /secrets
+          readonly: true
     worker:
       replicas: 1
       serviceAccount:
