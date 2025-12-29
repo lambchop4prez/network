@@ -32,12 +32,12 @@ spec:
       outposts:
         container_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
       postgresql:
-        host: "postgres17-rw.data-ops.svc.servonet.lan"
+        host: "authentik-postgres17-rw.security.svc.servonet.lan"
         name: "authentik"
         user: file:///secrets/pguser
         password: file:///secrets/pgpass
       redis:
-        host: "dragonfly.data-ops.svc.servonet.lan"
+        host: "authentik-dragonfly.security.svc.servonet.lan"
 
     server:
       replicas: 1

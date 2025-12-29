@@ -1,17 +1,14 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/dragonflydb.io/dragonfly_v1alpha1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/dragonflydb.io/dragonfly_v1alpha1.json
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
-  name: dragonfly
-  namespace: data-ops
+  name: ${APP}-dragonfly
 spec:
   image: ghcr.io/dragonflydb/dragonfly:v1.35.1
-  replicas: 3
+  replicas: 2
   env:
     - name: DEBUG
-      value: "true"
-    - name: VERBOSE
       value: "true"
     - name: MAX_MEMORY
       valueFrom:

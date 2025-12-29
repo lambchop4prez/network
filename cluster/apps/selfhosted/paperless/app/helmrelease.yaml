@@ -46,20 +46,20 @@ spec:
               PAPERLESS_OCR_LANGUAGES: eng
               PAPERLESS_OCR_LANGUAGE: eng
               # Configure database
-              PAPERLESS_DBHOST: postgres17-rw.data-ops.svc.servonet.lan
+              PAPERLESS_DBHOST: paperless-postgres17-rw.selfhosted.svc.servonet.lan
               PAPERLESS_DBNAME: paperless
               PAPERLESS_DBUSER:
                 valueFrom:
                   secretKeyRef:
-                    name: paperless-secret
-                    key: PAPERLESS_DBUSER
+                    name: paperless-pg-secret
+                    key: username
               PAPERLESS_DBPASS:
                 valueFrom:
                 secretKeyRef:
-                  name: paperless-secret
-                  key: PAPERLESS_DBPASS
+                  name: paperless-pg-secret
+                  key: password
               # Configure redis integration
-              PAPERLESS_REDIS: redis://dragonfly.data-ops.svc.servonet.lan:6379
+              PAPERLESS_REDIS: redis://paperless-dragonfly.selfhosted.svc.servonet.lan:6379
               # Configure user permissions
               USERMAP_UID: "3004"
               USERMAP_GID: "3001"
