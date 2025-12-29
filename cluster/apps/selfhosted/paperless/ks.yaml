@@ -15,8 +15,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../components/dragonfly/
-    - ../../../components/postgres/
+    - ../../../../components/dragonfly/
+    - ../../../../components/postgres/
   postBuild:
     substitute:
       APP: *app
