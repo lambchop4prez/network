@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: ${APP}-postgres17
+spec:
+  instances: 2
+  imageName: ghcr.io/cloudnative-pg/postgresql:17
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
+  bootstrap:
+    initdb:
+      database: ${APP}
+      owner: ${APP}
+      secret:
+        name: ${APP}-pg-secret
+  storage:
+    size: 10Gi
+    storageClass: ceph-block
+  enableSuperuserAccess: false
+  postgresql:
+    parameters:
+      max_connections: "400"
+      shared_buffers: 256MB
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      memory: 4Gi
+  monitoring:
+    enablePodMonitor: true

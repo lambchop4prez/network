@@ -1,0 +1,17 @@
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: postgres17
+#   annotations:
+#     lbipam.cilium.io/ips: 10.4.16.103
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     cnpg.io/cluster: ${APP}-postgres17
+#     cnpg.io/instanceRole: primary
+#   ports:
+#     - name: postgres
+#       port: 5432
+#       protocol: TCP
+#       targetPort: 5432

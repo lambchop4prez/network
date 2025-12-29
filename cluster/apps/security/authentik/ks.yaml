@@ -6,9 +6,19 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: security
+  dependsOn:
+    - name: external-secrets-manifests
+    - name: cloudnative-pg
+    - name: dragonfly
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../components/dragonfly/
+    - ../../../components/postgres/
+  postBuild:
+    substitute:
+      APP: *app
   interval: 10m
   path: "./cluster/apps/security/authentik/app"
   prune: true
@@ -16,6 +26,3 @@ spec:
     kind: GitRepository
     name: network
   wait: true
-  dependsOn:
-    - name: cloudnative-pg-cluster
-    - name: dragonfly-cluster

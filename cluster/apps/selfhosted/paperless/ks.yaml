@@ -9,9 +9,17 @@ spec:
   targetNamespace: selfhosted
   dependsOn:
     - name: external-secrets-manifests
+    - name: cloudnative-pg
+    - name: dragonfly
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../components/dragonfly/
+    - ../../../components/postgres/
+  postBuild:
+    substitute:
+      APP: *app
   path: ./cluster/apps/selfhosted/paperless/app
   prune: true
   sourceRef:
