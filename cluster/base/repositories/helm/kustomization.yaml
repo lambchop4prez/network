@@ -1,21 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - bitnami.yaml
   - bjw-s.yaml
   - cilium.yaml
-  - crunchydata.yaml
   - emqx.yaml
   - external-dns.yaml
-  - external-secrets.yaml
   - grafana.yaml
-  - influxdata.yaml
-  - ingress-nginx.yaml
   - jetstack.yaml
-  # - k8s-gateway.yaml
   - metrics-server.yaml
-  - minio.yaml
-  - nfs-subdir-external-provisioner.yaml
   - node-feature-discovery.yaml
   - nvidia-device-plugin.yaml
   - prometheus-community.yaml
