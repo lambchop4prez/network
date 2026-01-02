@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app lldap
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: lldap
+  values:
+    controllers:
+      lldap:
+        annotations:
+          reloader.stakater.com/auto: "true"
+          secret.reloader.stakater.com/reload: lldap-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/lldap/lldap
+              tag: v0.6.2@sha256:9e605a66c02514bfcffd1b67cafb1e98d50992216bb2871d7ae44622047dd09d
+            env:
+              TZ: America/Detroit
+              LLDAP_HTTP_PORT: &port 8080
+              LLDAP_HTTP_URL: https://lldap.servonet.lan
+              LLDAP_LDAP_PORT: &ldapPort 5389
+              LLDAP_LDAP_BASE_DN: dc=home,dc=arpa
+            envFrom:
+              - secretRef:
+                  name: lldap-secret
+            resources:
+              requests:
+                cpu: 100m
+                memory: 100Mi
+              limits:
+                memory: 500Mi
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+          ldap:
+            enabled: true
+            port: *ldapPort
+    route:
+      app:
+        hostnames:
+          - "lldap.servonet.lan"
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+    persistence:
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        storageClass: "ceph-block"
+        size: 1Gi
+        accessMode: ReadWriteOnce
+        retain: true
+        globalMounts:
+          - path: /data
+
