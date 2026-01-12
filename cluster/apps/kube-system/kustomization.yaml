@@ -9,4 +9,4 @@ resources:
   # - nvidia-device-plugin/ks.yaml
   - ./reloader/ks.yaml
   - ./trust-manager/ks.yaml
-  - ./tupper/ks.yaml
+  - ./tuppr/ks.yaml
