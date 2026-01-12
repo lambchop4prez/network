@@ -59,7 +59,7 @@ spec:
     route:
       main:
         hostnames: ["jellyfin.servonet.lan"]
-        parentRef:
+        parentRefs:
           - name: envoy-internal
             namespace: networking
         rules:
