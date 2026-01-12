@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./cluster/apps/kube-system/tupper/app
+  path: ./cluster/apps/kube-system/tuppr/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -33,7 +33,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./cluster/apps/kube-system/tupper/versions
+  path: ./cluster/apps/kube-system/tuppr/versions
   prune: true
   sourceRef:
     kind: GitRepository
