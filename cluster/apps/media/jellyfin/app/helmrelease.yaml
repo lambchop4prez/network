@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: jellyfin
+  name: &app jellyfin
   namespace: media
 spec:
   interval: 5m
@@ -62,24 +62,17 @@ spec:
         controller: main
         ports:
           http:
-            port: 8096
-    ingress:
+            port: &port 8096
+    routes:
       main:
-        enabled: true
-        className: "nginx"
-        annotations:
-          cert-manager.io/cluster-issuer: "step"
-        hosts:
-          - host: &host "jellyfin.lan"
-            paths:
-              - path: /
-                service:
-                  identifier: main
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: jellyfin-cert
+        hostnames: ["jellyfin.servonet.lan"]
+        parentRef:
+          - name: envoy-external
+            namespace: networking
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       config:
         enabled: true
