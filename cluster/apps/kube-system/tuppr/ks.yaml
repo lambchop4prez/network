@@ -29,7 +29,7 @@ metadata:
 spec:
   targetNamespace: kube-system
   dependsOn:
-    - name: tupper
+    - name: tuppr
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
