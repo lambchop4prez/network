@@ -9,4 +9,4 @@ resources:
   - ./sonarr/ks.yaml
   - ./radarr/ks.yaml
   - ./lidarr/ks.yaml
-  # - jellyfin/ks.yaml
+  - ./jellyfin/ks.yaml
