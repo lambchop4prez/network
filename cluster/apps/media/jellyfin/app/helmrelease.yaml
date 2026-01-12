@@ -56,7 +56,7 @@ spec:
         ports:
           http:
             port: &port 8096
-    routes:
+    route:
       main:
         hostnames: ["jellyfin.servonet.lan"]
         parentRef:
