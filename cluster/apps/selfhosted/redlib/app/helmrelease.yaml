@@ -46,16 +46,16 @@ spec:
                 memory: 50Mi
               limits:
                 memory: 250Mi
-      service:
-        app:
-          controller: *app
-          ports:
-            http:
-              port: *port
-      route:
-        app:
-          hostnames:
-            - redlib.servonet.lan
-          parentRefs:
-            - name: envoy-internal
-              namespace: networking
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - redlib.servonet.lan
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking

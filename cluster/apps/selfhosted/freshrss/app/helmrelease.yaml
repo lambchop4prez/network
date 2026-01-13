@@ -36,32 +36,32 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 512Mi
-      service:
-        app:
-          ports:
-            http:
-              port: *port
-      persistence:
-        data:
-          enabled: true
-          type: persistentVolumeClaim
-          storageClass: "ceph-block"
-          size: 10Gi
-          accessMode: ReadWriteOnce
-          retain: true
-          advancedMounts:
-            freshrss:
-              app:
-                - path: /var/www/FreshRSS/data
-                  subPath: data
-                  readOnly: false
-                - path: /var/www/FreshRSS/extensions
-                  subPath: extensions
-                  readOnly: false
-      route:
-        app:
-          hostnames:
-            - rss.servonet.lan
-          parentRefs:
-            - name: envoy-internal
-              namespace: networking
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    persistence:
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        storageClass: "ceph-block"
+        size: 10Gi
+        accessMode: ReadWriteOnce
+        retain: true
+        advancedMounts:
+          freshrss:
+            app:
+              - path: /var/www/FreshRSS/data
+                subPath: data
+                readOnly: false
+              - path: /var/www/FreshRSS/extensions
+                subPath: extensions
+                readOnly: false
+    route:
+      app:
+        hostnames:
+          - rss.servonet.lan
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
