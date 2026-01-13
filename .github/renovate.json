@@ -1,18 +1,19 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
+    "mergeConfidence:all-badges",
     "config:recommended",
     ":enablePreCommit",
     "helpers:pinGitHubActionDigests"
   ],
   "flux": {
-    "fileMatch": ["^cluster/.+\\.ya?ml$"]
+    "managerFilePatterns": ["/^cluster/.+\\.ya?ml$/"]
   },
   "helm-values": {
-    "fileMatch": ["^cluster/.+\\.ya?ml$"]
+    "managerFilePatterns": ["/^cluster/.+\\.ya?ml$/"]
   },
   "kubernetes": {
-    "fileMatch": ["^cluster/.+\\.ya?ml$"]
+    "managerFilePatterns": ["/^cluster/.+\\.ya?ml$/"]
   },
   "lockFileMaintenance": {
     "automerge": true
