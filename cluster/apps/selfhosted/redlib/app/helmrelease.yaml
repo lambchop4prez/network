@@ -1,0 +1,61 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app redlib
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: *app
+  interval: 30m
+  values:
+    controllers:
+      redlib:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          hostUsers: false
+        containers:
+          app:
+            image:
+              repository: quay.io/redlib/redlib
+              tag: latest@sha256:25dbb5466ebd22e58277d4aa54897899b044f02f7219ca3054784aecc0be34e1
+            env:
+              REDLIB_DEFAULT_WIDE: on
+              REDLIB_DEFAULT_USE_HLS: on
+              REDLIB_DEFAULT_HIDE_HLS_NOTIFICATION: on
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /settings
+                    port: &port 8080
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 12m
+                memory: 50Mi
+              limits:
+                memory: 250Mi
+      service:
+        app:
+          controller: *app
+          ports:
+            http:
+              port: *port
+      route:
+        app:
+          hostnames:
+            - redlib.servonet.lan
+          parentRefs:
+            - name: envoy-internal
+              namespace: networking

@@ -1,0 +1,67 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app freshrss
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: *app
+  interval: 30m
+  values:
+    controllers:
+      freshrss:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          hostUsers: false
+        containers:
+          app:
+            image:
+              repository: freshrss/freshrss
+              tag: 1.28.0-alpine
+            env:
+              CRON_MIN: "*"
+              DOMAIN: rss.servonet.lan
+              LISTEN: &port 8080
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            resources:
+              requests:
+                cpu: 12m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+      service:
+        app:
+          ports:
+            http:
+              port: *port
+      persistence:
+        data:
+          enabled: true
+          type: persistentVolumeClaim
+          storageClass: "ceph-block"
+          size: 10Gi
+          accessMode: ReadWriteOnce
+          retain: true
+          advancedMounts:
+            freshrss:
+              app:
+                - path: /var/www/FreshRSS/data
+                  subPath: data
+                  readOnly: false
+                - path: /var/www/FreshRSS/extensions
+                  subPath: extensions
+                  readOnly: false
+      route:
+        app:
+          hostnames:
+            - rss.servonet.lan
+          parentRefs:
+            - name: envoy-internal
+              namespace: networking

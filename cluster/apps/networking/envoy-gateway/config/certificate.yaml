@@ -36,3 +36,5 @@ spec:
     - "paperless.servonet.lan"
     - "lidarr.servonet.lan"
     - "auth.servonet.lan"
+    - "redlib.servonet.lan"
+    - "rss.servonet.lan"
