@@ -4,7 +4,7 @@ endpoint: https://10.4.3.1:6443
 domain: servonet.lan
 
 talosVersion: v1.11.5 # https://github.com/siderolabs/talos/releases
-kubernetesVersion: v1.34.1 # https://github.com/siderolabs/kubelet/releases
+kubernetesVersion: v1.35.0 # https://github.com/siderolabs/kubelet/releases
 
 allowSchedulingOnControlPlanes: true
 
