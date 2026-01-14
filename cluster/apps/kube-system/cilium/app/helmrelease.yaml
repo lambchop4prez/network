@@ -1,23 +1,14 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: cilium
 spec:
-  chart:
-    spec:
-      chart: cilium
-      interval: 30m
-      sourceRef:
-        kind: HelmRepository
-        name: cilium
-        namespace: flux-system
-      version: 1.18.6
+  chartRef:
+    kind: OCIRepository
+    name: cilium
   interval: 30m
-
-  valuesFrom:
-    - kind: ConfigMap
-      name: cilium-values
   values:
     autoDirectNodeRoutes: true
     bpf:
@@ -44,29 +35,7 @@ spec:
     gatewayAPI:
       enabled: false
     hubble:
-      enabled: true
-      serviceMonitor:
-        enabled: false
-      metrics:
-        enabled:
-          - dns:query;ignoreAAAA
-          - drop
-          - tcp
-          - flow
-          - port-distribution
-          - icmp
-          - http
-
-      relay:
-        enabled: true
-        rollOutPods: true
-
-      ui:
-        enabled: true
-        ingress:
-          enabled: false
-        rollOutPods: true
-
+      enabled: false
     ipam:
       mode: "kubernetes"
     ipv4NativeRoutingCIDR: 10.244.0.0/16
