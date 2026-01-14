@@ -71,7 +71,7 @@ spec:
         enabled: true
         type: persistentVolumeClaim
         storageClass: "ceph-block"
-        size: 3Gi
+        size: 8Gi
         accessMode: ReadWriteOnce
         retain: true
       movies:
