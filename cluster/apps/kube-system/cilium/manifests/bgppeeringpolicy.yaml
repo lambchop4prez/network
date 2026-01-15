@@ -8,15 +8,15 @@ spec: # CiliumBGPPeeringPolicySpec
   #   matchLabels:
   #     node-role.kubernetes.io/control-plane: "true"
   virtualRouters: # []CiliumBGPVirtualRouter
-    - localASN: 64523
+    - localASN: 64545
       exportPodCIDR: true
       # Announce all services
       serviceSelector:
         matchExpressions:
           - { key: somekey, operator: NotIn, values: ["never-used-value"] }
       neighbors: # []CiliumBGPNeighbor
-        - peerAddress: "${BGP_ROUTER_ADDR}/32"
-          peerASN: ${BGP_ROUTER_ASN}
+        - peerAddress: "/32"
+          peerASN: 64546
           eBGPMultihopTTL: 10
           connectRetryTimeSeconds: 120
           holdTimeSeconds: 90

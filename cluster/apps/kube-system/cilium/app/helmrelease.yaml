@@ -12,9 +12,12 @@ spec:
   values:
     autoDirectNodeRoutes: true
     bpf:
+      datapathMode: netkit
       masquerade: true
-      # Ref: https://github.com/siderolabs/talos/issues/10002
-      hostLegacyRouting: true
+      preallocateMaps: true
+      tproxy: true
+    bgpControlPlane:
+      enabled: true
     cgroup:
       autoMount:
         enabled: false
@@ -43,23 +46,31 @@ spec:
     k8sServicePort: 7445
     kubeProxyReplacement: true
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-    localRedirectPolicy: true
     l2announcements:
-      enabled: true
+      enabled: false
     loadBalancer:
       algorithm: maglev
       mode: dsr
+      serviceTopology: true
+    localRedirectPolicies:
+      enabled: true
     operator:
+      dashboards:
+        enabled: true
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
       rollOutPods: true
-    k8sClientRateLimit:
-      burst: 10
-      qps: 5
-    ingressController:
-      enabled: false
-      loadbalancerMode: shared
+    pmtuDiscovery:
+      enabled: true
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        trustCRDsExist: true
     rollOutCiliumPods: true
     routingMode: native
-
     securityContext:
       capabilities:
         ciliumAgent:

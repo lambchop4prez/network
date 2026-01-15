@@ -7,7 +7,7 @@ spec:
   gatewayClassName: envoy
   infrastructure:
     annotations:
-      lbipam.cilium.io/ips: 10.4.16.112
+      lbipam.cilium.io/ips: 192.168.42.112
   listeners:
     - name: http
       protocol: HTTP
