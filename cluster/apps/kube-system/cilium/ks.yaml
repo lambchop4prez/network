@@ -31,6 +31,8 @@ spec:
   interval: 10m
   path: "./cluster/apps/kube-system/cilium/manifests"
   prune: true
+  dependsOn:
+    - name: cilium
   sourceRef:
     kind: GitRepository
     name: network
