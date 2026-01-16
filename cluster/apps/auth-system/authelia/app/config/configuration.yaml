@@ -1,0 +1,43 @@
+---
+# yaml-language-server: $schema=https://www.authelia.com/schemas/latest/json-schema/configuration.json
+theme: auto
+server:
+  address: tcp://0.0.0.0:9091
+  disable_healthcheck: true
+totp:
+  disable: false
+webauthn:
+  disable: false
+  enable_passkey_login: true
+  experimental_enable_passkey_uv_two_factors: false
+  experimental_enable_passkey_upgrade: false
+  display_name: Authelia
+  attestation_conveyance_preference: indirect
+storage:
+  encryption_key: "{{ .STORAGE_ENCRYPTION_KEY }}"
+  postgres:
+    address: tcp://authelia-postgres.auth-system.svc.servonet.lan:5432
+    database: "{{ .POSTGRES_DATABASE }}"
+    username: "{{ .POSTGRES_USERNAME }}"
+    password: "{{ .POSTGRES_PASSWORD }}"
+ntp:
+  address: 10.4.1.1:123
+  version: 4
+  max_desync: 3s
+  disable_startup_check: false
+  disable_failure: false
+identity_validation:
+  reset_password:
+    jwt_secret: "{{ .RESET_PASSWORD_JWT }}"
+authentication_backend:
+  password_reset:
+    disable: false
+  refresh_interval: 1m
+  ldap:
+    implementation: lldap
+    address: ldap://lldap.auth-system.svc.servonet.lan:3890
+    timeout: 5s
+    start_tls: false
+    base_dn: dc=home,dc=cluster
+    user: uid=authelia_bind,ou=people,dc=home,dc=arpa
+    password: "{{ .LLDAP_PASSWORD }}"
