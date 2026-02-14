@@ -7,7 +7,7 @@ _.file = ["{{config_root}}/.secrets.env"]
 [tools]
 "python" = "3.14.3"
 "pipx:makejinja" = "2.8.2"
-"aqua:budimanjojo/talhelper" = "3.1.4"
+"aqua:budimanjojo/talhelper" = "3.1.5"
 "aqua:casey/just" = "1.46.0"
 "aqua:cilium/cilium-cli" = "0.19.0"
 "aqua:cli/cli" = "2.86.0"
