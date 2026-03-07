@@ -9,6 +9,12 @@ spec:
     annotations:
       lbipam.cilium.io/ips: 192.168.42.112
   listeners:
+    - name: ldap
+      protocol: TCP
+      port: 5389
+      allowedRoutes:
+        namespaces:
+          from: auth-system
     - name: http
       protocol: HTTP
       port: 80

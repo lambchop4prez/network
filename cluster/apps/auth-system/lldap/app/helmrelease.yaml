@@ -41,6 +41,9 @@ spec:
         ports:
           http:
             port: *port
+      ldap:
+        controller: *app
+        ports:
           ldap:
             enabled: true
             port: *ldapPort
@@ -55,6 +58,9 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
+              - name: *app
+                port: *ldapPort
+
     persistence:
       data:
         enabled: true
@@ -65,4 +71,3 @@ spec:
         retain: true
         globalMounts:
           - path: /data
-
