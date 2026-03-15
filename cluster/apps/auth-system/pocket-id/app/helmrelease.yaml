@@ -29,7 +29,7 @@ spec:
               KEYS_STORAGE: database
               UI_CONFIG_DISABLED: true
               LDAP_ENABLED: true
-              LDAP_URL: ldap://lldap-app.auth-system.svc.servonet.lan
+              LDAP_URL: ldap://lldap-ldap.auth-system.svc.servonet.lan
               LDAP_SKIP_CERT_VERIFY: true
               LDAP_BASE: dc=home,dc=arpa
               LDAP_BIND_DN: cn=pocketid_bind,ou=machines,dc=home,dc=arpa
