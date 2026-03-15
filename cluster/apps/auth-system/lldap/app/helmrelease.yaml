@@ -56,9 +56,9 @@ spec:
             namespace: networking
         rules:
           - backendRefs:
-              - name: *app
+              - name: lldap-app
                 port: *port
-              - name: *app
+              - name: lldap-ldap
                 port: *ldapPort
 
     persistence:
