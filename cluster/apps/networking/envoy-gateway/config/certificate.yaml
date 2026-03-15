@@ -40,3 +40,4 @@ spec:
     - "rss.servonet.lan"
     - "seerr.servonet.lan"
     - "lldap.servonet.lan"
+    - "id.servonet.lan"

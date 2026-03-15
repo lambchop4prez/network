@@ -1,0 +1,121 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app pocket-id
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: pocket-id
+  values:
+    controllers:
+      pocket-id:
+        annotations:
+          reloader.stakater.com/auto: "true"
+          secret.reloader.stakater.com/reload: lldap-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/lldap/lldap
+              tag: v0.6.2@sha256:9e605a66c02514bfcffd1b67cafb1e98d50992216bb2871d7ae44622047dd09d
+            env:
+              TZ: America/Detroit
+              ANALYTICS_DISABLED: true
+              APP_URL: https://id.${SECRET_DOMAIN}
+              DB_PROVIDER: postgres
+              EMAILS_VERIFIED: true
+              KEYS_STORAGE: database
+              UI_CONFIG_DISABLED: true
+              LDAP_ENABLED: true
+              LDAP_URL: ldap://lldap.auth-system.svc.servonet.lan
+              LDAP_SKIP_CERT_VERIFY: true
+              LDAP_BASE: dc=home,dc=arpa
+              LDAP_BIND_DN: cn=pocketid_bind,ou=machines,dc=home,dc=arpa
+              LDAP_USER_GROUP_SEARCH_FILTER: (&(objectClass=group)(cn=ID*))
+              LDAP_ATTRIBUTE_USER_UNIQUE_IDENTIFIER: objectGUID
+              LDAP_ATTRIBUTE_GROUP_UNIQUE_IDENTIFIER: objectGUID
+              LDAP_ATTRIBUTE_USER_FIRST_NAME: givenName
+              LDAP_ATTRIBUTE_USER_LAST_NAME: sn
+              LDAP_ATTRIBUTE_USER_USERNAME: sAMAccountName
+              LDAP_ATTRIBUTE_USER_EMAIL: mail
+              LDAP_ATTRIBUTE_GROUP_MEMBER: member
+              LDAP_ATTRIBUTE_GROUP_NAME: cn
+              LDAP_ADMIN_GROUP_NAME: ID-Admin
+              # SMTP_FROM: pocket-id@${SECRET_DOMAIN}
+              # SMTP_HOST: smtp-relay.networking.svc.cluster.local
+              # SMTP_PORT: 2525
+              SESSION_DURATION: 43800
+              TRUST_PROXY: true
+              VERSION_CHECK_DISABLED: true
+              UPLOAD_PATH: /app/data/uploads
+              GEOLITE_DB_PATH: /app/data/GeoLite2-City.mmdb
+            envFrom:
+              - secretRef:
+                  name: pocket-id-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: &port 1411
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 256Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: Always
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - "id.servonet.lan"
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+
+    persistence:
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        storageClass: "ceph-block"
+        size: 1Gi
+        accessMode: ReadWriteOnce
+        retain: true
+        globalMounts:
+          - path: /app/data
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          pocket-id:
+            app:
+              - path: /tmp
+                subPath: tmp

@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app pocket-id
+  namespace: flux-system
+spec:
+  targetNamespace: auth-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/postgres/
+  postBuild:
+    substitute:
+      APP: *app
+  interval: 10m
+  path: "./cluster/apps/auth-system/pocket-id/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: network
+  wait: true
+  dependsOn:
+    - name: rook-cluster
+    - name: lldap
