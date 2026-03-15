@@ -39,3 +39,4 @@ spec:
     - "redlib.servonet.lan"
     - "rss.servonet.lan"
     - "seerr.servonet.lan"
+    - "lldap.servonet.lan"
