@@ -29,13 +29,13 @@ spec:
               KEYS_STORAGE: database
               UI_CONFIG_DISABLED: true
               LDAP_ENABLED: true
-              LDAP_URL: ldap://lldap-ldap.auth-system.svc.servonet.lan
+              LDAP_URL: ldap://lldap-ldap.auth-system.svc.servonet.lan:5389
               LDAP_SKIP_CERT_VERIFY: true
               LDAP_BASE: dc=home,dc=arpa
               LDAP_BIND_DN: cn=pocketid_bind,ou=machines,dc=home,dc=arpa
               LDAP_USER_GROUP_SEARCH_FILTER: (&(objectClass=group)(cn=ID*))
-              LDAP_ATTRIBUTE_USER_UNIQUE_IDENTIFIER: objectGUID
-              LDAP_ATTRIBUTE_GROUP_UNIQUE_IDENTIFIER: objectGUID
+              LDAP_ATTRIBUTE_USER_UNIQUE_IDENTIFIER: uuid
+              LDAP_ATTRIBUTE_GROUP_UNIQUE_IDENTIFIER: uuid
               LDAP_ATTRIBUTE_USER_FIRST_NAME: givenName
               LDAP_ATTRIBUTE_USER_LAST_NAME: sn
               LDAP_ATTRIBUTE_USER_USERNAME: sAMAccountName
