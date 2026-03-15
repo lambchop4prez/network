@@ -18,8 +18,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/lldap/lldap
-              tag: v0.6.2@sha256:9e605a66c02514bfcffd1b67cafb1e98d50992216bb2871d7ae44622047dd09d
+              repository: ghcr.io/pocket-id/pocket-id
+              tag: v2.4.0@sha256:3e790c5d4fd82ff276b1c2bc3242be9da13cff204a2b937768ea1eba1e892571
             env:
               TZ: America/Detroit
               ANALYTICS_DISABLED: true
