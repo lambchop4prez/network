@@ -58,8 +58,8 @@ spec:
           - backendRefs:
               - name: lldap-app
                 port: *port
-              - name: lldap-ldap
-                port: *ldapPort
+              # - name: lldap-ldap
+              #   port: *ldapPort
 
     persistence:
       data:
