@@ -32,7 +32,7 @@ spec:
               LDAP_URL: ldap://lldap-ldap.auth-system.svc.servonet.lan:5389
               LDAP_SKIP_CERT_VERIFY: true
               LDAP_BASE: dc=home,dc=arpa
-              LDAP_BIND_DN: cn=pocketid_bind,ou=machines,dc=home,dc=arpa
+              LDAP_BIND_DN: uid=pocketid_bind,ou=machines,dc=home,dc=arpa
               LDAP_USER_GROUP_SEARCH_FILTER: (&(objectClass=group)(cn=ID*))
               LDAP_ATTRIBUTE_USER_UNIQUE_IDENTIFIER: uuid
               LDAP_ATTRIBUTE_GROUP_UNIQUE_IDENTIFIER: uuid
