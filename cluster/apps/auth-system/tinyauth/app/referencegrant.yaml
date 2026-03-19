@@ -1,0 +1,31 @@
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: tinyauth
+spec:
+  from:
+    - &policy
+      group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: auth-system
+    - <<: *policy
+      namespace: backup-system
+    - <<: *policy
+      namespace: data-ops
+    - <<: *policy
+      namespace: external-secrets
+    - <<: *policy
+      namespace: home
+    - <<: *policy
+      namespace: media
+    - <<: *policy
+      namespace: monitoring
+    - <<: *policy
+      namespace: networking
+    - <<: *policy
+      namespace: selfhosted
+  to:
+    - group: ''
+      kind: Service
+      name: tinyauth
