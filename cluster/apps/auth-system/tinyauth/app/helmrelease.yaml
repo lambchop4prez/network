@@ -25,9 +25,9 @@ spec:
               TINYAUTH_APPURL: https://tinyauth.servonet.lan
               TINYAUTH_DISABLEANALYTICS: true
               TINYAUTH_OAUTH_PROVIDERS_POCKETID_NAME: Pocket-ID
-              TINYAUTH_OAUTH_PROVIDERS_POCKETID_AUTHURL: http://pocket-id.auth-system.svc.servonet.lan:1411/authorize
-              TINYAUTH_OAUTH_PROVIDERS_POCKETID_TOKENURL: http://pocket-id.auth-system.svc.servonet.lan:1411/api/oidc/token
-              TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL: http://pocket-id.auth-system.svc.servonet.lan:1411/api/oidc/userinfo
+              TINYAUTH_OAUTH_PROVIDERS_POCKETID_AUTHURL: https://id.servonet.lan/authorize
+              TINYAUTH_OAUTH_PROVIDERS_POCKETID_TOKENURL: https://id.servonet.lan/api/oidc/token
+              TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL: https://id.servonet.lan/api/oidc/userinfo
               TINYAUTH_OAUTH_PROVIDERS_POCKETID_SCOPES: openid email profile groups
               TINYAUTH_AUTH_SECURECOOKIE: true
               TINYAUTH_AUTH_SESSIONEXPIRY: 604800
