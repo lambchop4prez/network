@@ -214,7 +214,7 @@ controlPlane:
             enabled: true
             resolveMemberNames: true
             # Incompatible with Cilium bpf masquerade. https://github.com/siderolabs/talos/issues/8836
-            forwardKubeDNSToHost: false
+            forwardKubeDNSToHost: true
 
     # Disable default API server admission plugins.
     - |-

@@ -38,6 +38,8 @@ spec:
               fallthrough in-addr.arpa ip6.arpa
           - name: k8s_external
             parameters: servonet.lan
+            configBlock: |-
+              fallthrough
           - name: autopath
             parameters: "@kubernetes"
           - name: forward

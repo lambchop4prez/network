@@ -11,7 +11,11 @@ spec:
   interval: 30m
   values:
     autoDirectNodeRoutes: true
+    bandwidthManager:
+      enabled: false
+      bbr: true
     bpf:
+      hostLegacyRouting: true
       datapathMode: netkit
       masquerade: true
       preallocateMaps: true
