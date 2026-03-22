@@ -3,8 +3,8 @@ clusterName: servonet
 endpoint: https://10.4.3.1:6443
 domain: servonet.lan
 
-talosVersion: v1.11.5 # https://github.com/siderolabs/talos/releases
-kubernetesVersion: v1.35.0 # https://github.com/siderolabs/kubelet/releases
+talosVersion: v1.12.5 # https://github.com/siderolabs/talos/releases
+kubernetesVersion: v1.35.2 # https://github.com/siderolabs/kubelet/releases
 
 allowSchedulingOnControlPlanes: true
 
@@ -35,8 +35,6 @@ nodes:
         mtu: 1500
         vip:
           ip: "10.4.3.1"
-    patches:
-      - "@./trusted-roots.yaml"
     schematic: &rpi-schematic
       overlay:
         image: siderolabs/sbc-raspberrypi
@@ -56,8 +54,6 @@ nodes:
         mtu: 1500
         vip:
           ip: "10.4.3.1"
-    patches:
-      - "@./trusted-roots.yaml"
     schematic: *rpi-schematic
 
   - hostname: tom-3e67
@@ -74,8 +70,6 @@ nodes:
         mtu: 1500
         vip:
           ip: "10.4.3.1"
-    patches:
-      - "@./trusted-roots.yaml"
     schematic: *rpi-schematic
   - hostname: tom-7aff
     nameservers:
@@ -91,8 +85,6 @@ nodes:
           hardwareAddr: "BC:24:11:47:7A:FF"
         dhcp: true
         mtu: 1500
-    patches:
-      - "@./trusted-roots.yaml"
     schematic: &amd-vm-schematic
       customization:
         systemExtensions:
@@ -112,8 +104,6 @@ nodes:
           hardwareAddr: "BC:24:11:E2:D4:64"
         dhcp: true
         mtu: 1500
-    patches:
-      - "@./trusted-roots.yaml"
 
     schematic: *amd-vm-schematic
   - hostname: tom-64c4
@@ -128,8 +118,6 @@ nodes:
           hardwareAddr: "BC:24:11:71:64:4C"
         dhcp: true
         mtu: 1500
-    patches:
-      - "@./trusted-roots.yaml"
     schematic: *amd-vm-schematic
 
   # - hostname: tom-4.servonet.lan
@@ -146,7 +134,7 @@ controlPlane:
     - &disableSearchDomainPatch |-
       machine:
         network:
-          disableSearchDomain: true
+          disableSearchDomain: false
 
     # Force nameserver
     - &nameServersPatch |-
