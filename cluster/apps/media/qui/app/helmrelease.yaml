@@ -1,0 +1,73 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: qui
+  namespace: media
+spec:
+  interval: 5m
+  chartRef:
+    kind: OCIRepository
+    name: qui
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/autobrr/qui
+              tag: v1.15.0@sha256:da33f8c850f7d6f1bfaee26b9553b21411e872639d54193906fa2cec51af1d0f
+            env:
+              QUI__AUTH_DISABLED: true
+              QUI__I_ACKNOWLEDGE_THIS_IS_A_BAD_IDEA: true
+              QUI__AUTH_DISABLED_ALLOWED_CIDRS: 0.0.0.0/0
+              QUI__HOST: 0.0.0.0
+              QUI__PORT: &port 80
+              TZ: "America/Detroit"
+            resources:
+              requests:
+                memory: 250Mi
+                cpu: 10m
+              limits:
+                memory: 1500Mi
+    defaultPodOptions:
+      terminationGracePeriodSeconds: 300
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1001
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: *port
+    route:
+      main:
+        hostnames:
+          - "{{ .Release.Name }}.servonet.lan"
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: *port
+    persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        storageClass: "ceph-block"
+        size: 1Gi
+        accessMode: ReadWriteOnce
+        retain: true
+      downloads:
+        existingClaim: nas-downloads
+      movies:
+        existingClaim: nas-movies
+      tv:
+        existingClaim: nas-tv
+      archive:
+        existingClaim: nas-archive

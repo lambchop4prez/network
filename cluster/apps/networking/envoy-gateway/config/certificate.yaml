@@ -41,3 +41,5 @@ spec:
     - "seerr.servonet.lan"
     - "lldap.servonet.lan"
     - "id.servonet.lan"
+    - "qbittorrent.servonet.lan"
+    - "qui.servonet.lan"
