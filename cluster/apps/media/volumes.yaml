@@ -166,3 +166,43 @@ spec:
   storageClassName: nas-dataset
   accessModes:
     - ReadWriteMany
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nas-archive
+spec:
+  capacity:
+    storage: 1Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  claimRef:
+    name: nas-archive
+    namespace: media
+  mountOptions:
+    - nfsvers=4.1
+    - nconnect=8
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
+  nfs:
+    path: /mnt/storage/archive
+    server: nas.lan
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nas-archive
+  namespace: media
+spec:
+  resources:
+    requests:
+      storage: 1Mi
+  volumeMode: Filesystem
+  storageClassName: nas-dataset
+  accessModes:
+    - ReadWriteMany
