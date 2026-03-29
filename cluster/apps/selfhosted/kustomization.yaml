@@ -7,3 +7,4 @@ resources:
   - ./freshrss/ks.yaml
   - ./paperless/ks.yaml
   - ./redlib/ks.yaml
+  - ./excalidraw/ks.yaml
