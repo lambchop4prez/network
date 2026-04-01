@@ -42,6 +42,10 @@ spec:
           http:
             port: *port
       ldap:
+        type: LoadBalancer
+        annotations:
+          lbipam.cillium.io/ips: 192.168.422.144
+        externalTrafficPolicy: Local
         controller: *app
         ports:
           ldap:
