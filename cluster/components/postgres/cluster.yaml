@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: ${APP}-postgres17
+  name: &name ${APP}-postgres17
 spec:
   instances: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:17
@@ -34,3 +34,10 @@ spec:
       memory: 4Gi
   monitoring:
     enablePodMonitor: true
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: "kubernetes.io/hostname"
+      whenUnsatisfiable: "DoNotSchedule"
+      labelSelector:
+        matchLabels:
+          cnpg.io/cluster: *name
