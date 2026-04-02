@@ -29,9 +29,9 @@ spec:
   resources:
     requests:
       cpu: 500m
-      memory: 1Gi
+      memory: 250Mi
     limits:
-      memory: 4Gi
+      memory: 2Gi
   monitoring:
     enablePodMonitor: true
   topologySpreadConstraints:
