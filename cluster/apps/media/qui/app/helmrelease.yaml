@@ -26,10 +26,10 @@ spec:
               TZ: "America/Detroit"
             resources:
               requests:
-                memory: 250Mi
+                memory: 32Mi
                 cpu: 10m
               limits:
-                memory: 1500Mi
+                memory: 512Mi
     defaultPodOptions:
       terminationGracePeriodSeconds: 300
       securityContext:
