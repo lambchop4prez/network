@@ -20,7 +20,8 @@ spec:
             fsGroup: 1001
             fsGroupChangePolicy: OnRootMismatch
           nodeSelector:
-            amd.feature.node.kubernetes.io/igpu: "true"
+            feature.node.kubernetes.io/amd-igpu: "true"
+
           # affinity:
           #   nodeAffinity:
           #     requiredDuringSchedulingIgnoredDuringExecution:

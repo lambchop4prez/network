@@ -7,14 +7,14 @@ spec:
   rules:
     - name: nvidia.gpu
       labels:
-        nvidia.feature.node.kubernetes.io/gpu: "true"
+        feature.node.kubernetes.io/nvidia-gpu: "true"
       matchFeatures:
         - feature: pci.device
           matchExpressions:
             vendor: { op: In, value: ["10de"] }
     - name: amd.igpu
       labels:
-        amd.feature.node.kubernetes.io/igpu: "true"
+        feature.node.kubernetes.io/amd-igpu: "true"
       matchFeatures:
         - feature: pci.device
           matchExpressions:
