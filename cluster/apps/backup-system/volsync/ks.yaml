@@ -10,7 +10,6 @@ spec:
     - name: rook-operator
     - name: rook-cluster
     - name: snapshot-controller
-      namespace: kube-system
   interval: 1h
   path: ./cluster/apps/backup-system/volsync/app
   prune: true
