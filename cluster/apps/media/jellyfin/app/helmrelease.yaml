@@ -19,8 +19,8 @@ spec:
             runAsGroup: 1001
             fsGroup: 1001
             fsGroupChangePolicy: OnRootMismatch
-          # nodeSelector:
-          #   nvidia.feature.node.kubernetes.io/gpu: "true"
+          nodeSelector:
+            amd.feature.node.kubernetes.io/igpu: "true"
           # affinity:
           #   nodeAffinity:
           #     requiredDuringSchedulingIgnoredDuringExecution:
