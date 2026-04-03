@@ -78,6 +78,8 @@ spec:
         existingClaim: nas-movies
       tv:
         existingClaim: nas-tv
+      music:
+        existingClaim: nas-music
       cache:
         enabled: true
         type: emptyDir
