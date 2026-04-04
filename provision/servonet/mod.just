@@ -46,3 +46,40 @@ cluster:
     just log info 'Bootstrap cluster'
     helmfile sync
     sops exec-file "{{ cluster_dir }}/components/sops/secrets.sops.yaml" "kubectl --namespace flux-system apply --server-side --filename {}"
+
+[doc('Download Talos machine image')]
+download version arch schematic:
+    gum spin --title "Download Talos {{ version }}..." -- \
+    curl -sfL --remove-on-error --retry 5 --retry-delay 5 --retry-all-errors \
+        -o "{{ provision_dir }}/talos-{{ version }}-{{ arch }}-{{ replace_regex(schematic, '^(.{8}).*', '$1') }}.iso" \
+        "https://factory.talos.dev/image/{{ schematic }}/{{ version }}/metal-{{ arch }}.iso"
+    just log info "Downloaded Talos" version "{{ version }}" arch "{{ arch }}" schematic "{{ schematic }}"
+
+
+[doc('Get schematic ID from Talos schematic')]
+schematic-id schematic:
+    curl -sX POST --data-binary @<(just template "{{ provision_dir }}/schematic/{{ schematic }}.yaml.j2") "https://factory.talos.dev/schematics" | jq -r '.id'
+
+[doc('Reboot a node')]
+reboot node:
+    gum confirm "Reboot {{ node }}?" --default="No" && \
+        talosctl -n {{ node }} reboot -m powercycle || exit 0
+
+[doc('Shutdown a node')]
+shutdown node *args:
+    gum confirm "Shutdown {{ node }}?" --default="No" && \
+        talosctl -n {{ node }} shutdown --force {{ args }} | exit 0
+
+[doc('Apply Talos config to node')]
+apply-config node *args:
+    just servonet render-config "{{ node }}" | talosctl -n "{{ node }}" apply-config -f /dev/stdin {{ args }}
+
+[doc('Render talos config for a node')]
+render-config node:
+    export IS_CONTROLLER="$(just servonet machine-controller {{ node }})"; \
+    talosctl machineconfig patch <(just template "{{ provision_dir }}/machineconfig.yaml.j2") \
+        -p @<(just template "{{ provision_dir }}/nodes/{{ node }}.yaml.j2")
+
+[private]
+machine-controller node:
+    just template "{{ provision_dir }}/nodes/{{ node }}.yaml.j2" | yq -e 'select(.machine) | (.machine.type == "controlplane") // ""'

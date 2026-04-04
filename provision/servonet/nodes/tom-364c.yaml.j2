@@ -1,0 +1,15 @@
+---
+machine:
+  type: controlplane
+  nodeLabels:
+    topology.kubernetes.io/zone: m
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: tom-364c
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: ethSel0
+selector:
+  match: glob("dc:a6:32:bb:36:4c", mac(link.hardware_addr))

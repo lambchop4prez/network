@@ -1,0 +1,15 @@
+---
+machine:
+  type: worker
+  nodeLabels:
+    topology.kubernetes.io/zone: m
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: tom-64c4
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: ethSel0
+selector:
+  match: glob("BC:24:11:71:64:4C", mac(link.hardware_addr))

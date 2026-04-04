@@ -1,0 +1,17 @@
+---
+machine:
+  type: controlplane
+  nodeLabels:
+    topology.kubernetes.io/zone: m
+  install:
+    disk: /dev/mmcblk0
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: tom-3e67
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: ethSel0
+selector:
+  match: glob("d8:3a:dd:37:3e:67", mac(link.hardware_addr))
