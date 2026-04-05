@@ -34,9 +34,9 @@ spec:
       terminationGracePeriodSeconds: 300
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1001
-        fsGroup: 1001
+        runAsUser: 3000
+        runAsGroup: 3001
+        fsGroup: 3001
         fsGroupChangePolicy: OnRootMismatch
     service:
       main:
