@@ -57,12 +57,7 @@ spec:
                 port: *port
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        storageClass: "ceph-block"
-        size: 1Gi
-        accessMode: ReadWriteOnce
-        retain: true
+        existingClaim: qui
       downloads:
         existingClaim: nas-downloads
       movies:
