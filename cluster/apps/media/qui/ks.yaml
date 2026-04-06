@@ -14,6 +14,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      VOLSYNC_CAPACITY: 1Gi
   interval: 10m
   path: "./cluster/apps/media/qui/app"
   prune: true
