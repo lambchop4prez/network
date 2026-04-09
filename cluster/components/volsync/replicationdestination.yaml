@@ -22,9 +22,9 @@ spec:
     copyMethod: Snapshot
     enableFileDeletion: true
     moverSecurityContext:
-      runAsUser: ${VOLSYNC_PUID:=1000}
-      runAsGroup: ${VOLSYNC_PGID:=1000}
-      fsGroup: ${VOLSYNC_PGID:=1000}
+      runAsUser: ${VOLSYNC_PUID:=3002}
+      runAsGroup: ${VOLSYNC_PGID:=3002}
+      fsGroup: ${VOLSYNC_PGID:=3002}
     repository: ${APP}-volsync-secret
     sourceIdentity:
       sourceName: ${APP}
