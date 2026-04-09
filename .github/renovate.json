@@ -16,5 +16,44 @@
   },
   "lockFileMaintenance": {
     "automerge": true
-  }
+  },
+  "packageRules": [
+    {
+      "matchDatasources": ["github-releases"],
+      "automerge": true,
+      "automergeType": "branch",
+      "ignoreTests": true,
+      "matchUpdateTypes": ["patch"]
+    },
+    {
+      "matchDatasources": ["helm"],
+      "automerge": true,
+      "automergeType": "branch",
+      "ignoreTests": true,
+      "matchUpdateTypes": ["minor"],
+      "matchPackageNames": [
+        "kube-prometheus-stack",
+        "renovate",
+        "node-feature-discovery",
+        "reloader",
+        "snapshot-controller"
+      ]
+    },
+    {
+      "matchDatasources": ["helm"],
+      "automerge": true,
+      "automergeType": "branch",
+      "ignoreTests": true,
+      "matchUpdateTypes": ["patch"]
+   },
+    {
+      "matchDatasources": ["helm"],
+      "automerge": false,
+      "automergeType": "branch",
+      "ignoreTests": true,
+      "matchUpdateTypes": ["patch"],
+      "matchPackageNames": [ "cilium"]
+    }
+
+  ]
 }
