@@ -18,5 +18,4 @@ spec:
     name: network
   wait: true
   dependsOn:
-    - name: rook-cluster
     - name: pocketid

@@ -10,6 +10,11 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: *app
   interval: 10m
   path: "./cluster/apps/auth-system/lldap/app"
   prune: true

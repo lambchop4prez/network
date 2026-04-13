@@ -106,12 +106,7 @@ spec:
 
     persistence:
       data:
-        enabled: true
-        type: persistentVolumeClaim
-        storageClass: "ceph-block"
-        size: 1Gi
-        accessMode: ReadWriteOnce
-        retain: true
+        existingClaim: pocketid
         globalMounts:
           - path: /app/data
       tmpfs:

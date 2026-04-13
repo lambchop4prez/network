@@ -62,16 +62,9 @@ spec:
           - backendRefs:
               - name: lldap-app
                 port: *port
-              # - name: lldap-ldap
-              #   port: *ldapPort
 
     persistence:
       data:
-        enabled: true
-        type: persistentVolumeClaim
-        storageClass: "ceph-block"
-        size: 1Gi
-        accessMode: ReadWriteOnce
-        retain: true
+        existingClaim: lldap
         globalMounts:
           - path: /data
