@@ -106,7 +106,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: pocket-id
+        existingClaim: pocketid
         globalMounts:
           - path: /app/data
       tmpfs:
