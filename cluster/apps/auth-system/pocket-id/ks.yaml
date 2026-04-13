@@ -10,9 +10,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-    components:
-    - ../../../../components/volsync
-    - ../../../../components/postgres/
+  components:
+  - ../../../../components/volsync
+  - ../../../../components/postgres/
   postBuild:
     substitute:
       APP: *app
