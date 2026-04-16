@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: ghcr.io/steveiliop56/tinyauth
-              tag: v5.0.0-alpha.1@sha256:9cf889b8dceb6ea85c69e1b42a6dc33ce1ca7b4aae1a3807ce3ddf6e494cca74
+              tag: v5.0.7-alpha.1@sha256:5127d62debfd72b54ae1088d721469e1472255799ad405cbb14e5c1aca811f54
             env:
               TZ: America/Detroit
               TINYAUTH_APPURL: https://tinyauth.servonet.lan
