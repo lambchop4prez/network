@@ -10,6 +10,7 @@ resources:
   - ./radarr/ks.yaml
   - ./lidarr/ks.yaml
   - ./jellyfin/ks.yaml
-  - ./seerr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./qui/ks.yaml
+  - ./tvheadend/ks.yaml
+  - ./seerr/ks.yaml
