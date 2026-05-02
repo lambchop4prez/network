@@ -6,25 +6,16 @@ metadata:
   namespace: rook-ceph
 spec:
   interval: 5m
-  chart:
-    spec:
-      # renovate: registryUrl=https://charts.rook.io/release
-      chart: rook-ceph
-      version: v1.19.5
-      sourceRef:
-        kind: HelmRepository
-        name: rook-ceph
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: rook-ceph
   values:
     monitoring:
       enabled: true
     csi:
       cephFSKernelMountOptions: ms_mode=prefer-crc
-      enableLiveness: true
-      serviceMonitor:
-        enabled: true
-    crds:
-      enabled: true
+    image:
+      repository: ghcr.io/rook/ceph
     resources:
       requests:
         cpu: 100m
