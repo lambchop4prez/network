@@ -10,6 +10,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  postBuild:
+    substitute:
+      APP: *app
   components:
     - ../../../../components/volsync
   interval: 10m
