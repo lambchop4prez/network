@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sonarr
+  name: tvheadend
   namespace: media
 spec:
   interval: 5m
@@ -18,7 +18,14 @@ spec:
             runAsUser: 1000
             runAsGroup: 1001
             fsGroup: 1001
+            fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 44 # video group
+              - 109 # render group
+              - 568 # for NFS access
+          nodeSelector:
+            feature.node.kubernetes.io/dvb-tuner: "true"
         containers:
           main:
             image:
@@ -28,18 +35,44 @@ spec:
               TZ: "America/Detroit"
               PUID: 1000
               PGID: 1001
-              SONARR__INSTANCE_NAME: Sonarr
-              SONARR__PORT: &port 8989
             resources:
               requests:
                 memory: 100Mi
                 cpu: 20m
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 9981
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  failureThreshold: 30
+                  periodSeconds: 10
     service:
       main:
         controller: main
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 192.168.42.103
         ports:
           http:
             port: *port
+            appProtocol: http
+          htsp:
+            port: 9982
+            appProtocol: tcp
     route:
       main:
         hostnames:
@@ -50,11 +83,17 @@ spec:
     persistence:
       config:
         existingClaim: tvheadend
+      recordings:
+        enabled: true
+        type: nfs
+        server: nas.lan
+        path: /mnt/storage/media/recordings
       dvb:
         enabled: true
-        type: "hostPath"
+        type: hostPath
         hostPath: /dev/dvb
-        mountPath: /dev/dvb
+        globalMounts:
+          - path: /dev/dvb
 
     affinity:
       nodeAffinity:
