@@ -38,6 +38,8 @@ spec:
               requests:
                 memory: 100Mi
                 cpu: 20m
+            securityContext:
+              privileged: true
             probes:
               liveness: &probes
                 enabled: true
