@@ -6,7 +6,7 @@ metadata:
   name: &app tvheadend
   namespace: flux-system
 spec:
-  targetNamespace: media
+  targetNamespace: tv
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -16,7 +16,7 @@ spec:
   components:
     - ../../../../components/volsync
   interval: 10m
-  path: "./cluster/apps/media/tvheadend/app"
+  path: "./cluster/apps/tv/tvheadend/app"
   prune: true
   sourceRef:
     kind: GitRepository
