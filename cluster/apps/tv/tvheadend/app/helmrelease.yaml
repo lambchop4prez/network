@@ -84,11 +84,15 @@ spec:
     persistence:
       config:
         existingClaim: tvheadend
+        globalMounts:
+          - path: /var/lib/tvheadend
       recordings:
         enabled: true
         type: nfs
         server: nas.lan
         path: /mnt/storage/media/recordings
+        globalMounts:
+          - path: /var/lib/tvheadend/recordings
       dvb:
         enabled: true
         type: hostPath
