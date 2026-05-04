@@ -23,8 +23,8 @@ spec:
               - 44 # video group
               - 109 # render group
               - 568 # for NFS access
-          # nodeSelector:
-          #   feature.node.kubernetes.io/dvb-tuner: "true"
+          nodeSelector:
+            feature.node.kubernetes.io/dvb-tuner: "true"
         containers:
           main:
             image:
