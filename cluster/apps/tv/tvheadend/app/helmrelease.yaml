@@ -15,9 +15,9 @@ spec:
       main:
         pod:
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1001
-            fsGroup: 568
+            runAsUser: 3000
+            runAsGroup: 3001
+            fsGroup: 3001
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups:
               - 44 # video group
