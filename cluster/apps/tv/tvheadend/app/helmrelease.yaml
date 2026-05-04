@@ -30,6 +30,8 @@ spec:
             image:
               repository: ghcr.io/tvheadend/tvheadend
               tag: latest@sha256:bd00456aab44c0b645849121ce72ad619804889bf26b3a55227a591dd3834dbe
+            args:
+              - --firstrun
             env:
               TZ: "America/Detroit"
               PUID: 1000
