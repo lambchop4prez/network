@@ -69,7 +69,7 @@ spec:
           io.cilium/lb-ipam-ips: 192.168.42.103
         ports:
           http:
-            port: *port
+            port: 9981
             appProtocol: http
           htsp:
             port: 9982
