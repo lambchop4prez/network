@@ -20,7 +20,8 @@ spec:
             image:
               repository: ghcr.io/dragonflydb/operator
               tag: v1.5.0@sha256:2ceb0128302cd7756b743cc5d56ec9479fb08163b5c563897045a4e5e1555f02
-            command: ["/manager"]
+            command: 
+              - "/manager"
             args:
               - --health-probe-bind-address=:8081
               - --metrics-bind-address=:8080
@@ -80,51 +81,51 @@ spec:
             port: 8080
     serviceAccount:
       dragonfly-operator: {}
-    rbac:
-      bindings:
-        dragonfly-operator:
-          roleRef:
-            kind: ClusterRole
-            name: dragonfly-operator
-          subjects:
-            - identifier: *app
-          type: ClusterRoleBinding
-      roles:
-        dragonfly-operator:
-          rules:
-            - apiGroups: ["coordination.k8s.io"]
-              resources: ["leases"]
-              verbs:
-                ["get", "list", "watch", "create", "update", "patch", "delete"]
-            - apiGroups: [""]
-              resources: ["events"]
-              verbs: ["create", "patch"]
-            - apiGroups: [""]
-              resources: ["pods", "services"]
-              verbs:
-                ["create", "delete", "get", "list", "patch", "update", "watch"]
-            - apiGroups: ["apps"]
-              resources: ["statefulsets"]
-              verbs:
-                ["create", "delete", "get", "list", "patch", "update", "watch"]
-            - apiGroups: ["policy"]
-              resources: ["poddisruptionbudgets"]
-              verbs:
-                ["create", "delete", "get", "list", "patch", "update", "watch"]
-            - apiGroups: ["dragonflydb.io"]
-              resources: ["dragonflies"]
-              verbs:
-                ["create", "delete", "get", "list", "patch", "update", "watch"]
-            - apiGroups: ["dragonflydb.io"]
-              resources: ["dragonflies/finalizers"]
-              verbs: ["update"]
-            - apiGroups: ["dragonflydb.io"]
-              resources: ["dragonflies/status"]
-              verbs: ["get", "patch", "update"]
-            - apiGroups: ["networking.k8s.io"]
-              resources: ["networkpolicies"]
-              verbs: ["get", "list"]
-          type: ClusterRole
+    # rbac:
+    #   bindings:
+    #     dragonfly-operator:
+    #       roleRef:
+    #         kind: ClusterRole
+    #         name: dragonfly-operator
+    #       subjects:
+    #         - identifier: *app
+    #       type: ClusterRoleBinding
+    #   roles:
+    #     dragonfly-operator:
+    #       rules:
+    #         - apiGroups: ["coordination.k8s.io"]
+    #           resources: ["leases"]
+    #           verbs:
+    #             ["get", "list", "watch", "create", "update", "patch", "delete"]
+    #         - apiGroups: [""]
+    #           resources: ["events"]
+    #           verbs: ["create", "patch"]
+    #         - apiGroups: [""]
+    #           resources: ["pods", "services"]
+    #           verbs:
+    #             ["create", "delete", "get", "list", "patch", "update", "watch"]
+    #         - apiGroups: ["apps"]
+    #           resources: ["statefulsets"]
+    #           verbs:
+    #             ["create", "delete", "get", "list", "patch", "update", "watch"]
+    #         - apiGroups: ["policy"]
+    #           resources: ["poddisruptionbudgets"]
+    #           verbs:
+    #             ["create", "delete", "get", "list", "patch", "update", "watch"]
+    #         - apiGroups: ["dragonflydb.io"]
+    #           resources: ["dragonflies"]
+    #           verbs:
+    #             ["create", "delete", "get", "list", "patch", "update", "watch"]
+    #         - apiGroups: ["dragonflydb.io"]
+    #           resources: ["dragonflies/finalizers"]
+    #           verbs: ["update"]
+    #         - apiGroups: ["dragonflydb.io"]
+    #           resources: ["dragonflies/status"]
+    #           verbs: ["get", "patch", "update"]
+    #         - apiGroups: ["networking.k8s.io"]
+    #           resources: ["networkpolicies"]
+    #           verbs: ["get", "list"]
+    #       type: ClusterRole
     serviceMonitor:
       app:
         serviceName: *app
