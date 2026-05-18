@@ -1,0 +1,5 @@
+[files]
+extend-exclude = ["*.sops.yaml"]
+[default.extend-words]
+hass = "hass"
+HASS = "HASS"

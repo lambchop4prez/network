@@ -19,7 +19,7 @@ template file *args:
 
 [group('check')]
 spellcheck:
-    typos
+    typos --config justfile_dir() / ".config/typos.toml"
 
 [group('check')]
 [parallel]
