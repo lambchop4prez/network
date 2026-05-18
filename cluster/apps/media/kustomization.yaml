@@ -9,7 +9,7 @@ resources:
   - ./sonarr/ks.yaml
   - ./radarr/ks.yaml
   - ./lidarr/ks.yaml
-  - ./jellyfin/ks.yaml
+  # - ./jellyfin/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./qui/ks.yaml
   - ./seerr/ks.yaml
