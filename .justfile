@@ -16,3 +16,12 @@ log lvl msg *args:
 [private]
 template file *args:
     bws run -- minijinja-cli --env "{{ file }}" {{ args }}
+
+[group('check')]
+spellcheck:
+    typos
+
+[group('check')]
+[parallel]
+analyze: spellcheck
+    just log info "Static analysis complete"
