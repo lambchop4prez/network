@@ -29,7 +29,7 @@ spec:
           main:
             image:
               repository: ghcr.io/tvheadend/tvheadend
-              tag: latest@sha256:c03d174ad61e215b2c0f33d7e86a5910baa769a5f48752c80397b8d5b1d2cd95
+              tag: latest@sha256:891001f9c22b84501d4ffac0457d041dc8ebc53d6c53749f4e2ebe57d689c10b
             args:
               - --config
               - /var/lib/tvheadend
