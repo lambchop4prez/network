@@ -1,0 +1,69 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: node-feature-discovery
+  namespace: kube-system
+spec:
+  interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: node-feature-discovery
+  install:
+    createNamespace: true
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
+  values:
+    nodeFeatureRule:
+      createCRD: true
+    master:
+      resources:
+        requests:
+          cpu: 23m
+          memory: 64M
+        limits:
+          memory: 64M
+    worker:
+      requests:
+        cpu: 15m
+        memory: 64M
+      limits:
+        cpu: 300m
+        memory: 64M
+    gc:
+      limits:
+        cpu: 100m
+    # worker:
+    #   config:
+    #     core:
+    #       labelSources:
+    #         - cpu
+    #         - custom
+    #         - pci
+    #         - usb
+    #     sources:
+    #       usb:
+    #         deviceClassWhitelist:
+    #           - "02"
+    #           - "03"
+    #           - "0e"
+    #           - "ef"
+    #           - "fe"
+    #           - "ff"
+    #         deviceLabelFields:
+    #           - class
+    #           - vendor
+    #           - device
+    #       custom:
+    #         - name: intel-gpu
+    #           matchOn:
+    #             - pciId:
+    #                 class: ["0300"]
+    #                 vendor: ["8086"]
+    #         - name: dvb-tuner
+    #           matchOn:
+    #             - usbId:
+    #                 class: ["ff"]
+    #                 vendor: ["2040"]
+    #                 device: ["826d"]

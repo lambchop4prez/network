@@ -3,28 +3,9 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: repositories
-  namespace: flux-system
-spec:
-  interval: 30m
-  path: ./cluster/base/repositories
-  prune: true
-  wait: false
-  sourceRef:
-    kind: GitRepository
-    name: network
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: apps
   namespace: flux-system
 spec:
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
   interval: 10m0s
   path: ./cluster/apps
   prune: true
@@ -32,18 +13,6 @@ spec:
     kind: GitRepository
     name: network
   patches:
-    - # Add sops decryption
-      patch: |-
-        apiVersion: kustomize.toolkit.fluxcd.io/v1
-        kind: Kustomization
-        metadata:
-          name: _
-        spec:
-          decryption:
-            provider: sops
-      target:
-        group: kustomize.toolkit.fluxcd.io
-        kind: Kustomization
     - # Add cluster settings
       patch: |-
         apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -56,8 +25,6 @@ spec:
             substituteFrom:
               - kind: ConfigMap
                 name: cluster-config
-              - kind: Secret
-                name: cluster-secrets
 
       target:
         group: kustomize.toolkit.fluxcd.io
@@ -104,6 +71,4 @@ spec:
     substituteFrom:
       - kind: ConfigMap
         name: cluster-config
-      - kind: Secret
-        name: cluster-secrets
 
