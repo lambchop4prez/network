@@ -15,11 +15,11 @@ log lvl msg *args:
 
 [private]
 template file *args:
-    bws run -- minijinja-cli --env "{{ file }}" {{ args }}
+    fnox exec -- minijinja-cli --env "{{ file }}" {{ args }}
 
 [group('check')]
 spellcheck:
-    typos --config justfile_dir() / ".config/typos.toml"
+    typos --config "{{ justfile_dir() }}/.config/typos.toml"
 
 [group('check')]
 [parallel]
