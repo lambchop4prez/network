@@ -2,12 +2,13 @@
 set quiet := true
 set script-interpreter := ['bash', '-euo', 'pipefail']
 set shell := ['bash', '-euo', 'pipefail', '-c']
-
-controller := `talosctl config info -o yaml | yq -e '.endpoints[0]'`
-
 [private]
 default:
     just -l servonet bootstrap
+
+[private]
+controller: 
+    talosctl config info -o yaml | yq -e '.endpoints[0]'
 
 [confirm('Bootstrap cluster? [y|N]')]
 [doc('Bootstrap a Talos & Kubernetes cluster end-to-end')]
@@ -32,7 +33,8 @@ nodes:
 [script]
 k8s:
     just log info "Running stage..." "stage" "$(basename "$0")"
-    until op=$(talosctl -n "{{ controller }}" bootstrap 2>&1 || true) && [[ "$op" == *"AlreadyExists"* ]]; do
+    export CONTROLLER="$(just servonet bootstrap controller)"
+    until op=$(talosctl -n "${CONTROLLER}" bootstrap 2>&1 || true) && [[ "$op" == *"AlreadyExists"* ]]; do
         just log info "Kubernetes bootstrap in progress. Retrying in 5 seconds..." "stage" "$(basename "$0")"
         sleep 5
     done
@@ -41,7 +43,8 @@ k8s:
 [script]
 kubeconfig:
     just log info "Running stage..." "stage" "$(basename "$0")"
-    if ! talosctl kubeconfig -n "{{ controller }}" -f --force-context-name main {{ justfile_dir() }}; then
+    export CONTROLLER="$(just servonet bootstrap controller)"
+    if ! talosctl kubeconfig -n "${CONTROLLER}" -f --force-context-name main {{ justfile_dir() }}; then
         just log fatal "Failed to fetch kubeconfig" "stage" "$(basename "$0")"
     fi
 
