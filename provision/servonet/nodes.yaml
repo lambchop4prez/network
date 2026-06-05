@@ -1,0 +1,32 @@
+---
+nodes:
+  tom-3a11:
+    endpoint: 10.4.3.32
+    schematic: rpi
+    controlplane: true
+    mac: "e4:5f:01:2f:3a:11"
+  tom-3e67:
+    endpoint: 10.4.3.34
+    schematic: rpi
+    controlplane: true
+    mac: "d8:3a:dd:37:3e:67"
+    disk: /dev/mmcblk0
+  # tom-7aff:
+  #   endpoint: 10.4.3.35
+  #   schematic: amd-vm
+  #   controlplane: true
+  #   mac: "BC:24:11:47:7A:FF"
+  # tom-d464:
+  #   endpoint: 10.4.3.36
+  #   schematic: amd-vm
+  #   mac: "BC:24:11:E2:D4:64"
+  # tom-64c4:
+  #   endpoint: 10.4.3.37
+  #   schematic: amd-vm
+  #   mac: "BC:24:11:71:64:4C"
+  tom-44dd:
+    endpoint: 10.4.3.38
+    controlplane: true
+    schematic: turing-rk1
+    mac: "12:e8:5f:39:44:dd"
+    disk: /dev/mmcblk0

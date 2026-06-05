@@ -49,3 +49,5 @@ known_hosts
 vault.env
 .direnv
 .secrets.env
+*.raw.xz
+*.iso

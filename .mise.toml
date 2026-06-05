@@ -1,6 +1,7 @@
 [env]
 TALOSCONFIG = "{{config_root}}/provision/servonet/clusterconfig/talosconfig"
 MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
+KUBECONFIG = "{{config_root}}/kubeconfig"
 
 _.file = ["{{config_root}}/.secrets.env"]
 
@@ -28,3 +29,4 @@ _.file = ["{{config_root}}/.secrets.env"]
 "aqua:charmbracelet/gum" = "0.17.0"
 "aqua:mitsuhiko/minijinja" = "2.19.0"
 "aqua:crate-ci/typos" = "1.46.1"
+fnox = "1.25.1"
