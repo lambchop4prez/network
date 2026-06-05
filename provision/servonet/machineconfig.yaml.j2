@@ -1,8 +1,13 @@
+---
 version: v1alpha1
 debug: false
 persist: true
 machine:
+  {% if ENV.IS_CONTROLLER %}
   type: controlplane
+  {% else %}
+  type: worker
+  {% endif %}
   token: {{ ENV.MACHINE_TOKEN }}
   ca:
     crt: {{ ENV.MACHINE_CA_CRT }}
@@ -26,11 +31,15 @@ machine:
     nodeIP:
       validSubnets:
           - 10.4.0.0/16
-    image: ghcr.io/siderolabs/kubelet:v1.35.2
+    image: ghcr.io/siderolabs/kubelet:v1.36.1
   network: {}
   install:
+    {% if disk %}
+    disk: {{ disk }}
+    {% else %}
     disk: /dev/sda
-    image: factory.talos.dev/metal-installer/ee21ef4a5ef808a9b7484cc0dda0f25075021691c8c09a276591eedb638ea1f9:v1.12.5
+    {% endif %}
+    image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:v1.13.3
     wipe: false
     grubUseUKICmdline: true
   features:
@@ -54,7 +63,6 @@ machine:
     {% endif %}
     rbac: true
   nodeLabels:
-    node.kubernetes.io/exclude-from-external-load-balancers: ""
     topology.kubernetes.io/region: main
   files:
     - op: create
@@ -116,7 +124,7 @@ cluster:
       - 10.244.0.0/16
     serviceSubnets:
       - 10.96.0.0/12
-  token: 7xbdc5.4gj2i9fhgwzhxvwl
+  token: {{ ENV.CLUSTER_TOKEN }}
   secretboxEncryptionSecret: {{ ENV.CLUSTER_SECRETBOX_ENCRYPTION_SECRET }}
   ca:
     crt: {{ ENV.CLUSTER_CA_CRT }}
@@ -130,7 +138,7 @@ cluster:
   serviceAccount:
     key: {{ ENV.CLUSTER_SERVICE_ACCOUNT_KEY }}
   apiServer:
-    image: registry.k8s.io/kube-apiserver:v1.35.2
+    image: registry.k8s.io/kube-apiserver:v1.36.1
     certSANs:
       - cluster.local
       - servonet.lan
@@ -161,12 +169,14 @@ cluster:
       kind: Policy
       rules:
         - level: Metadata
+  coreDNS:
+    disabled: true
   controllerManager:
-    image: registry.k8s.io/kube-controller-manager:v1.35.2
+    image: registry.k8s.io/kube-controller-manager:v1.36.1
   proxy:
-    image: registry.k8s.io/kube-proxy:v1.35.2
+    image: registry.k8s.io/kube-proxy:v1.36.1
   scheduler:
-    image: registry.k8s.io/kube-scheduler:v1.35.2
+    image: registry.k8s.io/kube-scheduler:v1.36.1
   discovery:
     enabled: true
     registries:
@@ -207,3 +217,13 @@ kind: TrustedRootsConfig
 name: step-ca # Name of the config document.
 certificates: |
   {{ ENV.STEP_CA_ROOT | indent(2, false) }}
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: {{ ENV.NODE }}
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: ethSel0
+selector:
+  match: glob("{{ mac }}", mac(link.hardware_addr))

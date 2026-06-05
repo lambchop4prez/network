@@ -1,0 +1,22 @@
+[providers]
+bws = { type = "bitwarden-sm", project_id = "15995f3f-b95d-4fcd-94bf-b3980160ab55" }
+
+[secrets]
+MACHINE_TOKEN = { provider = "bws", value = "MACHINE_TOKEN"}
+MACHINE_CA_CRT = { provider = "bws", value = "MACHINE_CA_CRT"}
+MACHINE_CA_KEY = { provider = "bws", value = "MACHINE_CA_KEY"}
+CLUSTER_ID = { provider = "bws", value = "CLUSTER_ID"}
+CLUSTER_TOKEN = { provider = "bws", value = "CLUSTER_TOKEN"}
+CLUSTER_SECRET = { provider = "bws", value = "CLUSTER_SECRET"}
+CLUSTER_SECRETBOX_ENCRYPTION_SECRET = { provider = "bws", value = "CLUSTER_SECRETBOX_ENCRYPTION_SECRET"}
+CLUSTER_CA_CRT = { provider = "bws", value = "CLUSTER_CA_CRT"}
+CLUSTER_CA_KEY = { provider = "bws", value = "CLUSTER_CA_KEY"}
+CLUSTER_AGGREGATOR_CA_CRT = { provider = "bws", value = "CLUSTER_AGGREGATOR_CA_CRT"}
+CLUSTER_AGGREGATOR_CA_KEY = { provider = "bws", value = "CLUSTER_AGGREGATOR_CA_KEY"}
+CLUSTER_SERVICE_ACCOUNT_KEY = { provider = "bws", value = "CLUSTER_SERVICE_ACCOUNT_KEY"}
+CLUSTER_ETCD_CA_CRT = { provider = "bws", value = "CLUSTER_ETCD_CA_CRT"}
+CLUSTER_ETCD_CA_KEY = { provider = "bws", value = "CLUSTER_ETCD_CA_KEY"}
+BITWARDEN_ACCESS_TOKEN = { provider = "bws", value = "BITWARDEN_ACCESS_TOKEN" }
+GITHUB_IDENTITY_PUB = { provider = "bws", value = "GITHUB_IDENTITY_PUB" }
+GITHUB_IDENTITY = { provider = "bws", value = "GITHUB_IDENTITY" }
+STEP_CA_ROOT = { provider = "bws", value = "STEP_CA_ROOT" }

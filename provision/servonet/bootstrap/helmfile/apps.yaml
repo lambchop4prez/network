@@ -13,10 +13,10 @@ helmDefaults:
   #   - yq ea --exit-status 'select(.kind == "CustomResourceDefinition")' -
 
 releases:
-  - name: kube-prometheus-stack
-    namespace: monitoring
-    chart: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
-    version: 85.1.3
+  # - name: kube-prometheus-stack
+  #   namespace: monitoring
+  #   chart: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
+  #   version: 85.1.3
 
   - name: envoy-gateway
     namespace: networking
@@ -56,4 +56,4 @@ releases:
       - templates/values.yaml.gotmpl
     needs:
       - flux-system/flux-operator
-      - monitoring/kube-prometheus-stack
+      # - monitoring/kube-prometheus-stack
