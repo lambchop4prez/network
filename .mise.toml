@@ -6,7 +6,7 @@ KUBECONFIG = "{{config_root}}/kubeconfig"
 _.file = ["{{config_root}}/.secrets.env"]
 
 [tools]
-"python" = "3.14.5"
+"python" = "3.14.6"
 "aqua:casey/just" = "1.51.0"
 "aqua:cilium/cilium-cli" = "0.19.4"
 "aqua:cli/cli" = "2.94.0"
