@@ -1,0 +1,45 @@
+services:
+  caddy:
+    image: caddy:2.11.4
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    networks:
+      - default
+      - servarr_default
+    volumes:
+      - /home/tmc/caddy:/etc/caddy
+      - /home/tmc/site:/srv
+      - /home/tmc/.step/certs/root_ca.crt:/etc/caddy/root_ca.crt
+      - caddy_data:/data
+      - caddy_config:/config
+  
+  pocket-id:
+    image: ghcr.io/pocket-id/pocket-id:v2.8.0
+    restart: unless-stopped
+    env_file: stack.env
+    ports:
+      - 1411:1411
+    volumes:
+      - "/home/tmc/data:/app/data"
+    # Optional healthcheck
+    healthcheck:
+      test: [ "CMD", "/app/pocket-id", "healthcheck" ]
+      interval: 1m30s
+      timeout: 5s
+      retries: 2
+      start_period: 10s
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:
+    external: true
+
+networks:
+  default:
+    name: ingress_default
+  servarr_default:
+    external: true

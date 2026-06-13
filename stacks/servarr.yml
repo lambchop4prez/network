@@ -1,0 +1,107 @@
+services:
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    init: true
+    container_name: seerr
+    environment:
+      - TZ=America/Detroit
+      - PORT=5055 #optional
+    ports:
+      - 5055:5055
+    volumes:
+      - /storage/seerr/config:/app/config
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/settings/public || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+      retries: 3
+    restart: unless-stopped
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    environment:
+      - PUID=1000
+      - PGID=1001
+      - TZ=America/Detroit
+    volumes:
+      - sabnzbd-config:/config
+      - downloads:/downloads #optional
+      # - /path/to/incomplete/downloads:/incomplete-downloads #optional
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1001
+      - TZ=America/Detroit
+    volumes:
+      - sonarr-config:/config
+      - tv:/tv #optional
+      - downloads:/downloads #optional
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1001
+      - TZ=America/Detroit
+    volumes:
+      - radarr-config:/config
+      - movies:/movies #optional
+      - downloads:/downloads #optional
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1001
+      - TZ=America/Detroit
+      - WEBUI_PORT=8088
+      - TORRENTING_PORT=6881
+    volumes:
+      - /storage/qbittorrent/config:/config
+      - downloads:/downloads #optional
+      - archive:/archive
+    ports:
+      - 8088:8088
+      - 6881:6881
+      - 6881:6881/udp
+    stop_grace_period: 10s #optional
+    restart: unless-stopped
+  qui:
+    image: ghcr.io/autobrr/qui:latest
+    container_name: qui
+    restart: unless-stopped
+    ports:
+      - 7476:7476
+    volumes:
+      - /storage/qui:/config
+volumes:
+  downloads:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /storage/downloads
+  archive:
+    external: true
+  tv:
+    external: true
+  movies:
+    external: true
+  sabnzbd-config:
+    external: true
+  sonarr-config:
+    external: true
+  radarr-config:
+    external: true
