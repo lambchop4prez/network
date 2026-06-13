@@ -1,0 +1,22 @@
+---
+services:
+  coredns:
+    image: coredns/coredns:1.14.4
+    restart: unless-stopped
+    container_name: coredns
+    command: -conf /home/nonroot/Corefile
+    volumes:
+      - /storage/coredns/Corefile:/home/nonroot/Corefile:ro
+    ports:
+      - 5533:53/udp
+    networks:
+      - default
+      - servarr_default
+
+networks:
+  default:
+    name: dns_default
+  ingress_default:
+    external: true
+  servarr_default:
+    external: true

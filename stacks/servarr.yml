@@ -25,9 +25,8 @@ services:
       - PGID=1001
       - TZ=America/Detroit
     volumes:
-      - sabnzbd-config:/config
-      - downloads:/downloads #optional
-      # - /path/to/incomplete/downloads:/incomplete-downloads #optional
+      - /storage/sabnzbd/config:/config
+      - downloads:/downloads
     ports:
       - 8080:8080
     restart: unless-stopped
@@ -39,9 +38,9 @@ services:
       - PGID=1001
       - TZ=America/Detroit
     volumes:
-      - sonarr-config:/config
-      - tv:/tv #optional
-      - downloads:/downloads #optional
+      - /storage/sonarr/config:/config
+      - tv:/tv
+      - downloads:/downloads
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -53,9 +52,9 @@ services:
       - PGID=1001
       - TZ=America/Detroit
     volumes:
-      - radarr-config:/config
-      - movies:/movies #optional
-      - downloads:/downloads #optional
+      - /storage/radarr/config:/config
+      - movies:/movies
+      - downloads:/downloads
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -70,13 +69,13 @@ services:
       - TORRENTING_PORT=6881
     volumes:
       - /storage/qbittorrent/config:/config
-      - downloads:/downloads #optional
+      - downloads:/downloads
       - archive:/archive
     ports:
       - 8088:8088
       - 6881:6881
       - 6881:6881/udp
-    stop_grace_period: 10s #optional
+    stop_grace_period: 10s
     restart: unless-stopped
   qui:
     image: ghcr.io/autobrr/qui:latest
@@ -98,10 +97,4 @@ volumes:
   tv:
     external: true
   movies:
-    external: true
-  sabnzbd-config:
-    external: true
-  sonarr-config:
-    external: true
-  radarr-config:
     external: true

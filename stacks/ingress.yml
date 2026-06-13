@@ -2,6 +2,7 @@ services:
   caddy:
     image: caddy:2.11.4
     restart: unless-stopped
+    container_name: caddy
     ports:
       - "80:80"
       - "443:443"
@@ -10,20 +11,21 @@ services:
       - default
       - servarr_default
     volumes:
-      - /home/tmc/caddy:/etc/caddy
-      - /home/tmc/site:/srv
-      - /home/tmc/.step/certs/root_ca.crt:/etc/caddy/root_ca.crt
+      - /storage/caddy/config:/etc/caddy
+      - /storage/caddy/site:/srv
+      - /home/tmc/.step/certs/root_ca.crt:/etc/ssl/certs/proxy_ca_root.crt
       - caddy_data:/data
       - caddy_config:/config
   
   pocket-id:
     image: ghcr.io/pocket-id/pocket-id:v2.8.0
     restart: unless-stopped
+    container_name: pocket-id
     env_file: stack.env
     ports:
       - 1411:1411
     volumes:
-      - "/home/tmc/data:/app/data"
+      - "/storage/pocket/data:/app/data"
     # Optional healthcheck
     healthcheck:
       test: [ "CMD", "/app/pocket-id", "healthcheck" ]
