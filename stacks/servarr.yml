@@ -98,3 +98,6 @@ volumes:
     external: true
   movies:
     external: true
+networks:
+  default:
+    name: servarr_default
