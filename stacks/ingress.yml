@@ -22,7 +22,7 @@ services:
     restart: unless-stopped
     container_name: pocket-id
     env_file:
-      - /storage/pocket/secrets.env
+      - /data/pocket.env
     ports:
       - 1411:1411
     volumes:
