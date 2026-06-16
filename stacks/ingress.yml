@@ -13,7 +13,7 @@ services:
     volumes:
       - /storage/caddy/config:/etc/caddy
       - /storage/caddy/site:/srv
-      - /home/tmc/.step/certs/root_ca.crt:/etc/ssl/certs/proxy_ca_root.crt
+      - /storage/root_ca.crt:/etc/ssl/certs/proxy_ca_root.crt
       - caddy_data:/data
       - caddy_config:/config
   
