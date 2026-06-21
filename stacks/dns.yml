@@ -20,3 +20,5 @@ networks:
     external: true
   servarr_default:
     external: true
+  monitoring_default:
+    external: true
