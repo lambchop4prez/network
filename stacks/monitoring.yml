@@ -9,7 +9,7 @@ services:
     volumes:
       - /storage/gatus/config:/config
       - /storage/gatus/data:/data
-      - /storage/root_ca.crt:/etc/ssl/certs/ca-certificates.crt:ro
+      - /storage/root_ca.crt:/etc/ssl/certs/proxy_ca_root.crt:ro
 
     environment:
       - GATUS_CONFIG_PATH=/config/config.yaml
