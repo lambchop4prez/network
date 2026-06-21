@@ -10,6 +10,7 @@ services:
     networks:
       - default
       - servarr_default
+      - monitoring_default
     volumes:
       - /storage/caddy/config:/etc/caddy
       - /storage/caddy/site:/srv
