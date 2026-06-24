@@ -8,7 +8,6 @@ services:
     restart: always
     ports:
       - ${SEARXNG_HOST:+${SEARXNG_HOST}:}${SEARXNG_PORT:-8080}:${SEARXNG_PORT:-8080}
-    env_file: ./.env
     volumes:
       - ./core-config/:/etc/searxng/:Z
       - core-data:/var/cache/searxng/
@@ -24,3 +23,7 @@ services:
 volumes:
   core-data:
   valkey-data:
+
+networks:
+  default:
+    name: seraxng_default
