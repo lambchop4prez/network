@@ -10,6 +10,7 @@ services:
     networks:
       - default
       - servarr_default
+      - seraxng_default
       - monitoring_default
     volumes:
       - /storage/caddy/config:/etc/caddy
@@ -48,4 +49,6 @@ networks:
   servarr_default:
     external: true
   monitoring_default:
+    external: true
+  seraxng_default:
     external: true
