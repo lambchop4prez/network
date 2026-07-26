@@ -1,0 +1,33 @@
+---
+services:
+  it-tools:
+    container_name: it-tools
+    image: sharevb/it-tools:latest
+    pull_policy: always
+    restart: unless-stopped
+    ports:
+      - 8080:8085       # Since Docker base image is now nginx-unpriviledged, docker image now listen to 8080 and no more 80. 
+  excalidraw:
+    container_name: excalidraw
+    image: excalidraw/excalidraw:latest
+    pull_policy: always
+    restart: unless-stopped
+    ports:
+      5000:5000
+  freshrss:
+    container_name: freshrss
+    image:  freshrss/freshrss:1.29.1-alpine
+    pull_policy: always
+    restart: unless-stopped
+    ports:
+      8080:8086
+    logging:
+      options:
+        max-size: 10m
+    volumes:
+      - data:/var/www/FreshRSS/data
+      - extensions:/var/www/FreshRSS/extensions
+    environment:
+      TZ: Europe/Paris
+      CRON_MIN: '3,33'
+      TRUSTED_PROXY: 172.20.0.0/16
