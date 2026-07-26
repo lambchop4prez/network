@@ -13,21 +13,21 @@ services:
     pull_policy: always
     restart: unless-stopped
     ports:
-      5000:5000
+      - 5000:5000
   freshrss:
     container_name: freshrss
     image:  freshrss/freshrss:1.29.1-alpine
     pull_policy: always
     restart: unless-stopped
     ports:
-      8080:8086
+      - 8080:8086
     logging:
       options:
         max-size: 10m
     volumes:
-      - data:/var/www/FreshRSS/data
-      - extensions:/var/www/FreshRSS/extensions
+      - /storage/freshrss/data:/var/www/FreshRSS/data
+      - /storage/freshrss/extensions:/var/www/FreshRSS/extensions
     environment:
-      TZ: Europe/Paris
+      TZ: America/Detroit
       CRON_MIN: '3,33'
       TRUSTED_PROXY: 172.20.0.0/16
