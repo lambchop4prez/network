@@ -13,7 +13,7 @@ services:
     pull_policy: always
     restart: unless-stopped
     ports:
-      - 5000:5000
+      - 5000:80
   freshrss:
     container_name: freshrss
     image:  freshrss/freshrss:1.29.1-alpine
