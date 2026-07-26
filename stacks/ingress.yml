@@ -27,6 +27,9 @@ services:
       - 1411:1411
     volumes:
       - "/storage/pocket/data:/app/data"
+    env:
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      MAXMIND_LICENSE_KEY: ${MAXMIND_LICENSE_KEY}
     # Optional healthcheck
     healthcheck:
       test: [ "CMD", "/app/pocket-id", "healthcheck" ]
