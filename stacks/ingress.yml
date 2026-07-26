@@ -12,6 +12,7 @@ services:
       - servarr_default
       - seraxng_default
       - monitoring_default
+      - selfhosted_default
     volumes:
       - /storage/caddy/config:/etc/caddy
       - /storage/caddy/site:/srv
