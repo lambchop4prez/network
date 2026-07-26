@@ -52,3 +52,5 @@ networks:
     external: true
   seraxng_default:
     external: true
+  selfhosted_default:
+    external: true
