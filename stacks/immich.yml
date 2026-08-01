@@ -66,3 +66,6 @@ services:
 
 volumes:
   model-cache:
+networks:
+  default:
+    name: immich_default

@@ -13,6 +13,7 @@ services:
       - seraxng_default
       - monitoring_default
       - selfhosted_default
+      - immich_default
     volumes:
       - /storage/caddy/config:/etc/caddy
       - /storage/caddy/site:/srv
@@ -55,4 +56,6 @@ networks:
   seraxng_default:
     external: true
   selfhosted_default:
+    external: true
+  immich_default:
     external: true
