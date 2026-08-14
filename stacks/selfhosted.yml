@@ -6,7 +6,7 @@ services:
     pull_policy: always
     restart: unless-stopped
     ports:
-      - 8085:8080       # Since Docker base image is now nginx-unpriviledged, docker image now listen to 8080 and no more 80. 
+      - 8085:8080       # Since Docker base image is now nginx-unprivileged, docker image now listen to 8080 and no more 80. 
   excalidraw:
     container_name: excalidraw
     image: excalidraw/excalidraw:latest
