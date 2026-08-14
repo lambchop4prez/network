@@ -3,8 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    authentik-nix.url = "github:nix-community/authentik-nix";
-    agenix.url = "github:ryantm/agenix";
     systems.url = "github:nix-systems/default";
     flake-utils = {
       url = "github:numtide/flake-utils";
@@ -17,10 +15,6 @@
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    secrets = {
-      url = "git+ssh://git@github.com/lambchop4prez/secrets.git";
-      flake = false;
     };
   };
 

@@ -29,3 +29,4 @@ _.file = ["{{config_root}}/.secrets.env"]
 "aqua:mitsuhiko/minijinja" = "2.24.0"
 "aqua:crate-ci/typos" = "1.49.0"
 fnox = "1.33.0"
+rust = "latest"
