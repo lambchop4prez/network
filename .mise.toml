@@ -26,6 +26,6 @@ _.file = ["{{config_root}}/.secrets.env"]
 "github:bitwarden/sdk" = "bws-v1.0.0"
 "aqua:derailed/k9s" = "0.51.0"
 "aqua:charmbracelet/gum" = "0.17.0"
-"aqua:mitsuhiko/minijinja" = "2.21.0"
+"aqua:mitsuhiko/minijinja" = "2.24.0"
 "aqua:crate-ci/typos" = "1.47.2"
 fnox = "1.33.0"
