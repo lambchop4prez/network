@@ -1,0 +1,30 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    network_mode: host
+
+    security_opt:
+      - apparmor=unconfined
+      - systempaths=unconfined
+
+    volumes:
+      - /storage/jellyfin/config:/config   # change to your actual config storage path
+      - /storage/jellyfin/cache:/cache     # change to your actual cache/transcode storage path, ideally NVMe
+      - tv:/media/tv:ro           # change to your actual media library path
+      - movies:/media/movies:ro           # change to your actual media library path
+
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/dma_heap:/dev/dma_heap
+      - /dev/mpp_service:/dev/mpp_service
+      - /dev/rga:/dev/rga
+      - /dev/mali0:/dev/mali0
+
+    restart: unless-stopped
+
+volumes:
+  tv:
+    external: true
+  movies:
+    external: true
