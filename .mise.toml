@@ -28,5 +28,5 @@ _.file = ["{{config_root}}/.secrets.env"]
 "aqua:charmbracelet/gum" = "0.17.0"
 "aqua:mitsuhiko/minijinja" = "2.24.0"
 "aqua:crate-ci/typos" = "1.49.0"
-fnox = "1.33.0"
+fnox = "1.33.1"
 rust = "latest"
