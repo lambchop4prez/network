@@ -8,7 +8,7 @@ _.file = ["{{config_root}}/.secrets.env"]
 [tools]
 "python" = "3.14.7"
 "aqua:casey/just" = "1.58.0"
-"aqua:cilium/cilium-cli" = "0.19.7"
+"aqua:cilium/cilium-cli" = "0.20.0"
 "aqua:cli/cli" = "2.97.0"
 "aqua:cloudflare/cloudflared" = "2026.8.2"
 "aqua:cue-lang/cue" = "0.17.1"
