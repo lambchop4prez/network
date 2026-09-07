@@ -22,7 +22,7 @@ services:
       - caddy_config:/config
   
   id:
-    image: ghcr.io/pocket-id/pocket-id:v2.8.0
+    image: ghcr.io/pocket-id/pocket-id:v2.14.0
     restart: unless-stopped
     container_name: pocket-id
     ports:
