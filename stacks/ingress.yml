@@ -30,6 +30,7 @@ services:
     volumes:
       - "/storage/pocket/data:/app/data"
     environment:
+      APP_URL: 'https://id.lan'
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
       MAXMIND_LICENSE_KEY: ${MAXMIND_LICENSE_KEY}
     # Optional healthcheck
