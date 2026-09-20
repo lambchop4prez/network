@@ -1,4 +1,4 @@
-set quiet := true
+set quiet
 set script-interpreter := ['bash', '-euo', 'pipefail']
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
@@ -50,6 +50,9 @@ download version arch schematic ext=default_ext:
 [doc('Download all images')]
 download-all version: (download version "arm64" "rpi") (download version "arm64" "turing-rk1") (download version "amd64" "amd-vm" "iso")
 
+upload version arch="arm64" schematic="turing-rk1" ext="raw":
+    scp "{{ provision_dir }}/talos-{{ version }}-{{ arch }}-{{ replace_regex(schematic, '^(.{10}).*', '$1') }}.{{ ext }}" root@turingpi.lan:/mnt/sdcard
+
 [doc('Reboot a node')]
 reboot node:
     gum confirm "Reboot {{ node }}?" --default="No" && \
@@ -61,7 +64,7 @@ shutdown node *args:
         talosctl -n {{ node }} shutdown --force {{ args }} | exit 0
 
 [doc('Apply Talos config to node')]
-apply-config node *args:
+apply-config node=default_node *args:
     just servonet render-config "{{ node }}" | talosctl -n "{{ node }}" apply-config -f /dev/stdin {{ args }}
 
 [doc('Render talos config for a node')]

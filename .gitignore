@@ -50,4 +50,7 @@ vault.env
 .direnv
 .secrets.env
 *.raw.xz
+*.raw
 *.iso
+talosconfig
+.tmp

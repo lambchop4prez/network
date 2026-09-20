@@ -1,0 +1,13 @@
+---
+context: servonet
+contexts:
+  servonet:
+    endpoints:
+      {% for name in nodes %}
+      - {{ nodes[name].endpoint }}
+      {% endfor %}
+    ca: {{ ENV.MACHINE_CA_CRT }}
+    {% if ENV.ADMIN_CRT %}
+    crt: {{ ENV.ADMIN_CRT }}
+    key: {{ ENV.ADMIN_KEY }}
+    {% endif %}

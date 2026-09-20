@@ -31,7 +31,7 @@ machine:
     nodeIP:
       validSubnets:
           - 10.4.0.0/16
-    image: ghcr.io/siderolabs/kubelet:v1.36.1
+    image: ghcr.io/siderolabs/kubelet:v1.37.0
   network: {}
   install:
     {% if disk %}
@@ -39,7 +39,7 @@ machine:
     {% else %}
     disk: /dev/sda
     {% endif %}
-    image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:v1.13.3
+    image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:v1.14.1
     wipe: false
     grubUseUKICmdline: true
   features:
@@ -138,7 +138,7 @@ cluster:
   serviceAccount:
     key: {{ ENV.CLUSTER_SERVICE_ACCOUNT_KEY }}
   apiServer:
-    image: registry.k8s.io/kube-apiserver:v1.36.1
+    image: registry.k8s.io/kube-apiserver:v1.37.0
     certSANs:
       - cluster.local
       - servonet.lan
@@ -172,11 +172,11 @@ cluster:
   coreDNS:
     disabled: true
   controllerManager:
-    image: registry.k8s.io/kube-controller-manager:v1.36.1
+    image: registry.k8s.io/kube-controller-manager:v1.37.0
   proxy:
-    image: registry.k8s.io/kube-proxy:v1.36.1
+    image: registry.k8s.io/kube-proxy:v1.37.0
   scheduler:
-    image: registry.k8s.io/kube-scheduler:v1.36.1
+    image: registry.k8s.io/kube-scheduler:v1.37.0
   discovery:
     enabled: true
     registries:
