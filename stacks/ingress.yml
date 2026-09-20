@@ -22,7 +22,7 @@ services:
       - caddy_config:/config
   
   id:
-    image: ghcr.io/pocket-id/pocket-id:v2.8.0
+    image: ghcr.io/pocket-id/pocket-id:v2.14.0
     restart: unless-stopped
     container_name: pocket-id
     ports:
@@ -30,6 +30,7 @@ services:
     volumes:
       - "/storage/pocket/data:/app/data"
     environment:
+      APP_URL: 'https://id.lan'
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
       MAXMIND_LICENSE_KEY: ${MAXMIND_LICENSE_KEY}
     # Optional healthcheck
