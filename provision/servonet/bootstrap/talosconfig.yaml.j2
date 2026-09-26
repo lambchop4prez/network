@@ -6,6 +6,10 @@ contexts:
       {% for name in nodes %}
       - {{ nodes[name].endpoint }}
       {% endfor %}
+    nodes:
+      {% for name in nodes %}
+      - {{ nodes[name].endpoint }}
+      {% endfor %}
     ca: {{ ENV.MACHINE_CA_CRT }}
     {% if ENV.ADMIN_CRT %}
     crt: {{ ENV.ADMIN_CRT }}

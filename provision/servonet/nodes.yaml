@@ -14,10 +14,10 @@ nodes:
   #   schematic: turing-rk1
   #   mac: "12:e8:5f:39:44:dd"
   #   disk: /dev/mmcblk0
-  # tom-c86c:
-  #   slot: 3
-  #   endpoint: 10.4.3.34
-  #   controlplane: true
-  #   schematic: turing-rk1
-  #   mac: "66:b4:b5:27:c8:6c"
-  #   disk: /dev/mmcblk0
+  tom-c86c:
+    slot: 3
+    endpoint: 10.4.3.34
+    controlplane: true
+    schematic: turing-rk1
+    mac: "66:b4:b5:27:c8:6c"
+    disk: /dev/mmcblk0
