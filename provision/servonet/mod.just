@@ -1,3 +1,5 @@
+#!/usr/bin/env -S just --justfile
+
 set quiet
 set script-interpreter := ['bash', '-euo', 'pipefail']
 set shell := ['bash', '-euo', 'pipefail', '-c']
@@ -18,8 +20,8 @@ choose node=default_node:
     echo {{ if node == "choose" { `gum choose $(just servonet nodes)` } else { node } }}
 
 [doc('Generate config')]
-config node:    
-    yq -r '.nodes["{{node}}"]' nodes.yaml
+config node:
+    yq -r '.nodes["{{ node }}"]' nodes.yaml
 
 [doc('Apply namespaces')]
 namespaces:
@@ -30,7 +32,7 @@ namespaces:
       fi; \
     done
 
-schematic node: 
+schematic node:
     just servonet schematic-id "$(yq -r '.nodes["{{ node }}"].schematic' nodes.yaml)"
 
 [doc('Get schematic ID from Talos schematic')]

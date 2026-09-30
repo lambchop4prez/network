@@ -1,9 +1,12 @@
 #!/usr/bin/env -S just --justfile
 
-set quiet := true
+set quiet
+set script-interpreter := ['bash', '-euo', 'pipefail']
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
+mod cluster 'cluster'
 mod servonet 'provision/servonet'
+mod gpc 'provision/gpc'
 
 [private]
 default:
@@ -17,11 +20,15 @@ log lvl msg *args:
 template file *args:
     fnox exec -- minijinja-cli --env "{{ file }}" {{ args }}
 
-[group('check')]
+[group('setup')]
+setup:
+    lefthook install
+
+[group('analyze')]
 spellcheck:
     typos --config "{{ justfile_dir() }}/.config/typos.toml"
 
-[group('check')]
+[group('analyze')]
 [parallel]
-analyze: spellcheck
+analyze: spellcheck cluster::kubeconform servonet::bootstrap::helmfile (gpc::fmt '-check') gpc::validate
     just log info "Static analysis complete"

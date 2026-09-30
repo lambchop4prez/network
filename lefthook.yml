@@ -1,0 +1,42 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: "spellcheck"
+      run: just spellcheck
+
+    - name: "format:terraform"
+      run: tofu fmt -fix
+      glob: "*.{tf}"
+      stage_fixed: true
+
+    - name: "format:just"
+      glob:
+        - "*.just"
+        - ".justfile"
+      stage_fixed: true
+      run: |
+        for file in {staged_files}; do
+          just --justfile "$file" --fmt --unstable
+        done
+
+    - name: "validate:renovate"
+      glob:
+        - ".renovate/*.json"
+        - "renovate.json*"
+        - ".renovaterc*"
+      run: renovate-config-validator --no-global {staged_files}
+
+    - name: "lint:actions"
+      glob: "*.{yml,yaml}"
+      root: .github/workflows
+      run: actionlint {staged_files}
+
+    - name: "analyze:actions"
+      glob: "*.{yml,yaml}"
+      root: .github/workflows
+      run: zizmor {staged_files} --fix=all
+      stage_fixed: true
+
+    - name: "validate:k8s"
+      glob: "cluster/*.{yml,yaml}"
+      run: just cluster kubeconform

@@ -5,6 +5,9 @@ KUBECONFIG = "{{config_root}}/kubeconfig"
 
 _.file = ["{{config_root}}/.secrets.env"]
 
+[hooks]
+postinstall = "just setup"
+
 [tools]
 "python" = "3.14.7"
 "aqua:casey/just" = "1.58.0"
@@ -16,6 +19,7 @@ _.file = ["{{config_root}}/.secrets.env"]
 "aqua:fluxcd/flux2" = "2.9.5"
 "aqua:getsops/sops" = "3.13.3"
 "aqua:helm/helm" = "4.3.0"
+"aqua:opentofu/opentofu" = "1.12.6"
 "aqua:helmfile/helmfile" = "1.8.0"
 "aqua:jqlang/jq" = "1.8.1"
 "aqua:kubernetes-sigs/kustomize" = "5.7.1"
@@ -30,3 +34,9 @@ _.file = ["{{config_root}}/.secrets.env"]
 "aqua:crate-ci/typos" = "1.50.2"
 fnox = "1.35.3"
 rust = "latest"
+oxfmt = "0.69.0"
+lefthook = "2.1.14"
+# @yarnpkg/libzip@3.2.2 (transitive, Yarn support unused here) lacks provenance; published manually by arcanis. Review/remove exclusion if republished with provenance.
+"npm:renovate" = { version = "44.69.3", trust_policy_excludes = ["@yarnpkg/libzip@3.2.2"] }
+zizmor = "1.29.0"
+actionlint = "1.7.12"
