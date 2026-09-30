@@ -36,6 +36,7 @@ fnox = "1.35.3"
 rust = "latest"
 oxfmt = "0.69.0"
 lefthook = "2.1.14"
-"npm:renovate" = "44.69.3"
+# @yarnpkg/libzip@3.2.2 (transitive, Yarn support unused here) lacks provenance; published manually by arcanis. Review/remove exclusion if republished with provenance.
+"npm:renovate" = { version = "44.69.3", trust_policy_excludes = ["@yarnpkg/libzip@3.2.2"] }
 zizmor = "1.29.0"
 actionlint = "1.7.12"
