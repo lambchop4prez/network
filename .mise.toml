@@ -35,7 +35,7 @@ postinstall = "just setup"
 fnox = "1.36.0"
 rust = "latest"
 oxfmt = "0.71.0"
-lefthook = "2.1.15"
+lefthook = "2.1.16"
 # @yarnpkg/libzip@3.2.2 (transitive, Yarn support unused here) lacks provenance; published manually by arcanis. Review/remove exclusion if republished with provenance.
 "npm:renovate" = { version = "44.121.4", trust_policy_excludes = ["@yarnpkg/libzip@3.2.2"] }
 zizmor = "1.29.0"
