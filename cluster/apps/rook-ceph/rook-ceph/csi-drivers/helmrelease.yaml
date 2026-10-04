@@ -6,9 +6,13 @@ metadata:
   name: ceph-csi-drivers
   namespace: rook-ceph
 spec:
-  chartRef:
-    kind: HelmRepository
-    name: ceph-csi-operator
+  chart:
+    spec:
+      chart: ceph-csi-drivers
+      version: 1.0.4
+      sourceRef:
+        kind: HelmRepository
+        name: ceph-csi-operator
   interval: 1h
   dependsOn:
     - name: rook-ceph-cluster
