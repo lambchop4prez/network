@@ -51,12 +51,7 @@ spec:
             namespace: networking
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        storageClass: "ceph-block"
-        size: 3Gi
-        accessMode: ReadWriteOnce
-        retain: true
+        existingClaim: sonarr
       downloads:
         existingClaim: nas-downloads
       tv:

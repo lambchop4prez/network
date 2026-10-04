@@ -69,12 +69,7 @@ spec:
                 port: *port
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        storageClass: "ceph-block"
-        size: 8Gi
-        accessMode: ReadWriteOnce
-        retain: true
+        existingClaim: jellyfin
       movies:
         existingClaim: nas-movies
       tv:

@@ -56,12 +56,7 @@ spec:
             namespace: networking
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        storageClass: "ceph-block"
-        size: 1Gi
-        accessMode: ReadWriteOnce
-        retain: true
+        existingClaim: lidarr
       downloads:
         existingClaim: nas-downloads
       music:

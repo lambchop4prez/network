@@ -83,12 +83,7 @@ spec:
             namespace: networking
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        storageClass: "ceph-block"
-        size: 10Gi
-        accessMode: ReadWriteOnce
-        retain: true
+        existingClaim: seerr
         globalMounts:
           - path: /app/config
       tmp:

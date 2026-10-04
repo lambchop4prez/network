@@ -3,13 +3,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname seerr
+  name: &app seerr
   namespace: flux-system
 spec:
   targetNamespace: media
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CAPACITY: 10Gi
   interval: 10m
   path: "./cluster/apps/media/seerr/app"
   prune: true
