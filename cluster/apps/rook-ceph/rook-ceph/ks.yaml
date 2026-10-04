@@ -36,3 +36,23 @@ spec:
   wait: true
   dependsOn:
     - name: rook-operator
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname rook-csi-drivers
+  namespace: flux-system
+spec:
+  targetNamespace: rook-ceph
+  commonMetadata:
+    labels:
+      app.kubernetes.io: *appname
+  interval: 10m
+  path: "./cluster/apps/rook-ceph/rook-ceph/csi-drivers"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: network
+  wait: true
+  dependsOn:
+    - name: rook-cluster
