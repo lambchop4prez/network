@@ -1,5 +1,5 @@
 [files]
-extend-exclude = ["*.sops.yaml"]
+extend-exclude = ["*.sops.yaml", "**/bitwarden-ca-bundle.yaml"] # CA bundles contain base64 blobs with typo false-positives
 [default.extend-words]
 hass = "hass"
 HASS = "HASS"

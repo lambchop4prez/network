@@ -15,6 +15,21 @@ spec:
     leaderElect: true
     bitwarden-sdk-server:
       enabled: true
+      image:
+        tls:
+          # The cert-manager Certificate for this server does not include a ca.crt
+          # entry (the step ACME profile returns leaf-only chains). The SDK server
+          # only needs cert.pem/key.pem; client-side trust comes from the
+          # bitwarden-ca-bundle ConfigMap referenced by the ClusterSecretStore.
+          volumes:
+            - name: bitwarden-tls-certs
+              secret:
+                secretName: bitwarden-tls-certs
+                items:
+                  - key: tls.crt
+                    path: cert.pem
+                  - key: tls.key
+                    path: key.pem
       podAnnotations:
         secret.reloader.stakater.com/reload: bitwarden, bitwarden-tls-certs
     grafanaDashboard:
