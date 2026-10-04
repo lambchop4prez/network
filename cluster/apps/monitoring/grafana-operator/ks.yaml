@@ -26,7 +26,6 @@ spec:
   dependsOn:
     - name: grafana-operator
     - name: rook-cluster
-      namespace: rook-ceph
   interval: 1h
   path: ./cluster/apps/monitoring/grafana-operator/instance
   prune: true
