@@ -43,12 +43,7 @@ spec:
             port: *port
     persistence:
       data:
-        enabled: true
-        type: persistentVolumeClaim
-        storageClass: "ceph-block"
-        size: 10Gi
-        accessMode: ReadWriteOnce
-        retain: true
+        existingClaim: freshrss
         advancedMounts:
           freshrss:
             app:

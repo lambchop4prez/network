@@ -17,9 +17,14 @@ spec:
   components:
     - ../../../../components/dragonfly/
     - ../../../../components/postgres/
+    - ../../../../components/volsync
   postBuild:
     substitute:
       APP: *app
+      VOLSYNC_CAPACITY: 10Gi
+      # Match USERMAP_UID/USERMAP_GID so the kopia mover can read the volume
+      VOLSYNC_PUID: 3004
+      VOLSYNC_PGID: 3001
   path: ./cluster/apps/selfhosted/paperless/app
   prune: true
   sourceRef:

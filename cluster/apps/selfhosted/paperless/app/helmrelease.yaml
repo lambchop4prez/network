@@ -102,12 +102,7 @@ spec:
 
     persistence:
       data:
-        enabled: true
-        type: persistentVolumeClaim
-        storageClass: "ceph-block"
-        size: 10Gi
-        accessMode: ReadWriteOnce
-        retain: true
+        existingClaim: paperless
         advancedMounts:
           paperless:
             app:

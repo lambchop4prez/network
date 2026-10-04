@@ -12,9 +12,12 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/volsync
   postBuild:
     substitute:
       APP: *app
+      VOLSYNC_CAPACITY: 10Gi
   path: ./cluster/apps/selfhosted/freshrss/app
   prune: true
   sourceRef:
