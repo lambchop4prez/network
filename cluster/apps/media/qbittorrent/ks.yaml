@@ -25,3 +25,12 @@ spec:
   wait: true
   dependsOn:
     - name: rook-cluster
+  patches:
+    # Bump the one-shot manual restore trigger now that CSI provisioning is
+    # fixed and the kopia repository snapshots are reachable again.
+    - patch: |-
+        - op: replace
+          path: /spec/trigger/manual
+          value: restore-20261004
+      target:
+        kind: ReplicationDestination
