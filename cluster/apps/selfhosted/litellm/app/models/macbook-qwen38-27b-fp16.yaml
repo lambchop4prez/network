@@ -1,0 +1,18 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: macbook-qwen38-27b-fp16
+spec:
+  modelName: macbook-qwen38-27b-fp16
+  params:
+    model: openai/Qwen3.8-27B-oQ8e-fp16-mtp
+    apiBase: http://Tims-MacBook-Pro.lan:8899/v1
+    apiKeyRef:
+      name: litellm-secrets
+      key: LITELLM_MACBOOK_OMLX_API_KEY
+    dropParams: true
+  info:
+    mode: chat
+    maxInputTokens: 262144
+    supportsFunctionCalling: true

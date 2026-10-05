@@ -45,3 +45,4 @@ spec:
     - "qui.servonet.lan"
     - "draw.servonet.lan"
     - "kopia.servonet.lan"
+    - "litellm.servonet.lan"

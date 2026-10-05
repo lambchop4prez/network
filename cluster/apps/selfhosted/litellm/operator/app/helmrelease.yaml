@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: litellm-operator
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: litellm-operator
+  interval: 30m
+  values:
+    # The validating webhook self-manages its serving cert (no cert-manager
+    # dependency) and catches CR mistakes before they reach the proxy config.
+    webhook:
+      enabled: true
+    # No LLMKube CRDs in this cluster — explicit off (also the chart default).
+    llmkube:
+      autoRegister: false
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        memory: 128Mi

@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hermes-seed-config
+data:
+  # Seed-only: copied to /opt/data/config.yaml on first boot (marker = file
+  # absent). Afterwards the PVC copy is authoritative; edits here require
+  # deleting /opt/data/config.yaml or `hermes config set` in the pod.
+  # Secrets are NOT here: ${LITELLM_MASTER_KEY} is interpolated from the
+  # process env (injected from hermes-secrets), so no key touches disk.
+  config.yaml: |
+    model:
+      provider: custom
+      model: macbook-qwen38-flash-next
+      base_url: http://litellm.selfhosted.svc.cluster.local:4000/v1
+      api_key: ${LITELLM_MASTER_KEY}

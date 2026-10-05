@@ -1,0 +1,108 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app hermes
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: *app
+  interval: 30m
+  values:
+    controllers:
+      hermes:
+        forceRename: hermes
+        # NOTES:
+        # - Do not override the image ENTRYPOINT and do not set
+        #   pod.hostUsers: false — the s6-overlay /init must start as root to
+        #   chown /opt/data, then drops to the runtime `hermes` user
+        #   (UID/GID 10000) for every supervised service.
+        # - args become CMD; the entrypoint dispatcher routes them to
+        #   `hermes gateway run` under s6 supervision.
+        containers:
+          app:
+            image:
+              repository: docker.io/nousresearch/hermes-agent
+              tag: v2026.9.24@sha256:fca358f12efd65bfaaca05884166f15c0e2788375ca30d77061ac1ebc96452b7
+            args:
+              - gateway
+              - run
+            env:
+              API_SERVER_ENABLED: "true"
+              # Kubelet probes cannot reach a loopback bind, so the API server
+              # binds 0.0.0.0 inside the pod; API_SERVER_KEY (secret) guards
+              # it. No HTTPRoute exists — pod-network reach only.
+              API_SERVER_HOST: "0.0.0.0"
+            envFrom:
+              - secretRef:
+                  name: hermes-secrets
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 8642
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8642
+                  failureThreshold: 24
+                  periodSeconds: 5
+            resources:
+              requests:
+                cpu: 250m
+                memory: 1Gi
+              limits:
+                memory: 2Gi
+        initContainers:
+          seed:
+            type: init
+            image:
+              repository: docker.io/nousresearch/hermes-agent
+              tag: v2026.9.24@sha256:fca358f12efd65bfaaca05884166f15c0e2788375ca30d77061ac1ebc96452b7
+            command:
+              - /bin/sh
+              - -c
+            args:
+              - |
+                if [ ! -f /opt/data/config.yaml ]; then
+                  cp /seed/config.yaml /opt/data/config.yaml
+                  chown 10000:10000 /opt/data/config.yaml 2>/dev/null || true
+                  echo "seeded /opt/data/config.yaml"
+                else
+                  echo "config.yaml already present; seed skipped"
+                fi
+    podSecurityContext:
+      fsGroup: 10000
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+    persistence:
+      data:
+        existingClaim: hermes
+        advancedMounts:
+          hermes:
+            app:
+              - path: /opt/data
+            seed:
+              - path: /opt/data
+      seed-config:
+        type: configMap
+        name: hermes-seed-config
+        advancedMounts:
+          hermes:
+            seed:
+              - path: /seed

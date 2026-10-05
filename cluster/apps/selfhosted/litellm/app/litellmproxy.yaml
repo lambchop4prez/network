@@ -1,0 +1,49 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMProxy
+metadata:
+  name: litellm
+spec:
+  # Pinned stable release; the plain v1.66.0 tag does not exist upstream —
+  # the branch-prefixed stable tag is the immutable one. arm64 verified in
+  # the manifest list at pin time (see docs/plans/litellm-hermes-cluster.md).
+  image: ghcr.io/berriai/litellm:litellm_stable_release_branch-v1.66.0-stable@sha256:1ae3674b699ac5f4abfd55172359322270f35eaad9788e5ca02c0df9616623f2
+  replicas: 1
+  # file mode: rendered config.yaml, no DB, no PVC (v100 plan decision 6).
+  applyMode: file
+  route:
+    hostnames:
+      - litellm.servonet.lan
+    parentRefs:
+      - name: envoy-internal
+        namespace: networking
+  env:
+    - name: LITELLM_MASTER_KEY
+      valueFrom:
+        secretKeyRef:
+          name: litellm-secrets
+          key: LITELLM_MASTER_KEY
+    - name: LITELLM_LOG
+      value: INFO
+  routerSettings:
+    routing_strategy: simple-shuffle
+    # Generous: oMLX LRU may have unloaded a model — first request pays the
+    # reload cost (spikes, not failures).
+    request_timeout: 600
+    num_retries: 2
+    cooldown_time: 60
+    # MacBooks may sleep; every macbook lane falls through to the cloud tier
+    # so the router is never fully dark. No mini lane yet (hardware absent).
+    fallbacks:
+      - macbook-qwen38-flash-next:
+          - cloud-orcarouter-free
+      - macbook-qwen38-27b:
+          - cloud-deepseek-v4-flash-free
+      - macbook-qwen38-27b-fp16:
+          - cloud-glm-5-3-flash-free
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      memory: 1Gi

@@ -1,0 +1,19 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: cloud-orcarouter-free
+spec:
+  modelName: cloud-orcarouter-free
+  params:
+    # No native litellm orcarouter provider — route as OpenAI-compatible.
+    model: openai/orcarouter/free
+    apiBase: https://api.orcarouter.ai/v1
+    apiKeyRef:
+      name: litellm-secrets
+      key: LITELLM_ORCAROUTER_API_KEY
+    dropParams: true
+  info:
+    mode: chat
+    # Context/tools left unset: OrcaRouter /v1/models does not report them
+    # for the free slugs — litellm falls back to its model cost map.

@@ -1,0 +1,20 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: macbook-qwen38-flash-next
+spec:
+  modelName: macbook-qwen38-flash-next
+  params:
+    model: openai/Qwen3.8-Flash-Next-oQ4e-mtp
+    apiBase: http://Tims-MacBook-Pro.lan:8899/v1
+    apiKeyRef:
+      name: litellm-secrets
+      key: LITELLM_MACBOOK_OMLX_API_KEY
+    # oMLX rejects params it does not implement; drop instead of erroring.
+    dropParams: true
+  info:
+    mode: chat
+    # From live /v1/models discovery (oMLX @ :8899): max_model_len 262144.
+    maxInputTokens: 262144
+    supportsFunctionCalling: true

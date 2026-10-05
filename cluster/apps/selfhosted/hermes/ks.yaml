@@ -1,0 +1,35 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app hermes
+  namespace: flux-system
+spec:
+  targetNamespace: selfhosted
+  dependsOn:
+    - name: litellm
+    - name: rook-cluster
+    - name: external-secrets-manifests
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CAPACITY: 10Gi
+      # Matches the runtime `hermes` user in the official image (UID/GID 10000)
+      # so the kopia mover can read the volume.
+      VOLSYNC_PUID: 10000
+      VOLSYNC_PGID: 10000
+  path: ./cluster/apps/selfhosted/hermes/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: network
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m

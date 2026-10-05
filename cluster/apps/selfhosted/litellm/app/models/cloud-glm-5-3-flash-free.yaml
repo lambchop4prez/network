@@ -1,0 +1,16 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: cloud-glm-5-3-flash-free
+spec:
+  modelName: cloud-glm-5-3-flash-free
+  params:
+    model: openai/z-ai/glm-5.3-flash-free
+    apiBase: https://api.orcarouter.ai/v1
+    apiKeyRef:
+      name: litellm-secrets
+      key: LITELLM_ORCAROUTER_API_KEY
+    dropParams: true
+  info:
+    mode: chat

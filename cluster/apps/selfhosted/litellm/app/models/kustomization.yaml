@@ -3,11 +3,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./namespace.yaml
-  - ./freshrss/ks.yaml
-  - ./hermes/ks.yaml
-  - ./litellm/operator/ks.yaml
-  - ./litellm/ks.yaml
-  # - ./paperless/ks.yaml
-  - ./redlib/ks.yaml
-  - ./excalidraw/ks.yaml
+  - ./macbook-qwen38-flash-next.yaml
+  - ./macbook-qwen38-27b.yaml
+  - ./macbook-qwen38-27b-fp16.yaml
+  - ./cloud-orcarouter-free.yaml
+  - ./cloud-glm-5-3-flash-free.yaml
+  - ./cloud-deepseek-v4-flash-free.yaml

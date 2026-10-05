@@ -1,0 +1,16 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: cloud-deepseek-v4-flash-free
+spec:
+  modelName: cloud-deepseek-v4-flash-free
+  params:
+    model: openai/deepseek/deepseek-v4-flash-free
+    apiBase: https://api.orcarouter.ai/v1
+    apiKeyRef:
+      name: litellm-secrets
+      key: LITELLM_ORCAROUTER_API_KEY
+    dropParams: true
+  info:
+    mode: chat
