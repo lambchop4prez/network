@@ -25,8 +25,16 @@ spec:
           key: LITELLM_MASTER_KEY
     - name: LITELLM_LOG
       value: INFO
+    # Dragonfly (Redis-compatible) created by the dragonfly component as
+    # "<APP>-dragonfly" — see ks.yaml postBuild APP=litellm.
+    - name: REDIS_HOST
+      value: litellm-dragonfly
+    - name: REDIS_PORT
+      value: "6379"
   routerSettings:
     routing_strategy: simple-shuffle
+    redis_host: os.environ/REDIS_HOST
+    redis_port: os.environ/REDIS_PORT
     # Generous: oMLX LRU may have unloaded a model — first request pays the
     # reload cost (spikes, not failures).
     request_timeout: 600

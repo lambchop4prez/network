@@ -7,7 +7,10 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: selfhosted
+  components:
+    - ../../../../components/dragonfly
   dependsOn:
+    - name: dragonfly
     - name: litellm-operator
     - name: external-secrets-manifests
   commonMetadata:
