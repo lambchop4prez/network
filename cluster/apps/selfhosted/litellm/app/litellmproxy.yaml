@@ -46,7 +46,7 @@ spec:
           name: litellm-pg-secret
           key: password
     - name: DATABASE_URL
-      value: "postgres://${LITELLM_DBUSER}:${LITELLM_DBPASS}@${LITELLM_DBHOST}"
+      value: "postgres://${LITELLM_DBUSER}:${LITELLM_DBPASS}@${LITELLM_DBHOST}:5432/litellm"
   routerSettings:
     routing_strategy: simple-shuffle
     redis_host: os.environ/REDIS_HOST
