@@ -10,8 +10,6 @@ contexts:
       {% for name in nodes %}
       - {{ nodes[name].endpoint }}
       {% endfor %}
+    # ca: Talos machine CA (Bitwarden MACHINE_CA_CRT). admin crt/key are
+    # minted per-render by the `talosconfig` recipe and injected via yq.
     ca: {{ ENV.MACHINE_CA_CRT }}
-    {% if ENV.ADMIN_CRT %}
-    crt: {{ ENV.ADMIN_CRT }}
-    key: {{ ENV.ADMIN_KEY }}
-    {% endif %}

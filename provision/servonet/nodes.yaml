@@ -7,13 +7,13 @@ nodes:
     controlplane: true
     mac: "96:26:24:cd:71:10"
     disk: /dev/mmcblk0
-  # tom-44dd:
-  #   slot: 2
-  #   endpoint: 10.4.3.33
-  #   controlplane: true
-  #   schematic: turing-rk1
-  #   mac: "12:e8:5f:39:44:dd"
-  #   disk: /dev/mmcblk0
+  tom-44dd:
+    slot: 2
+    endpoint: 10.4.3.33
+    controlplane: true
+    schematic: turing-rk1
+    mac: "12:e8:5f:39:44:dd"
+    disk: /dev/mmcblk0
   tom-c86c:
     slot: 3
     endpoint: 10.4.3.34

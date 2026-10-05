@@ -22,5 +22,3 @@ CLUSTER_ETCD_CA_KEY = { provider = "bws", value = "CLUSTER_ETCD_CA_KEY"}
 GITHUB_IDENTITY_PUB = { provider = "bws", value = "GITHUB_IDENTITY_PUB" }
 GITHUB_IDENTITY = { provider = "bws", value = "GITHUB_IDENTITY" }
 STEP_CA_ROOT = { provider = "bws", value = "STEP_CA_ROOT" }
-ADMIN_CRT = { provider = "keychain", value = "ADMIN_CRT" }
-ADMIN_KEY = { provider = "keychain", value = "ADMIN_KEY" }

@@ -10,18 +10,43 @@ default:
 controller:
     talosctl config info -o yaml | yq -e '.endpoints[0]'
 
-[doc('Render talosconfig from template')]
+[doc('Render talosconfig from template with freshly minted admin client certificate')]
 [script]
 talosconfig:
     just log info "Running stage..." "stage" "$(basename "$0")"
     export TALOSCONFIG="${TALOSCONFIG:-{{ justfile_dir() }}/talosconfig}"
     mkdir -p "$(dirname "${TALOSCONFIG}")"
+    tmp="$(mktemp -d)"
+    trap 'rm -rf "${tmp}"' EXIT
+    if ! just servonet bootstrap mint-admin-cert "${tmp}"; then
+        just log fatal "Failed to mint admin client certificate" "stage" "$(basename "$0")"
+    fi
     if ! just template "{{ source_directory() }}/talosconfig.yaml.j2" "{{ source_directory() }}/../nodes.yaml" > "${TALOSCONFIG}.tmp"; then
         just log fatal "Failed to render talosconfig" "stage" "$(basename "$0")"
+    fi
+    export ADMIN_CRT="$(base64 < "${tmp}/admin.crt" | tr -d '\n')"
+    export ADMIN_KEY="$(base64 < "${tmp}/admin.key" | tr -d '\n')"
+    if ! yq -i '.contexts[.context].crt = strenv(ADMIN_CRT) | .contexts[.context].key = strenv(ADMIN_KEY)' "${TALOSCONFIG}.tmp"; then
+        just log fatal "Failed to inject admin client certificate" "stage" "$(basename "$0")"
     fi
     chmod 600 "${TALOSCONFIG}.tmp"
     mv -f "${TALOSCONFIG}.tmp" "${TALOSCONFIG}"
     just log info "Rendered talosconfig" "stage" "$(basename "$0")" "path" "${TALOSCONFIG}"
+
+[doc('Mint an admin client certificate signed by the Talos machine CA')]
+[private]
+[script]
+mint-admin-cert dir:
+    fnox exec -- bash -euo pipefail -c '
+        umask 077
+        cd "$1"
+        printf "%s" "${MACHINE_CA_CRT}" | base64 -d > ca.crt
+        printf "%s" "${MACHINE_CA_KEY}" | base64 -d > ca.key
+        openssl x509 -checkend $((30 * 86400)) -noout -in ca.crt
+        talosctl gen key --name admin
+        talosctl gen csr --key admin.key --ip 127.0.0.1
+        talosctl gen crt --ca ca --csr admin.csr --name admin --hours 8760
+    ' _ "{{ dir }}"
 
 [group('analyze')]
 [script]
