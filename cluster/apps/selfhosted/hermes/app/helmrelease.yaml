@@ -20,6 +20,11 @@ spec:
         #   (UID/GID 10000) for every supervised service.
         # - args become CMD; the entrypoint dispatcher routes them to
         #   `hermes gateway run` under s6 supervision.
+        pod:
+          securityContext:
+            # fsGroup so the kopia mover (VOLSYNC_PUID/PGID) and the runtime
+            # `hermes` user share ownership of /opt/data.
+            fsGroup: 10000
         containers:
           app:
             image:
@@ -66,7 +71,6 @@ spec:
                 memory: 2Gi
         initContainers:
           seed:
-            type: init
             image:
               repository: docker.io/nousresearch/hermes-agent
               tag: v2026.9.24@sha256:fca358f12efd65bfaaca05884166f15c0e2788375ca30d77061ac1ebc96452b7
@@ -82,8 +86,6 @@ spec:
                 else
                   echo "config.yaml already present; seed skipped"
                 fi
-    podSecurityContext:
-      fsGroup: 10000
     service:
       app:
         controller: *app
