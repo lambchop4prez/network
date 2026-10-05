@@ -9,6 +9,7 @@ spec:
   targetNamespace: selfhosted
   components:
     - ../../../../components/dragonfly
+    - ../../../../components/postgres/
   dependsOn:
     - name: dragonfly
     - name: litellm-operator
