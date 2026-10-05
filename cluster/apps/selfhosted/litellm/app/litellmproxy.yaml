@@ -28,13 +28,13 @@ spec:
     # Dragonfly (Redis-compatible) created by the dragonfly component as
     # "<APP>-dragonfly" — see ks.yaml postBuild APP=litellm.
     - name: REDIS_HOST
-      value: litellm-dragonfly.selfhosted.svc.servonet.lan:6379
+      value: litellm-dragonfly.selfhosted.svc.servonet.lan
     - name: REDIS_PORT
       value: "6379"
     - name: LITELLM_DBHOST
       value: litellm-postgres17-rw.selfhosted.svc.servonet.lan
     - name: LITELLM_DBNAME
-      value: paperless
+      value: litellm
     - name: LITELLM_DBUSER
       valueFrom:
         secretKeyRef:
