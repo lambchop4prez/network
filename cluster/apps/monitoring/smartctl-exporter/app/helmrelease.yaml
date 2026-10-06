@@ -10,6 +10,9 @@ spec:
   interval: 1h
   values:
     fullnameOverride: *app
+    image:
+      repository: ghcr.io/prometheus-community/smartctl-exporter
+      tag: master # multi-arch; quay release tags are amd64-only (upstream issue)
     serviceMonitor:
       enabled: true
     prometheusRules:
