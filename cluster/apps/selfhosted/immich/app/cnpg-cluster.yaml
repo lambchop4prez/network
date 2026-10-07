@@ -1,0 +1,48 @@
+---
+# Dedicated CNPG cluster: stock cloudnative-pg/postgresql lacks the vchord
+# extension Immich needs, so use the all-in-one tensorchord image
+# (PG 17.5 + vectorchord 0.4.3, arm64 multi-arch — verified on ghcr).
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: &name ${APP}-postgres17
+spec:
+  instances: 2
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:17.5-0.4.3
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
+  bootstrap:
+    initdb:
+      database: ${APP}
+      owner: ${APP}
+      secret:
+        name: ${APP}-pg-secret
+  storage:
+    size: 10Gi
+    storageClass: ceph-block
+  enableSuperuserAccess: false
+  postgresql:
+    parameters:
+      max_connections: "400"
+      shared_buffers: 128MB
+    shared_preload_libraries:
+      - vchord.so
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  resources:
+    requests:
+      cpu: 500m
+      memory: 250Mi
+    limits:
+      memory: 2Gi
+  monitoring:
+    enablePodMonitor: true
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: "kubernetes.io/hostname"
+      whenUnsatisfiable: "DoNotSchedule"
+      labelSelector:
+        matchLabels:
+          cnpg.io/cluster: *name

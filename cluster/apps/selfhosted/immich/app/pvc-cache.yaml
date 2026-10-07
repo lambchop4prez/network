@@ -1,0 +1,16 @@
+---
+# Model cache for immich-machine-learning. Created standalone (not via
+# app-template) because the chart names its sole auto-PVC after the release
+# fullname ("immich"), which would collide with the volsync library PVC.
+# No volsync here — the cache is re-downloadable content.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-machine-learning-cache
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: ceph-block
