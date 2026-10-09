@@ -19,7 +19,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v3.2.4
+              tag: v3.3.1
             env:
               TZ: America/Detroit
               DB_HOSTNAME: immich-postgres17-rw.selfhosted.svc.servonet.lan
@@ -76,7 +76,7 @@ spec:
             #   nodeSelector: { hardware/gpu: v100 }
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v3.2.4
+              tag: v3.3.1
             env:
               TZ: America/Detroit
               TRANSFORMERS_CACHE: /cache
