@@ -35,6 +35,14 @@ data:
       default_theme: simple
       results_on_new_tab: false
 
+    enabled_plugins:
+      - Basic Calculator
+      - Hash plugin
+      - Open Access DOI rewrite
+      - Self Information
+      - Tracker URL remover
+      - Unit converter plugin
+
     outgoing:
       proxies:
         # Uncomment to route engine requests through the cluster egress proxy:
