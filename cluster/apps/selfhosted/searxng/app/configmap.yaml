@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: searxng-config
+data:
+  # Mounted read-only at /config/settings.yml via SEARXNG_SETTINGS_PATH so
+  # the image keeps its writable /etc/searxng (entrypoint writes uwsgi.ini
+  # there). secret_key interpolates ${SEARXNG_SECRET} from the process env
+  # (injected from searxng-secret). Add engine tweaks here.
+  settings.yml: |
+    use_default_settings: true
+
+    server:
+      secret_key: "${SEARXNG_SECRET}"
+      limiter: false
+      image_proxy: true
+      method: "GET"
+
+    general:
+      debug: false
+      instance_name: "SearXNG"
+
+    search:
+      formats:
+        - "html"
+        - "json"
+      safe_search: 0
+      autocomplete: "duckduckgo"
+      default_lang: "en-US"
+
+    ui:
+      static_use_hash: true
+      query_in_title: true
+      default_theme: simple
+      results_on_new_tab: false
+
+    outgoing:
+      proxies:
+        # Uncomment to route engine requests through the cluster egress proxy:
+        # all: http://envoy-egress.networking.svc.cluster.local:8888

@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app searxng
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: *app
+  interval: 30m
+  values:
+    controllers:
+      searxng:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          hostUsers: false
+          securityContext:
+            # Official image runs uwsgi as the searxng user (UID/GID 8080);
+            # hostUsers: false maps it to a subUID offset, fsGroup guarantees
+            # group ownership of the writable /etc/searxng + cache mounts.
+            runAsUser: 8080
+            runAsGroup: 8080
+            fsGroup: 8080
+        containers:
+          app:
+            image:
+              repository: docker.io/searxng/searxng
+              tag: latest@sha256:85492ba800a861e3e8ff6014c430e81369fe6ca766a9990595f616d1ce95b272
+            env:
+              # Settings come from the read-only ConfigMap; /etc/searxng stays
+              # image-managed (entrypoint writes uwsgi.ini there).
+              SEARXNG_SETTINGS_PATH: /config/settings.yml
+              SEARXNG_BASE_URL: https://search.servonet.lan/
+            envFrom:
+              - secretRef:
+                  name: searxng-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 8080
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+    persistence:
+      config:
+        type: configMap
+        name: searxng-config
+        advancedMounts:
+          searxng:
+            app:
+              - path: /config
+      cache:
+        type: emptyDir
+        advancedMounts:
+          searxng:
+            app:
+              - path: /var/cache/searxng
+    route:
+      app:
+        hostnames:
+          - search.servonet.lan
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking

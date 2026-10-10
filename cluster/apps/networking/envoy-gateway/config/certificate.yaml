@@ -46,3 +46,4 @@ spec:
     - "draw.servonet.lan"
     - "kopia.servonet.lan"
     - "litellm.servonet.lan"
+    - "search.servonet.lan"
