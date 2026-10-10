@@ -15,23 +15,25 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
-          hostUsers: false
           securityContext:
-            # Official image runs uwsgi as the searxng user (UID/GID 8080);
-            # hostUsers: false maps it to a subUID offset, fsGroup guarantees
-            # group ownership of the writable /etc/searxng + cache mounts.
+            # Official image runs as the searxng user (UID/GID 8080). Plain
+            # runAsUser/fsGroup keeps volume ownership resolvable to
+            # searxng:searxng inside the container; hostUsers: false surfaced
+            # mounts as root:UNKNOWN and crash-looped entrypoint writes to
+            # /etc/searxng, so userns remapping is dropped here.
             runAsUser: 8080
             runAsGroup: 8080
             fsGroup: 8080
+            fsGroupChangePolicy: OnRootMismatch
         containers:
           app:
             image:
               repository: docker.io/searxng/searxng
               tag: latest@sha256:a31763b7af3caf6ae9aac1816ba774214eb550252e06a4998f276ded8d60461b
             env:
-              # Settings come from the read-only ConfigMap; /etc/searxng stays
-              # image-managed (entrypoint writes uwsgi.ini there).
-              # SEARXNG_SETTINGS_PATH: /config/settings.yml
+              # settings.yml is seeded into the writable /etc/searxng emptyDir
+              # by the seed initContainer (default SEARXNG_SETTINGS_PATH), so
+              # the entrypoint can manage the rest of that directory.
               SEARXNG_BASE_URL: https://search.servonet.lan/
             envFrom:
               - secretRef:
@@ -57,6 +59,18 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
+        initContainers:
+          seed:
+            image:
+              repository: ghcr.io/home-operations/busybox
+              tag: 1.38.0@sha256:7e2c04dd50ede647bf4a7a4c8dbd629dd4971cd139b9b88fb22bfc3c7a6c13df
+            command:
+              - /bin/sh
+              - -c
+            args:
+              - |
+                cp /config/settings.yml /etc/searxng/settings.yml
+                chown 8080:8080 /etc/searxng/settings.yml
     service:
       app:
         controller: *app
@@ -64,13 +78,21 @@ spec:
           http:
             port: *port
     persistence:
+      etc:
+        type: emptyDir
+        advancedMounts:
+          searxng:
+            app:
+              - path: /etc/searxng
+            seed:
+              - path: /etc/searxng
       config:
         type: configMap
         name: searxng-config
         advancedMounts:
           searxng:
-            app:
-              - path: /etc/searxng
+            seed:
+              - path: /config
       cache:
         type: emptyDir
         advancedMounts:

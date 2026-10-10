@@ -4,10 +4,11 @@ kind: ConfigMap
 metadata:
   name: searxng-config
 data:
-  # Mounted read-only at /config/settings.yml via SEARXNG_SETTINGS_PATH so
-  # the image keeps its writable /etc/searxng (entrypoint writes uwsgi.ini
-  # there). secret_key interpolates ${SEARXNG_SECRET} from the process env
-  # (injected from searxng-secret). Add engine tweaks here.
+  # Seeded by the seed initContainer into the writable /etc/searxng
+  # emptyDir (default SEARXNG_SETTINGS_PATH) so the image keeps its
+  # writable /etc/searxng. secret_key interpolates ${SEARXNG_SECRET}
+  # from the process env (injected from searxng-secret). Add engine
+  # tweaks here.
   settings.yml: |
     use_default_settings: true
 
