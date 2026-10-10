@@ -76,8 +76,7 @@ spec:
               - -c
             args:
               - |
-                chown 977:977 /etc/searxng
-                mkdir -p /var/cache/searxng && chown 977:97 /var/cache/searxng
+                chown 977:977 /etc/searxng /var/cache/searxng
                 cp /config/settings.yml /etc/searxng/settings.yml
                 chown 977:977 /etc/searxng/settings.yml
     service:
@@ -107,6 +106,8 @@ spec:
         advancedMounts:
           searxng:
             app:
+              - path: /var/cache/searxng
+            seed:
               - path: /var/cache/searxng
     route:
       app:
