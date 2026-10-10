@@ -31,7 +31,7 @@ spec:
             env:
               # Settings come from the read-only ConfigMap; /etc/searxng stays
               # image-managed (entrypoint writes uwsgi.ini there).
-              SEARXNG_SETTINGS_PATH: /config/settings.yml
+              # SEARXNG_SETTINGS_PATH: /config/settings.yml
               SEARXNG_BASE_URL: https://search.servonet.lan/
             envFrom:
               - secretRef:
@@ -70,7 +70,7 @@ spec:
         advancedMounts:
           searxng:
             app:
-              - path: /config
+              - path: /etc/searxng
       cache:
         type: emptyDir
         advancedMounts:
