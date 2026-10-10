@@ -18,6 +18,12 @@ spec:
       owner: ${APP}
       secret:
         name: ${APP}-pg-secret
+      # Installed by CNPG's internal superuser at initdb — lets Immich run
+      # with enableSuperuserAccess: false (vector/vchord are not "trusted"
+      # extensions, so the app user cannot create them itself)
+      postInitApplicationSQL:
+        - CREATE EXTENSION IF NOT EXISTS vector;
+        - CREATE EXTENSION IF NOT EXISTS vchord;
   storage:
     size: 10Gi
     storageClass: ceph-block
