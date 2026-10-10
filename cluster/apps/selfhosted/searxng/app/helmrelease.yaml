@@ -62,11 +62,21 @@ spec:
             image:
               repository: ghcr.io/home-operations/busybox
               tag: 1.38.0@sha256:7e2c04dd50ede647bf4a7a4c8dbd629dd4971cd139b9b88fb22bfc3c7a6c13df
+            # Root only here: kubelet mounts volume roots as root, and
+            # re-owning them to searxng:searxng (what the entrypoint checks)
+            # needs CAP_CHOWN. emptyDirs are recreated each pod start and
+            # seed runs every start, so this is self-healing; the app
+            # container still runs unprivileged as 977.
+            securityContext:
+              runAsUser: 0
+              capabilities:
+                add: ["CHOWN"]
             command:
               - /bin/sh
               - -c
             args:
               - |
+                chown 977:977 /etc/searxng /var/cache/searxng
                 cp /config/settings.yml /etc/searxng/settings.yml
                 chown 977:977 /etc/searxng/settings.yml
     service:
