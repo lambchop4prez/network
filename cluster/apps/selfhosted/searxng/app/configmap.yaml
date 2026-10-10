@@ -30,6 +30,13 @@ data:
       autocomplete: "duckduckgo"
       default_lang: "en-US"
 
+    engines:
+      # Tor-only engines fail to register without tor; disabled for clean logs.
+      - name: "ahmia"
+        disabled: true
+      - name: "torch"
+        disabled: true
+
     ui:
       static_use_hash: true
       query_in_title: true

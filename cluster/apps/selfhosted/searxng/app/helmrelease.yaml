@@ -16,14 +16,12 @@ spec:
           reloader.stakater.com/auto: "true"
         pod:
           securityContext:
-            # Official image runs as the searxng user (UID/GID 8080). Plain
-            # runAsUser/fsGroup keeps volume ownership resolvable to
-            # searxng:searxng inside the container; hostUsers: false surfaced
-            # mounts as root:UNKNOWN and crash-looped entrypoint writes to
-            # /etc/searxng, so userns remapping is dropped here.
-            runAsUser: 8080
-            runAsGroup: 8080
-            fsGroup: 8080
+            # Official image runs as the searxng user (UID/GID 977 in current
+            # images; the old 8080 no longer exists in /etc/passwd and caused
+            # root:UNKNOWN ownership warnings + crash-looping volume writes).
+            runAsUser: 977
+            runAsGroup: 977
+            fsGroup: 977
             fsGroupChangePolicy: OnRootMismatch
         containers:
           app:
@@ -70,7 +68,7 @@ spec:
             args:
               - |
                 cp /config/settings.yml /etc/searxng/settings.yml
-                chown 8080:8080 /etc/searxng/settings.yml
+                chown 977:977 /etc/searxng/settings.yml
     service:
       app:
         controller: *app
