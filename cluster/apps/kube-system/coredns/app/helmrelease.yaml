@@ -36,7 +36,10 @@ spec:
             parameters: cluster.local servonet.lan in-addr.arpa ip6.arpa
             configBlock: |-
               pods verified
-              fallthrough in-addr.arpa ip6.arpa
+              # servonet.lan fallthrough: split-horizon names (id.*, hermes.*, ...)
+              # are not Service records; forward unmatched queries upstream
+              # (router 10.4.1.1 -> k8s-gateway 192.168.42.111).
+              fallthrough in-addr.arpa ip6.arpa servonet.lan
           - name: autopath
             parameters: "@kubernetes"
           - name: forward
