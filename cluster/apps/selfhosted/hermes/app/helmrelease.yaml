@@ -19,7 +19,8 @@ spec:
         #   chown /opt/data, then drops to the runtime `hermes` user
         #   (UID/GID 10000) for every supervised service.
         # - args become CMD; the entrypoint dispatcher routes them to
-        #   `hermes gateway run` under s6 supervision.
+        #   `hermes gateway run` (app container, s6-supervised) or
+        #   `hermes dashboard` (dashboard container, main process).
         pod:
           securityContext:
             # fsGroup so the kopia mover (VOLSYNC_PUID/PGID) and the runtime
@@ -37,7 +38,7 @@ spec:
               API_SERVER_ENABLED: "true"
               # Kubelet probes cannot reach a loopback bind, so the API server
               # binds 0.0.0.0 inside the pod; API_SERVER_KEY (secret) guards
-              # it. No HTTPRoute exists — pod-network reach only.
+              # it. Reachable on the LAN via the LoadBalancer service below.
               API_SERVER_HOST: "0.0.0.0"
             envFrom:
               - secretRef:
@@ -69,6 +70,52 @@ spec:
                 memory: 1Gi
               limits:
                 memory: 2Gi
+          dashboard:
+            image:
+              repository: docker.io/nousresearch/hermes-agent
+              tag: v2026.9.24@sha256:fca358f12efd65bfaaca05884166f15c0e2788375ca30d77061ac1ebc96452b7
+            # `hermes dashboard` binds 127.0.0.1 by default; 0.0.0.0 is required
+            # so envoy-internal can reach it. A non-loopback bind engages the
+            # auth gate, which FAILS CLOSED at startup unless the basic-auth
+            # env vars are present in hermes-secrets.
+            args:
+              - dashboard
+              - --host
+              - 0.0.0.0
+              - --no-open
+            env:
+              # Host-header guard + OAuth callback origin behind envoy.
+              HERMES_DASHBOARD_PUBLIC_URL: "https://hermes.servonet.lan"
+            envFrom:
+              - secretRef:
+                  name: hermes-secrets
+            probes:
+              liveness: &dashboardProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/status
+                    port: &dashboardPort 9119
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              readiness: *dashboardProbes
+              startup:
+                enabled: true
+                spec:
+                  httpGet:
+                    path: /api/status
+                    port: 9119
+                  failureThreshold: 24
+                  periodSeconds: 5
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
         initContainers:
           seed:
             image:
@@ -89,15 +136,37 @@ spec:
     service:
       app:
         controller: *app
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 192.168.42.106
+        externalTrafficPolicy: Local
         ports:
           http:
             port: *port
+      dashboard:
+        controller: *app
+        ports:
+          http:
+            port: *dashboardPort
+    route:
+      dashboard:
+        hostnames:
+          - "hermes.servonet.lan"
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+        rules:
+          - backendRefs:
+              - identifier: dashboard
+                port: *dashboardPort
     persistence:
       data:
         existingClaim: hermes
         advancedMounts:
           hermes:
             app:
+              - path: /opt/data
+            dashboard:
               - path: /opt/data
             seed:
               - path: /opt/data
