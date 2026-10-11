@@ -86,6 +86,10 @@ spec:
             env:
               # Host-header guard + OAuth callback origin behind envoy.
               HERMES_DASHBOARD_PUBLIC_URL: "https://hermes.servonet.lan"
+              # Trust the step-ca root for OIDC discovery at id.servonet.lan
+              # (node trust does not apply inside the container).
+              REQUESTS_CA_BUNDLE: /etc/hermes/ca/ca.crt
+              SSL_CERT_FILE: /etc/hermes/ca/ca.crt
             envFrom:
               - secretRef:
                   name: hermes-secrets
@@ -177,3 +181,10 @@ spec:
           hermes:
             seed:
               - path: /seed
+      ca-bundle:
+        type: configMap
+        name: hermes-ca-bundle
+        advancedMounts:
+          hermes:
+            dashboard:
+              - path: /etc/hermes/ca
