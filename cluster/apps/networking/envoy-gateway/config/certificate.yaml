@@ -47,3 +47,6 @@ spec:
     - "kopia.servonet.lan"
     - "litellm.servonet.lan"
     - "search.servonet.lan"
+    - "immich.servonet.lan"
+    - "karakeep.servonet.lan"
+    - "hermes.servonet.lan"
