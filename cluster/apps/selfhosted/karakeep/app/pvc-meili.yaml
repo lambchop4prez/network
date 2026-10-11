@@ -1,0 +1,15 @@
+---
+# Meilisearch data volume. Standalone (not volsync) because the index is
+# fully rebuildable from karakeep's SQLite data via Settings -> "Reindex
+# All". Karakeep's primary datastore lives on the volsync-protected PVC.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: karakeep-meili
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: ceph-block

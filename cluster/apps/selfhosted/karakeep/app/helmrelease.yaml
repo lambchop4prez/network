@@ -1,0 +1,183 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app karakeep
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: *app
+  interval: 30m
+  values:
+    controllers:
+      # All-in-one container: s6-overlay supervises the web app and all
+      # background workers in a single process group (no separate worker
+      # deployment since the SQLite move).
+      web:
+        forceRename: karakeep
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          hostUsers: false
+          securityContext:
+            # Image ships s6 services supervised as the `node` user (uid
+            # 1000). Run the whole container as node and let fsGroup make
+            # /data writable.
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+        containers:
+          app:
+            image:
+              repository: ghcr.io/karakeep-app/karakeep
+              tag: 0.33.2
+            env:
+              TZ: America/Detroit
+              DATA_DIR: /data
+              NEXTAUTH_URL: https://karakeep.servonet.lan
+              LOG_LEVEL: notice
+              MEILI_ADDR: http://karakeep-meili:7700
+              BROWSER_WEB_URL: http://karakeep-chrome:9222
+              DISABLE_NEW_RELEASE_CHECK: "true"
+              # AI tagging via cluster litellm (OpenAI-compatible API).
+              # Overriding the base URL auto-disables OpenAI embeddings, so
+              # semantic search stays off until a vision/embedding route is
+              # added to litellm.
+              OPENAI_BASE_URL: http://litellm.selfhosted.svc.servonet.lan:4000/v1
+              INFERENCE_TEXT_MODEL: cloud-glm-5-3-flash-free
+              INFERENCE_CONTEXT_LENGTH: "8192"
+            envFrom:
+              - secretRef:
+                  name: karakeep-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: &port 3000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            resources:
+              requests:
+                cpu: 50m
+                memory: 768Mi
+              limits:
+                memory: 2Gi
+
+      meili:
+        pod:
+          hostUsers: false
+        containers:
+          app:
+            image:
+              repository: docker.io/getmeili/meilisearch
+              tag: v1.41.0
+            env:
+              TZ: America/Detroit
+              MEILI_NO_ANALYTICS: "true"
+            envFrom:
+              - secretRef:
+                  name: karakeep-secret
+            probes:
+              liveness: &meili-probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &meili-port 7700
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *meili-probes
+            resources:
+              requests:
+                cpu: 25m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+
+      # Headless Chrome for JS rendering, screenshots and full-page archives.
+      # arm64 nodes get Debian Chromium automatically (image selects per-arch).
+      chrome:
+        pod:
+          hostUsers: false
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+        containers:
+          app:
+            image:
+              repository: ghcr.io/karakeep-app/karakeep-chrome
+              tag: 151.0.7922.47-r1
+            args:
+              - --disable-gpu
+              - --disable-dev-shm-usage
+              - --hide-scrollbars
+              - --disable-blink-features=AutomationControlled
+              - --window-size=1440,900
+            resources:
+              requests:
+                cpu: 50m
+                memory: 512Mi
+              limits:
+                memory: 1.5Gi
+
+    service:
+      app:
+        primary: true
+        controller: web
+        ports:
+          http:
+            port: *port
+      meili:
+        controller: meili
+        ports:
+          http:
+            port: *meili-port
+      chrome:
+        controller: chrome
+        ports:
+          cdp:
+            port: 9222
+
+    persistence:
+      data:
+        existingClaim: karakeep
+        advancedMounts:
+          web:
+            app:
+              - path: /data
+      meili-data:
+        existingClaim: karakeep-meili
+        advancedMounts:
+          meili:
+            app:
+              - path: /meili_data
+
+    route:
+      app:
+        hostnames:
+          - karakeep.servonet.lan
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+        # Explicit backendRefs required: auto-detection is ambiguous with
+        # the meili/chrome clusterIP services alongside the primary.
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
