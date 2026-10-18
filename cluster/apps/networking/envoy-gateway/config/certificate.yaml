@@ -20,33 +20,18 @@ metadata:
 spec:
   secretName: servonet-internal-tls
   issuerRef:
+    group: certmanager.step.sm
+    kind: StepClusterIssuer
     name: step
-    kind: ClusterIssuer
   commonName: "servonet.lan"
+  # Wildcard: step-ca signs via the RA API, so no per-name HTTP-01 route.
+  # Keep explicit apex + wildcard; add one-off names only if the CA ever
+  # restricts this provisioner's SANs.
   dnsNames:
     - "servonet.lan"
-    - "echo.servonet.lan"
-    - "prometheus.servonet.lan"
-    - "rook.servonet.lan"
-    - "grafana.servonet.lan"
-    - "sabnzbd.servonet.lan"
-    - "sonarr.servonet.lan"
-    - "radarr.servonet.lan"
-    - "jellyfin.servonet.lan"
-    - "paperless.servonet.lan"
-    - "lidarr.servonet.lan"
-    - "auth.servonet.lan"
-    - "redlib.servonet.lan"
-    - "rss.servonet.lan"
-    - "seerr.servonet.lan"
-    - "lldap.servonet.lan"
-    - "id.servonet.lan"
-    - "qbittorrent.servonet.lan"
-    - "qui.servonet.lan"
-    - "draw.servonet.lan"
-    - "kopia.servonet.lan"
-    - "litellm.servonet.lan"
-    - "search.servonet.lan"
-    - "immich.servonet.lan"
-    - "karakeep.servonet.lan"
-    - "hermes.servonet.lan"
+    - "*.servonet.lan"
+  # step-ca caps issuance at the provisioner's maxDur — the cert-manager
+  # provisioner is created with --x509-max-duration 2160h (90d).
+  duration: 2160h
+  renewBefore: 720h
+

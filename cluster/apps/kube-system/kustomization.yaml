@@ -9,4 +9,5 @@ resources:
   - ./openebs/ks.yaml
   - ./reloader/ks.yaml
   - ./snapshot-controller/ks.yaml
+  - ./step-issuer/ks.yaml
   - ./tuppr/ks.yaml
