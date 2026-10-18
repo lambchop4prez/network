@@ -17,16 +17,17 @@ spec:
           # (3002); qui needs to own its files to chmod its db. Fix ownership
           # here at startup instead of in the mover (mover uid 3002 is required
           # for the NAS kopia repository export).
-          - name: volume-permissions
-            image: docker.io/library/alpine:3.20
-            command: ["/bin/sh", "-c"]
-            args: ["chown -R 3000:3001 /config"]
+          volume-permissions:
+            image:
+              repository: docker.io/library/alpine
+              tag: "3.20"
+            command:
+              - /bin/sh
+              - -c
+              - chown -R 3000:3001 /config
             securityContext:
               runAsUser: 0
               runAsGroup: 0
-            volumeMounts:
-              - name: config
-                mountPath: /config
         containers:
           main:
             image:
