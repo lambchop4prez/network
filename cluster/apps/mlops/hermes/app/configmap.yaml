@@ -11,7 +11,17 @@ data:
   # process env (injected from hermes-secrets), so no key touches disk.
   config.yaml: |
     model:
-      provider: custom
+      provider: litellm
       model: macbook-qwen38-flash-next
-      base_url: http://litellm.selfhosted.svc.cluster.local:4000/v1
-      api_key: ${LITELLM_MASTER_KEY}
+    providers:
+      litellm:
+        base_url: http://litellm.mlops.svc.cluster.local:4000/v1
+        key_env: LITELLM_API_KEY
+        transport: chat_completions
+    toolsets:
+      - hermes-cli
+    terminal:
+      backend: local
+      cwd: /opt/data/workspace
+      timeout: 180
+      persistent_shell: true

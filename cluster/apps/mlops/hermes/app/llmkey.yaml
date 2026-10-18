@@ -1,0 +1,9 @@
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMVirtualKey
+metadata:
+  name: hermes
+spec:
+  proxyRef: litellm
+  keyAlias: KaraKeep
+  secretName: hermes-secret
+  secretKey: LITELLM_API_KEY

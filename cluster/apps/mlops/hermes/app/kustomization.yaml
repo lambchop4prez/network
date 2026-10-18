@@ -7,4 +7,5 @@ resources:
   - ./configmap.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./llmkey.yaml
   - ./ocirepository.yaml
