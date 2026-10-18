@@ -6,7 +6,7 @@ metadata:
   name: &app litellm
   namespace: flux-system
 spec:
-  targetNamespace: selfhosted
+  targetNamespace: mlops
   components:
     - ../../../../components/dragonfly
     - ../../../../components/postgres/
@@ -20,7 +20,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  path: ./cluster/apps/selfhosted/litellm/app
+  path: ./cluster/apps/mlops/litellm/app
   prune: true
   sourceRef:
     kind: GitRepository

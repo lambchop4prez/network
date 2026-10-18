@@ -45,7 +45,7 @@ spec:
               # Overriding the base URL auto-disables OpenAI embeddings, so
               # semantic search stays off until a vision/embedding route is
               # added to litellm.
-              OPENAI_BASE_URL: http://litellm.selfhosted.svc.servonet.lan:4000/v1
+              OPENAI_BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
               INFERENCE_TEXT_MODEL: cloud-glm-5-3-flash-free
               INFERENCE_CONTEXT_LENGTH: "8192"
             envFrom:

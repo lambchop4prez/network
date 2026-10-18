@@ -1,0 +1,9 @@
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMVirtualKey
+metadata:
+  name: karakeep
+spec:
+  proxyRef: litellm
+  keyAlias: KaraKeep
+  secretName: karakeep-secret
+  secretKey: OPENAI_API_KEY

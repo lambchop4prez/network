@@ -5,11 +5,8 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./freshrss/ks.yaml
-  - ./hermes/ks.yaml
   - ./immich/ks.yaml
   - ./karakeep/ks.yaml
-  - ./litellm/operator/ks.yaml
-  - ./litellm/ks.yaml
   # - ./paperless/ks.yaml
   - ./redlib/ks.yaml
   - ./searxng/ks.yaml

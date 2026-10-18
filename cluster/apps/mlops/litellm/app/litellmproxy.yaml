@@ -58,13 +58,14 @@ spec:
     cooldown_time: 60
     # MacBooks may sleep; every macbook lane falls through to the cloud tier
     # so the router is never fully dark. No mini lane yet (hardware absent).
-    fallbacks:
-      - macbook-qwen38-flash-next:
-          - cloud-orcarouter-free
-      - macbook-qwen38-27b:
-          - cloud-deepseek-v4-flash-free
-      - macbook-qwen38-27b-fp16:
-          - cloud-glm-5-3-flash-free
+    # I'd prefer to not have internal fail back to external free
+    # fallbacks:
+    #   - macbook-qwen38-flash-next:
+    #       - cloud-orcarouter-free
+    #   - macbook-qwen38-27b:
+    #       - cloud-deepseek-v4-flash-free
+    #   - macbook-qwen38-27b-fp16:
+    #       - cloud-glm-5-3-flash-free
   resources:
     requests:
       cpu: 100m
