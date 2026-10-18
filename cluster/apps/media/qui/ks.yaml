@@ -16,6 +16,10 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 1Gi
+      # match the app's uid/gid (helmrelease runAsUser/runAsGroup) so kopia
+      # restores land files owned by the app user, not the mover default (3002)
+      VOLSYNC_PUID: "3000"
+      VOLSYNC_PGID: "3001"
   interval: 10m
   path: "./cluster/apps/media/qui/app"
   prune: true
