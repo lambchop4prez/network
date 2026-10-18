@@ -17,6 +17,10 @@ spec:
     parentRefs:
       - name: envoy-internal
         namespace: networking
+  apiAccess:
+    masterKeyRef:
+      name: litellm
+      key: LITELLM_MASTER_KEY
   env:
     - name: LITELLM_MASTER_KEY
       valueFrom:
