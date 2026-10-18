@@ -38,7 +38,7 @@ spec:
               DB_VECTOR_EXTENSION: vectorchord
               REDIS_HOSTNAME: immich-dragonfly.selfhosted.svc.servonet.lan
               REDIS_PORT: "6379"
-              IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning:3003
+              IMMICH_MACHINE_LEARNING_URL: http://immich-ml.selfhosted.svc.servonet.lan:3003
               # Transcoding: CPU-only on RK1. RKMPP needs the Rockchip BSP
               # kernel (mpp_service/rga), unavailable on Talos mainline —
               # see .tmp/external-context/talos/rk3588-vpu-and-node-labels.md
