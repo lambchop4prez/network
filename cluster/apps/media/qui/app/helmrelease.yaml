@@ -26,6 +26,7 @@ spec:
               - -c
               - chown -R 3000:3001 /config
             securityContext:
+              runAsNonRoot: false
               runAsUser: 0
               runAsGroup: 0
         containers:
