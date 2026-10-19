@@ -4,6 +4,6 @@ metadata:
   name: hermes
 spec:
   proxyRef: litellm
-  keyAlias: KaraKeep
+  keyAlias: Hermes
   secretName: hermes-secret
   secretKey: LITELLM_API_KEY
