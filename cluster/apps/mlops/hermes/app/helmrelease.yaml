@@ -44,8 +44,9 @@ spec:
               - secretRef:
                   name: hermes-secrets
               # Virtual key written by litellm-operator (LITELLM_API_KEY).
+              # NB: the operator pluralizes secretName -> "<name>-keys".
               - secretRef:
-                  name: hermes-litellm-key
+                  name: hermes-litellm-keys
             probes:
               liveness: &probes
                 enabled: true
@@ -97,8 +98,9 @@ spec:
               - secretRef:
                   name: hermes-secrets
               # Virtual key written by litellm-operator (LITELLM_API_KEY).
+              # NB: the operator pluralizes secretName -> "<name>-keys".
               - secretRef:
-                  name: hermes-litellm-key
+                  name: hermes-litellm-keys
             probes:
               liveness: &dashboardProbes
                 enabled: true
