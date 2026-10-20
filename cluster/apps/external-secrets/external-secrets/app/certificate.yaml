@@ -13,5 +13,6 @@ spec:
     encoding: PKCS8
     size: 2048
   issuerRef:
+    group: certmanager.step.sm
     name: step
     kind: StepClusterIssuer
