@@ -51,10 +51,6 @@ spec:
             envFrom:
               - secretRef:
                   name: karakeep-secret
-              # Virtual key written by litellm-operator (OPENAI_API_KEY).
-              # NB: the operator pluralizes secretName -> "<name>-keys".
-              - secretRef:
-                  name: karakeep-litellm-keys
             probes:
               liveness: &probes
                 enabled: true
@@ -91,6 +87,10 @@ spec:
             env:
               TZ: America/Detroit
               MEILI_NO_ANALYTICS: "true"
+              # One-shot: migrate the on-disk DB after the 1.41 -> 1.55 image
+              # bump (engine refuses to boot against the older database).
+              # Remove once the upgrade has completed successfully.
+              MEILI_UPGRADE_DB: "true"
             envFrom:
               - secretRef:
                   name: karakeep-secret
