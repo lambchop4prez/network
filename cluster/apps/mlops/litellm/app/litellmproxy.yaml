@@ -18,8 +18,10 @@ spec:
       - name: envoy-internal
         namespace: networking
   apiAccess:
+    # Must name the real secret (ExternalSecret target); the operator reads
+    # this to call the LiteLLM admin API for virtual-key lifecycle.
     masterKeyRef:
-      name: litellm
+      name: litellm-secrets
       key: LITELLM_MASTER_KEY
   env:
     - name: LITELLM_MASTER_KEY

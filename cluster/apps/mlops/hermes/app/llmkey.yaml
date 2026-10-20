@@ -5,5 +5,7 @@ metadata:
 spec:
   proxyRef: litellm
   keyAlias: Hermes
-  secretName: hermes-secrets
+  # Dedicated secret: hermes-secrets is owned by the ExternalSecret
+  # (creationPolicy: Owner) and would be clobbered on every sync.
+  secretName: hermes-litellm-keys
   secretKey: LITELLM_API_KEY

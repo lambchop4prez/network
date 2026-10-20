@@ -51,6 +51,9 @@ spec:
             envFrom:
               - secretRef:
                   name: karakeep-secret
+              # Virtual key written by litellm-operator (OPENAI_API_KEY).
+              - secretRef:
+                  name: karakeep-litellm-key
             probes:
               liveness: &probes
                 enabled: true
