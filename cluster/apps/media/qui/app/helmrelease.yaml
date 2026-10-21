@@ -20,7 +20,7 @@ spec:
           volume-permissions:
             image:
               repository: docker.io/library/alpine
-              tag: "3.20"
+              tag: "3.24"
             command:
               - /bin/sh
               - -c
