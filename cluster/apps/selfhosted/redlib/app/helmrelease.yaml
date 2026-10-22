@@ -20,7 +20,7 @@ spec:
           app:
             image:
               repository: quay.io/redlib/redlib
-              tag: latest@sha256:4659555063b850b4b685181aca7dda21dab86da379642fe262602bb2e76bc14a
+              tag: latest@sha256:37f624d87ce6cdd90d945af3688fdf0c195a0251d3b5ba62047792e8be2390df
             env:
               REDLIB_DEFAULT_WIDE: on
               REDLIB_DEFAULT_USE_HLS: on
