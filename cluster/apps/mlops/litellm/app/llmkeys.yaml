@@ -2,7 +2,7 @@
 # Virtual keys are centralized here (next to LiteLLMProxy/litellm) because
 # the operator resolves spec.proxyRef within the CR's own namespace — keys
 # defined in consumer namespaces (e.g. selfhosted) can never reach the proxy.
-# Output secrets land in "<secretName>-keys" (operator pluralizes).
+# Output secret is created with the exact name given in spec.secretName.
 apiVersion: litellm.home-operations.com/v1alpha1
 kind: LiteLLMVirtualKey
 metadata:
