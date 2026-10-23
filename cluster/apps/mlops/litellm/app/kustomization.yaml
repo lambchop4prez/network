@@ -6,5 +6,4 @@ resources:
   - ./externalsecret.yaml
   - ./litellmproxy.yaml
   - ./llmkeys.yaml
-  - ./secret-mirror.yaml
   - ./models
