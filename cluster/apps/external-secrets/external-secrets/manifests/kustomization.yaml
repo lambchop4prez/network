@@ -7,3 +7,4 @@ metadata:
 resources:
   - ./bitwarden-ca-bundle.yaml
   - ./clustersecretstore.yaml
+  - ./clustersecretstore-kubernetes.yaml

@@ -10,6 +10,9 @@ spec:
   dependsOn:
     - name: rook-cluster
     - name: external-secrets-manifests
+    # Source secret (karakeep-litellm-keys in mlops) must exist before the
+    # app pod waits on its mirrored envFrom secret.
+    - name: litellm
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app

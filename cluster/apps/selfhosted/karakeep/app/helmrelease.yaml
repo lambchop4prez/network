@@ -51,6 +51,10 @@ spec:
             envFrom:
               - secretRef:
                   name: karakeep-secret
+              # Virtual key mirrored from mlops/karakeep-litellm-keys by the
+              # ExternalSecret (operator writes it there; envFrom is ns-local).
+              - secretRef:
+                  name: karakeep-litellm-keys
             probes:
               liveness: &probes
                 enabled: true

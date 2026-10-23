@@ -1,0 +1,26 @@
+---
+# Virtual keys are centralized here (next to LiteLLMProxy/litellm) because
+# the operator resolves spec.proxyRef within the CR's own namespace — keys
+# defined in consumer namespaces (e.g. selfhosted) can never reach the proxy.
+# Output secrets land in "<secretName>-keys" (operator pluralizes).
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMVirtualKey
+metadata:
+  name: hermes
+spec:
+  proxyRef: litellm
+  keyAlias: Hermes
+  # Not hermes-secrets: that is ExternalSecret-owned (creationPolicy: Owner)
+  # and would be clobbered on every sync.
+  secretName: hermes-litellm-key
+  secretKey: LITELLM_API_KEY
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMVirtualKey
+metadata:
+  name: karakeep
+spec:
+  proxyRef: litellm
+  keyAlias: KaraKeep
+  secretName: karakeep-litellm-key
+  secretKey: OPENAI_API_KEY
