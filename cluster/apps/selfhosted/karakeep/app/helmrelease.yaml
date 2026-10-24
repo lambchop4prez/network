@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/karakeep-app/karakeep
-              tag: 0.34.0
+              tag: 0.34.1
             env:
               TZ: America/Detroit
               DATA_DIR: /data
@@ -126,7 +126,7 @@ spec:
           app:
             image:
               repository: ghcr.io/karakeep-app/karakeep-chrome
-              tag: 154.0.8037.57-r1
+              tag: 156.0.8078.47-r1
             args:
               - --disable-gpu
               - --disable-dev-shm-usage
