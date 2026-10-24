@@ -31,6 +31,12 @@ spec:
     cephClusterSpec:
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
+      cephConfig:
+        mon:
+          # Default 30% free-space warn is unsatisfiable on the 28 GiB SD
+          # system partition (mon store is ~56 MiB and kubelet image GC
+          # already caps usage at ~70%). Warn at 15% free instead.
+          mon_data_avail_warn: "15"
       security:
         cephx:
           csi:
