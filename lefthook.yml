@@ -4,10 +4,10 @@ pre-commit:
     - name: "spellcheck"
       run: just spellcheck
 
-    - name: "format:terraform"
-      run: tofu fmt -fix
-      glob: "*.{tf}"
-      stage_fixed: true
+    # - name: "format:terraform"
+    #   run: tofu fmt -fix
+    #   glob: "*.{tf}"
+    #   stage_fixed: true
 
     - name: "format:just"
       glob:

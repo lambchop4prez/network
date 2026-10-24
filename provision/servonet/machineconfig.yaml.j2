@@ -39,7 +39,7 @@ machine:
     {% else %}
     disk: /dev/sda
     {% endif %}
-    image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:v1.14.1
+    image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:v1.14.2
     wipe: false
     grubUseUKICmdline: true
   features:
@@ -57,6 +57,7 @@ machine:
       enabled: true
       allowedKubernetesNamespaces:
         - actions-runner-system
+        - kube-system
         - system-upgrade
       allowedRoles:
         - os:admin
