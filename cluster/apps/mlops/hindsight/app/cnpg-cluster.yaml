@@ -1,0 +1,58 @@
+---
+# Dedicated CNPG cluster, immich-style: stock cloudnative-pg/postgresql lacks
+# pgvector, so reuse the tensorchord all-in-one image (PG 17.5 + pgvector 0.8
+# + vectorchord 0.4.3, arm64 multi-arch — proven on this cluster via immich).
+# Hindsight needs pgvector >= 0.5.0 and defaults to it
+# (HINDSIGHT_API_VECTOR_EXTENSION=pgvector); vchord is pre-created so the
+# backend can be switched later without re-provisioning.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: &name ${APP}-postgres17
+spec:
+  instances: 2
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:17.5-0.4.3
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
+  bootstrap:
+    initdb:
+      database: ${APP}
+      owner: ${APP}
+      secret:
+        name: ${APP}-pg-secret
+      # Installed by CNPG's internal superuser at initdb — pgvector is not a
+      # "trusted" extension, so the app user (enableSuperuserAccess: false)
+      # cannot create it itself, and Hindsight tries CREATE EXTENSION vector
+      # against public on first migration.
+      postInitApplicationSQL:
+        - CREATE EXTENSION IF NOT EXISTS vector;
+        - CREATE EXTENSION IF NOT EXISTS vchord;
+  storage:
+    size: 10Gi
+    storageClass: ceph-block
+  enableSuperuserAccess: false
+  postgresql:
+    parameters:
+      max_connections: "400"
+      shared_buffers: 128MB
+    shared_preload_libraries:
+      - vchord.so
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  resources:
+    requests:
+      cpu: 500m
+      memory: 250Mi
+    limits:
+      memory: 2Gi
+  monitoring:
+    enablePodMonitor: true
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: "kubernetes.io/hostname"
+      whenUnsatisfiable: "DoNotSchedule"
+      labelSelector:
+        matchLabels:
+          cnpg.io/cluster: *name

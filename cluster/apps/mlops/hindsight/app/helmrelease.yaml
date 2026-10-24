@@ -1,0 +1,91 @@
+---
+# Official Hindsight chart (not bjw-s app-template): it wires the API/control
+# -plane route split correctly (/v1 -> api :8888, / -> control plane :3000;
+# /api/* belongs to the control plane's Next.js handlers — see chart #4741),
+# uses the DB-safe probes (/health/live liveness, /health readiness), and
+# supports existingSecret + Gateway API natively.
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app hindsight
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: *app
+  interval: 30m
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    # Pin image tag across api/control-plane (chart appVersion).
+    version: 1.1.0
+
+    # Secrets (DB password + litellm virtual key) aggregated by the
+    # hindsight-app-secret ExternalSecret; all keys injected via envFrom.
+    existingSecret: hindsight-app-secret
+
+    postgresql:
+      # Database is the dedicated CNPG cluster (cnpg-cluster.yaml).
+      enabled: false
+      external:
+        host: hindsight-postgres17-rw.mlops.svc.servonet.lan
+        port: 5432
+        database: hindsight
+        username: hindsight
+
+    api:
+      env:
+        TZ: America/Detroit
+        # LLM via the in-cluster litellm proxy (same pattern as karakeep).
+        HINDSIGHT_API_LLM_PROVIDER: openai
+        HINDSIGHT_API_LLM_BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
+        HINDSIGHT_API_LLM_MODEL: macbook-qwen38-flash-next
+        # Embeddings: default provider "local" (BAAI/bge-small-en-v1.5,
+        # downloaded to /home/hindsight/.cache on first use). To move
+        # embeddings onto litellm later, register an embedding-mode
+        # LiteLLMModel and switch to:
+        #   HINDSIGHT_API_EMBEDDINGS_PROVIDER: openai
+        #   HINDSIGHT_API_EMBEDDINGS_OPENAI_BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
+        #   HINDSIGHT_API_EMBEDDINGS_OPENAI_MODEL: <slug>
+        #   HINDSIGHT_API_EMBEDDINGS_OPENAI_API_KEY: <virtual key>
+      persistence:
+        # Persist the model cache so embeddings are not re-downloaded on
+        # every pod restart.
+        modelCache:
+          enabled: true
+          size: 5Gi
+          storageClass: ceph-block
+      startupProbe:
+        # First start pulls the embedding model and runs migrations.
+        httpGet:
+          path: /health/live
+          port: 8888
+        periodSeconds: 10
+        failureThreshold: 60
+      resources:
+        requests:
+          cpu: 250m
+          memory: 1Gi
+        limits:
+          memory: 3Gi
+
+    controlPlane:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+        limits:
+          memory: 1Gi
+
+    gatewayApi:
+      enabled: true
+      parentRefs:
+        - name: envoy-internal
+          namespace: networking
+      hostnames:
+        - hindsight.servonet.lan

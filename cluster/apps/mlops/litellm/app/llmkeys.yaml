@@ -24,3 +24,13 @@ spec:
   keyAlias: KaraKeep
   secretName: karakeep-litellm-key
   secretKey: OPENAI_API_KEY
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMVirtualKey
+metadata:
+  name: hindsight
+spec:
+  proxyRef: litellm
+  keyAlias: Hindsight
+  secretName: hindsight-litellm-key
+  secretKey: OPENAI_API_KEY
