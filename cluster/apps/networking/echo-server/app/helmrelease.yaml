@@ -41,7 +41,6 @@ spec:
       main:
         hostnames:
           - echo.servonet.lan
-          - echo.${EXTERNAL_DOMAIN}
         parentRefs:
           - name: envoy-internal
             namespace: networking
