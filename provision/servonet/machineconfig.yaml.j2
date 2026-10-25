@@ -22,8 +22,8 @@ machine:
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraArgs:
-      image-gc-high-threshold: 70
-      image-gc-low-threshold: 65
+      image-gc-high-threshold: 60
+      image-gc-low-threshold: 55
     extraConfig:
       maxParallelImagePulls: 10
       maxPods: 200
@@ -69,8 +69,6 @@ machine:
     - op: create
       path: /etc/cri/conf.d/20-customization.part
       content: |
-        [plugins."io.containerd.cri.v1.images"]
-          discard_unpacked_layers = false
         [plugins."io.containerd.cri.v1.runtime"]
           cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
           device_ownership_from_security_context = true
