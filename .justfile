@@ -5,6 +5,7 @@ set script-interpreter := ['bash', '-euo', 'pipefail']
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
 mod cluster 'cluster'
+mod hindsight 'cluster/apps/mlops/hindsight'
 mod servonet 'provision/servonet'
 mod gpc 'provision/gpc'
 

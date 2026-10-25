@@ -90,6 +90,29 @@ spec:
         limits:
           memory: 1Gi
 
+    worker:
+      # Off-hours retain gating: dedicated workers consume the async operation
+      # queue, and the chart auto-sets HINDSIGHT_API_WORKER_ENABLED=false on
+      # the API so retains only queue up during work hours. CronJobs in
+      # worker-scaler.yaml scale this StatefulSet 0 at 08:00 / 1 at 22:00
+      # weekdays; `just hindsight scale <0|1>` overrides manually.
+      # replicaCount is the resting state (helm upgrades reset to this).
+      enabled: true
+      replicaCount: 1
+      persistence:
+        modelCache:
+          # Keep bge-small out of every nightly cold start; StatefulSet
+          # scale-to-0 preserves the PVC.
+          enabled: true
+          size: 5Gi
+          storageClass: ceph-block
+      resources:
+        requests:
+          cpu: 250m
+          memory: 1Gi
+        limits:
+          memory: 3Gi
+
     gatewayApi:
       enabled: true
       parentRefs:

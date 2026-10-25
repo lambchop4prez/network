@@ -1,0 +1,158 @@
+---
+# Off-hours gating for the Hindsight retain pipeline.
+#
+# Retain/consolidation requests land as async operations in Postgres and are
+# only executed by the dedicated worker StatefulSet (enabled via `worker:` in
+# helmrelease.yaml). Scaling that StatefulSet to 0 at work start parks the
+# work losslessly: pending rows are never pruned, and SIGTERM makes a running
+# worker drain up to 30s, then hand its claimed operations back to 'pending'.
+# Waking at 22:00 drains the backlog overnight; the Friday-evening wake covers
+# weekends. Manual override: `just hindsight scale <0|1>` from the repo root.
+#
+# NOTE: helm upgrades reset worker replicas to the chart value (1); the daily
+# cron re-applies the sleep on weekdays, so a mid-day upgrade just means one
+# day of background processing.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ${APP}-worker-scaler
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ${APP}-worker-scaler
+rules:
+  - apiGroups: ["apps"]
+    resources: ["statefulsets"]
+    verbs: ["get"]
+  - apiGroups: ["apps"]
+    resources: ["statefulsets/scale"]
+    verbs: ["get", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ${APP}-worker-scaler
+subjects:
+  - kind: ServiceAccount
+    name: ${APP}-worker-scaler
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: ${APP}-worker-scaler
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ${APP}-worker-sleep
+spec:
+  # Weekdays 08:00: stop background retain so local LLM inference is free.
+  schedule: "0 8 * * 1-5"
+  timeZone: America/Detroit
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 300
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          restartPolicy: Never
+          serviceAccountName: ${APP}-worker-scaler
+          securityContext:
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: scale
+              image: docker.io/bitnamilegacy/kubectl:1.33.4
+              command: ["kubectl"]
+              args:
+                - scale
+                - statefulset/${APP}-worker
+                - --namespace=$(NAMESPACE)
+                - --replicas=0
+              env:
+                - name: NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
+                # Keep kubectl's home off the (read-only) image filesystem.
+                - name: HOME
+                  value: /tmp
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 32Mi
+                limits:
+                  memory: 128Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: ["ALL"]
+          volumes:
+            - name: tmp
+              emptyDir: {}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ${APP}-worker-wake
+spec:
+  # Weekdays 22:00: start draining the day's retain backlog. The Friday wake
+  # leaves the worker running through the weekend.
+  schedule: "0 22 * * 1-5"
+  timeZone: America/Detroit
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 300
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          restartPolicy: Never
+          serviceAccountName: ${APP}-worker-scaler
+          securityContext:
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: scale
+              image: docker.io/bitnamilegacy/kubectl:1.33.4
+              command: ["kubectl"]
+              args:
+                - scale
+                - statefulset/${APP}-worker
+                - --namespace=$(NAMESPACE)
+                - --replicas=1
+              env:
+                - name: NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
+                - name: HOME
+                  value: /tmp
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 32Mi
+                limits:
+                  memory: 128Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: ["ALL"]
+          volumes:
+            - name: tmp
+              emptyDir: {}
