@@ -44,7 +44,7 @@ spec:
         # LLM via the in-cluster litellm proxy (same pattern as karakeep).
         HINDSIGHT_API_LLM_PROVIDER: openai
         HINDSIGHT_API_LLM_BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
-        HINDSIGHT_API_LLM_MODEL: macbook-qwen38-flash-next
+        HINDSIGHT_API_LLM_MODEL: macbook-qwen38-27b
         # Embeddings: default provider "local" (BAAI/bge-small-en-v1.5,
         # downloaded to /home/hindsight/.cache on first use). To move
         # embeddings onto litellm later, register an embedding-mode
