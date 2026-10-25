@@ -46,6 +46,13 @@ spec:
         HINDSIGHT_API_LLM_BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
         HINDSIGHT_API_LLM_MODEL: macbook-qwen38-27b
         HINDSIGHT_API_LLM_MAX_CONCURRENT: 4
+        # Recall latency fix: the default "local" reranker scores up to 300
+        # candidates per recall on CPU (cross-encoder/ms-marco-MiniLM-L-6-v2,
+        # ~370ms/candidate) — the coding-agent::network bank alone carries 159
+        # units, so every recall took 8-20s and timed out client-side. "rrf"
+        # disables neural reranking (RRF passthrough); recall drops to <1s.
+        # If ranking quality suffers, swap in the chart's tei.reranker instead.
+        HINDSIGHT_API_RERANKER_PROVIDER: rrf
         # Embeddings: default provider "local" (BAAI/bge-small-en-v1.5,
         # downloaded to /home/hindsight/.cache on first use). To move
         # embeddings onto litellm later, register an embedding-mode
