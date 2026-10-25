@@ -6,7 +6,7 @@ metadata:
 spec:
   modelName: macbook-qwen38-flash-next
   params:
-    model: openai/Qwen3.8-Flash-Next-oQ4e-mtp
+    model: openai/Qwen3.8-Flash-Next-UD-IQ4_XS
     apiBase: http://Tims-MacBook-Pro.lan:8899/v1
     apiKeyRef:
       name: litellm-secrets
