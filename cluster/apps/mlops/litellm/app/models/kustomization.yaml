@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./macbook-qwen38-flash-next.yaml
   - ./macbook-qwen38-27b.yaml
-  - ./macbook-qwen38-27b-fp16.yaml
+  - ./cloud-qwen-38-flash.yaml
   - ./cloud-orcarouter-free.yaml
   - ./cloud-glm-5-3-flash-free.yaml
   - ./cloud-deepseek-v4-flash-free.yaml
