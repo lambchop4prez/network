@@ -7,7 +7,10 @@ spec:
   modelName: cloud-qwen3.8-flash
   params:
     # No native litellm orcarouter provider — route as OpenAI-compatible.
-    model: qwen/qwen3.8-flash
+    # The "openai/" prefix is REQUIRED: it tells litellm to use the OpenAI
+    # provider against apiBase below. Bare "qwen/..." is not a litellm
+    # provider prefix and fails with "LLM Provider NOT provided".
+    model: openai/qwen3.8-flash
     apiBase: https://api.orcarouter.ai/v1
     apiKeyRef:
       name: litellm-secrets
