@@ -1,0 +1,18 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: macbook-gpt-oss-20b
+spec:
+  modelName: macbook-gpt-oss-20b
+  params:
+    model: openai/gpt-oss-20b-MXFP4-Q8
+    apiBase: http://Tims-MacBook-Pro.lan:8899/v1
+    apiKeyRef:
+      name: litellm-secrets
+      key: LITELLM_MACBOOK_OMLX_API_KEY
+    dropParams: true
+  info:
+    mode: chat
+    maxInputTokens: 262144
+    supportsFunctionCalling: true
