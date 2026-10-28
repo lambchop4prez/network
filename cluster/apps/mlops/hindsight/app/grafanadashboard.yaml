@@ -1,0 +1,41 @@
+---
+# Upstream dashboards from the hindsight repo, pinned to the app tag (v1.1.0).
+# No `datasources` binding here: unlike grafana.com JSON (literal
+# ${DS_PROMETHEUS} for the operator to substitute), these use a native
+# $datasource template variable of type "prometheus", which Grafana resolves
+# to the provisioned `prometheus` datasource on its own.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: hindsight-api-service
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  url: https://raw.githubusercontent.com/vectorize-io/hindsight/v1.1.0/monitoring/grafana/dashboards/hindsight-api-service.json
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: hindsight-llm
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  url: https://raw.githubusercontent.com/vectorize-io/hindsight/v1.1.0/monitoring/grafana/dashboards/hindsight-llm.json
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: hindsight-operations
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  url: https://raw.githubusercontent.com/vectorize-io/hindsight/v1.1.0/monitoring/grafana/dashboards/hindsight-operations.json
