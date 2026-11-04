@@ -1,0 +1,45 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: embed-lab-config
+  labels:
+    app.kubernetes.io/name: embed-lab
+data:
+  # ---- Model under test -------------------------------------------------
+  # Swap MODEL_URL + MODEL_FILE + LLAMA_ARG_POOLING (+ LLAMA_ARG_CTX_SIZE)
+  # together, then: kubectl -n lab rollout restart deploy/embed-lab
+  #
+  # Catalog (ungated GGUFs — the fetch init has no HF token; Q8_0 is small and
+  # still offloads, see ggml-rocket's note to run quantized weights with -nr):
+  #   Qwen3-Embedding-0.6B  1024d decoder (Qwen3)  pooling=last  ctx 32768
+  #   embeddinggemma-300M    768d non-causal Gemma pooling=mean  ctx 2048
+  #   mxbai-embed-large-v1  1024d BERT             pooling=cls   ctx 512
+  #   bge-m3                1024d XLM-RoBERTa      pooling=cls   ctx 8192
+  MODEL_URL: "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B-GGUF/resolve/main/Qwen3-Embedding-0.6B-Q8_0.gguf"
+  MODEL_FILE: "Qwen3-Embedding-0.6B-Q8_0.gguf"
+
+  # ---- llama-server embeddings knobs (native LLAMA_ARG_* env) -----------
+  LLAMA_ARG_EMBEDDINGS: "true"
+  # /v1/embeddings refuses to serve when pooling=none, so it must be set.
+  LLAMA_ARG_POOLING: "last"
+  LLAMA_ARG_HOST: "0.0.0.0"
+  LLAMA_ARG_PORT: "8080"
+  LLAMA_ARG_CTX_SIZE: "8192"
+  # One slot: context is split across slots and the lab benchmarks single-
+  # stream latency.
+  LLAMA_ARG_N_PARALLEL: "1"
+  LLAMA_ARG_BATCH: "2048"
+  # ubatch is the GEMM size the NPU sees per step; 512 is chat-rk1's sweet spot.
+  LLAMA_ARG_UBATCH: "512"
+  # Rocket offload is scheduler-driven (BLAS-style), not layer offload.
+  LLAMA_ARG_N_GPU_LAYERS: "0"
+  # Flash attention hurts the rocket prefill path (measured on-node).
+  LLAMA_ARG_FLASH_ATTN: "off"
+
+  # ---- The NPU switch ---------------------------------------------------
+  # Set  -> ggml dlopens the rocket backend and offloads prefill to the NPU.
+  # Empty -> same image, pure CPU baseline (the A/B):
+  #   CPU:     kubectl -n lab set env deploy/embed-lab GGML_BACKEND_PATH=""
+  #   restore: kubectl -n lab set env deploy/embed-lab GGML_BACKEND_PATH-
+  GGML_BACKEND_PATH: "/opt/rocket/libggml-rocket.so"
