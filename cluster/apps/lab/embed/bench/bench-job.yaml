@@ -35,7 +35,7 @@ spec:
         npu.rocket-stack/enabled: "true"
       containers:
         - name: bench
-          image: ghcr.io/eburgueno/chat-rk1/rocket-runtime:v0.1.0
+          image: ghcr.io/lambchop4prez/rocket-runtime:v0.1.0
           command: ["bash", "-c"]
           args:
             - |

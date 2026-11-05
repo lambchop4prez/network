@@ -33,7 +33,10 @@ spec:
         npu.rocket-stack/enabled: "true"
       initContainers:
         - name: fetch-model
-          image: ghcr.io/eburgueno/chat-rk1/rocket-runtime:v0.1.0
+          # Built by .github/workflows/rocket-runtime.yaml — the upstream
+          # ghcr.io/eburgueno/chat-rk1 package is referenced but never
+          # published (401 for anonymous pulls). Pin the digest once published.
+          image: ghcr.io/lambchop4prez/rocket-runtime:v0.1.0
           command: ["bash", "-c"]
           args:
             - |
@@ -51,7 +54,7 @@ spec:
               mountPath: /models
       containers:
         - name: llama-server
-          image: ghcr.io/eburgueno/chat-rk1/rocket-runtime:v0.1.0
+          image: ghcr.io/lambchop4prez/rocket-runtime:v0.1.0
           # Everything else (embeddings/pooling/host/port/backend) is read from
           # the ConfigMap as LLAMA_ARG_* / GGML_BACKEND_PATH.
           command: ["bash", "-c", "exec llama-server -m /models/${MODEL_FILE}"]
