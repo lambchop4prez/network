@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: embed-lab-bench
+  namespace: flux-system
+spec:
+  targetNamespace: lab
+  dependsOn:
+    - name: embed-lab
+  path: ./cluster/apps/lab/embed/bench
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: network
+  # No wait: the benchmark Job takes far longer than a reconciliation and is
+  # never "Ready" until it completes — Flux would time it out.
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m

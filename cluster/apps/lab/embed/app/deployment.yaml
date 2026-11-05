@@ -1,0 +1,106 @@
+---
+# NPU-accelerated embedding server for the RK1 lab.
+#
+# Mirrors eburgueno/chat-rk1's Talos pattern: bind the host /dev/accel into a
+# privileged container and point GGML_BACKEND_PATH at the rocket backend. The
+# node must carry the npu.rocket-stack/enabled=true label (the servonet nodes
+# already ship the siderolabs/rockchip-rknn extension).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: embed-lab
+  labels:
+    app.kubernetes.io/name: embed-lab
+  annotations:
+    # The fetch init uses shell ${MODEL_URL}/${MODEL_FILE}, which are NOT Flux
+    # postBuild vars — Flux would blank them (it rendered searxng's
+    # ${SEARXNG_SECRET} to ""). Opt this resource out of substitution.
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+spec:
+  replicas: 1
+  # RWO model volume + a single NPU: never run two instances side by side.
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: embed-lab
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: embed-lab
+    spec:
+      nodeSelector:
+        npu.rocket-stack/enabled: "true"
+      initContainers:
+        - name: fetch-model
+          image: ghcr.io/eburgueno/chat-rk1/rocket-runtime:v0.1.0
+          command: ["bash", "-c"]
+          args:
+            - |
+              set -euo pipefail
+              f="/models/${MODEL_FILE}"
+              if [ -s "$f" ]; then echo "model present: $f"; exit 0; fi
+              echo "downloading ${MODEL_URL} -> $f"
+              curl -fL --retry 5 --retry-all-errors -C - -o "$f.part" "${MODEL_URL}"
+              mv "$f.part" "$f"
+          envFrom:
+            - configMapRef:
+                name: embed-lab-config
+          volumeMounts:
+            - name: models
+              mountPath: /models
+      containers:
+        - name: llama-server
+          image: ghcr.io/eburgueno/chat-rk1/rocket-runtime:v0.1.0
+          # Everything else (embeddings/pooling/host/port/backend) is read from
+          # the ConfigMap as LLAMA_ARG_* / GGML_BACKEND_PATH.
+          command: ["bash", "-c", "exec llama-server -m /models/${MODEL_FILE}"]
+          envFrom:
+            - configMapRef:
+                name: embed-lab-config
+          ports:
+            - name: http
+              containerPort: 8080
+          securityContext:
+            # Needed to open /dev/accel/accel*. Narrow to a device-cgroup rule
+            # or a DRM-accel device plugin if the policy ever tightens.
+            privileged: true
+          volumeMounts:
+            - name: models
+              mountPath: /models
+            - name: dev-accel
+              mountPath: /dev/accel
+          # /health is 503 while the model loads and 200 once serving.
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 60
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 30
+            failureThreshold: 5
+          resources:
+            requests:
+              cpu: "2"
+              memory: 4Gi
+            limits:
+              # Headroom for the larger Qwen3-Embedding-4B/8B Q4 GGUFs; the
+              # default 0.6B Q8_0 needs well under 2 GiB.
+              memory: 12Gi
+      volumes:
+        - name: models
+          persistentVolumeClaim:
+            claimName: embed-lab-models
+        - name: dev-accel
+          hostPath:
+            path: /dev/accel
+            type: Directory

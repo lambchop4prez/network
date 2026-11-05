@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab
+  labels:
+    # The embedding lab binds the host NPU device (/dev/accel) into a
+    # privileged container, which the cluster-default "baseline" PodSecurity
+    # level forbids. Same opt-in as rook-ceph / monitoring / tv.
+    pod-security.kubernetes.io/enforce: privileged

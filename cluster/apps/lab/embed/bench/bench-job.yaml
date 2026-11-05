@@ -1,0 +1,79 @@
+---
+# One-shot NPU-vs-CPU prefill sweep across the candidate embedding models.
+#
+# Embeddings are pure prefill (one batched forward pass, no decode), so the
+# prompt-processing rate llama-bench reports IS the embedding throughput to
+# compare. ggml-rocket is scheduler-driven: the GGML_BACKEND_PATH arm runs the
+# same binary with the NPU backend loaded, the `env -u` arm is the CPU baseline.
+#
+#   kubectl -n lab logs -f job/embed-lab-bench
+#
+# It reuses the embed-lab models PVC (RWO, same node) and downloads any model
+# that is not already present. Deliberately no ttlSecondsAfterFinished: a TTL
+# would delete the Job after it completes and Flux would immediately recreate
+# and re-run it.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: embed-lab-bench
+  labels:
+    app.kubernetes.io/name: embed-lab-bench
+  annotations:
+    # Shell loop vars ($spec/$file/$url, ${spec%%|*}); keep Flux from blanking
+    # them.
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 10800
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: embed-lab-bench
+    spec:
+      restartPolicy: Never
+      nodeSelector:
+        npu.rocket-stack/enabled: "true"
+      containers:
+        - name: bench
+          image: ghcr.io/eburgueno/chat-rk1/rocket-runtime:v0.1.0
+          command: ["bash", "-c"]
+          args:
+            - |
+              set -uo pipefail
+              for spec in \
+                "Qwen3-Embedding-0.6B-Q8_0.gguf|https://huggingface.co/Qwen/Qwen3-Embedding-0.6B-GGUF/resolve/main/Qwen3-Embedding-0.6B-Q8_0.gguf" \
+                "embeddinggemma-300M-Q8_0.gguf|https://huggingface.co/ggml-org/embeddinggemma-300M-GGUF/resolve/main/embeddinggemma-300M-Q8_0.gguf" \
+                "mxbai-embed-large-v1.Q8_0.gguf|https://huggingface.co/ChristianAzinn/mxbai-embed-large-v1-gguf/resolve/main/mxbai-embed-large-v1.Q8_0.gguf" \
+                "bge-m3-Q8_0.gguf|https://huggingface.co/lm-kit/bge-m3-gguf/resolve/main/bge-m3-Q8_0.gguf"; do
+                file="${spec%%|*}"; url="${spec##*|}"
+                f="/models/$file"
+                if [ ! -s "$f" ]; then
+                  echo "downloading $url"
+                  curl -fL --retry 5 --retry-all-errors -C - -o "$f.part" "$url" && mv "$f.part" "$f"
+                fi
+                [ -s "$f" ] || { echo "SKIP $file (download failed)"; continue; }
+                echo "########## $file : NPU ##########"
+                GGML_BACKEND_PATH=/opt/rocket/libggml-rocket.so \
+                  llama-bench -m "$f" -p 512,2048 -n 0 -r 3 --repack 0 2>&1 \
+                  || echo "llama-bench (NPU) failed for $file"
+                echo "########## $file : CPU ##########"
+                env -u GGML_BACKEND_PATH \
+                  llama-bench -m "$f" -p 512,2048 -n 0 -r 3 --repack 0 2>&1 \
+                  || echo "llama-bench (CPU) failed for $file"
+              done
+              echo "BENCH DONE"
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: models
+              mountPath: /models
+            - name: dev-accel
+              mountPath: /dev/accel
+      volumes:
+        - name: models
+          persistentVolumeClaim:
+            claimName: embed-lab-models
+        - name: dev-accel
+          hostPath:
+            path: /dev/accel
+            type: Directory
