@@ -83,7 +83,13 @@ spec:
   targetSelectors:
     - group: gateway.networking.k8s.io
       kind: Gateway
-  tcpKeepalive: {}
+  tcpKeepalive:
+    # Aggressive downstream keepalives so idle WebSockets (e.g. Jellyfin/Kodi)
+    # emit probes well before any intermediate session state expires, and dead
+    # peers are detected in ~2min instead of the 7200s kernel default.
+    idleTime: 60s
+    interval: 10s
+    probes: 6
   timeout:
     http:
       requestReceivedTimeout: 0s
