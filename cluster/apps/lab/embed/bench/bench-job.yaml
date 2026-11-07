@@ -12,6 +12,16 @@
 # that is not already present. Deliberately no ttlSecondsAfterFinished: a TTL
 # would delete the Job after it completes and Flux would immediately recreate
 # and re-run it.
+#
+# F16 weights are used wherever published. ggml-rocket only offloads a
+# quantized GGUF when the host's weight repack is OFF, and this llama-bench
+# build (the pinned llama.cpp) exposes no repack flag at all — so a Q8_0 arm
+# silently stays on the CPU and measures nothing (observed: Q8_0 NPU 133 t/s vs
+# CPU 148 t/s, i.e. no win). F16 needs no repack and does offload (Qwen3-0.6B
+# f16: NPU 122 vs CPU 78 t/s). embeddinggemma only ships Q8_0.
+#
+# No --repack/--no-repack: this llama-bench rejects it with
+# "invalid parameter for argument: --repack".
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -40,28 +50,34 @@ spec:
           args:
             - |
               set -uo pipefail
+              status=0
               for spec in \
-                "Qwen3-Embedding-0.6B-Q8_0.gguf|https://huggingface.co/Qwen/Qwen3-Embedding-0.6B-GGUF/resolve/main/Qwen3-Embedding-0.6B-Q8_0.gguf" \
+                "Qwen3-Embedding-0.6B-f16.gguf|https://huggingface.co/Qwen/Qwen3-Embedding-0.6B-GGUF/resolve/main/Qwen3-Embedding-0.6B-f16.gguf" \
                 "embeddinggemma-300M-Q8_0.gguf|https://huggingface.co/ggml-org/embeddinggemma-300M-GGUF/resolve/main/embeddinggemma-300M-Q8_0.gguf" \
-                "mxbai-embed-large-v1.Q8_0.gguf|https://huggingface.co/ChristianAzinn/mxbai-embed-large-v1-gguf/resolve/main/mxbai-embed-large-v1.Q8_0.gguf" \
-                "bge-m3-Q8_0.gguf|https://huggingface.co/lm-kit/bge-m3-gguf/resolve/main/bge-m3-Q8_0.gguf"; do
+                "mxbai-embed-large-v1_fp16.gguf|https://huggingface.co/ChristianAzinn/mxbai-embed-large-v1-gguf/resolve/main/mxbai-embed-large-v1_fp16.gguf" \
+                "bge-m3-F16.gguf|https://huggingface.co/lm-kit/bge-m3-gguf/resolve/main/bge-m3-F16.gguf"; do
                 file="${spec%%|*}"; url="${spec##*|}"
                 f="/models/$file"
                 if [ ! -s "$f" ]; then
                   echo "downloading $url"
-                  curl -fL --retry 5 --retry-all-errors -C - -o "$f.part" "$url" && mv "$f.part" "$f"
+                  if ! curl -fL --retry 5 --retry-all-errors -C - -o "$f.part" "$url"; then
+                    echo "SKIP $file (download failed)"; status=1; continue
+                  fi
+                  mv "$f.part" "$f"
                 fi
-                [ -s "$f" ] || { echo "SKIP $file (download failed)"; continue; }
                 echo "########## $file : NPU ##########"
-                GGML_BACKEND_PATH=/opt/rocket/libggml-rocket.so \
-                  llama-bench -m "$f" -p 512,2048 -n 0 -r 3 --repack 0 2>&1 \
-                  || echo "llama-bench (NPU) failed for $file"
+                if ! GGML_BACKEND_PATH=/opt/rocket/libggml-rocket.so \
+                     llama-bench -m "$f" -p 512,2048 -n 0 -r 3; then
+                  echo "llama-bench (NPU) failed for $file"; status=1
+                fi
                 echo "########## $file : CPU ##########"
-                env -u GGML_BACKEND_PATH \
-                  llama-bench -m "$f" -p 512,2048 -n 0 -r 3 --repack 0 2>&1 \
-                  || echo "llama-bench (CPU) failed for $file"
+                if ! env -u GGML_BACKEND_PATH \
+                     llama-bench -m "$f" -p 512,2048 -n 0 -r 3; then
+                  echo "llama-bench (CPU) failed for $file"; status=1
+                fi
               done
-              echo "BENCH DONE"
+              echo "BENCH DONE (status=$status)"
+              exit "$status"
           securityContext:
             privileged: true
           volumeMounts:
