@@ -87,6 +87,30 @@ cluster/apps/lab/
    chosen model's dimension.
 3. The bench Job logs `... : NPU` and `... : CPU` blocks for all four models.
 
+## First measurements (2026-11-06, tom-7110)
+
+`llama-bench -p 512,2048 -n 0 -r 3 -ub 2048`; NPU = `GGML_BACKEND_PATH` set,
+CPU = the same image with it unset. pp512 t/s:
+
+| model (F16 unless noted) | NPU | CPU | ratio |
+|---|---:|---:|---:|
+| Qwen3-Embedding-0.6B | 140.5 | 83.7 | 1.68x |
+| mxbai-embed-large-v1 (bert 335M) | 174.7 | 110.9 | 1.58x |
+| bge-m3 (xlm-r 568M) | 187.8 | 99.7 | 1.88x |
+| embeddinggemma-300M (Q8_0) | 358.3 | 376.3 | 0.95x |
+
+- The NPU offload **does work** for `llama.cpp` embeddings — this closes the
+  earlier open question — for both decoder (Qwen3) and encoder (bert/xlm-r)
+  graphs.
+- It needs **F16**: quantized weights stay on the CPU because ggml-rocket needs
+  the host repack off and this llama-bench has no repack flag (embeddinggemma,
+  Q8-only, shows no win).
+- The win **shrinks with sequence length**: at pp2048, Qwen3 is 1.18x and
+  bge-m3 0.94x (CPU parity). For these small embedding models the NPU is not a
+  clear win.
+- Encoder models abort at pp2048 without `-ub 2048`
+  ("encoder requires n_ubatch >= n_tokens").
+
 ## Open items (next pass)
 
 - **Embedding model on the NPU is unverified for `llama.cpp --embedding`
