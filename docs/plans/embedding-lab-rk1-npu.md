@@ -25,8 +25,9 @@ the benchmark only — no litellm/Honcho wiring. Owner: opencode.
    `.github/workflows/rocket-runtime.yaml` to
    `ghcr.io/lambchop4prez/rocket-runtime`. Make the package public on first
    publish, then pin the digest in the manifests.
-4. **First sweep** (all ungated Q8_0 GGUFs): Qwen3-Embedding-0.6B,
-   embeddinggemma-300M, mxbai-embed-large-v1, bge-m3.
+4. **Sweep** (F16 where published — see "First measurements" for why):
+   Qwen3-Embedding-0.6B, Qwen3-Embedding-4B (2560-d), embeddinggemma-300M
+   (Q8_0 only), mxbai-embed-large-v1, bge-m3.
 5. **Pinned to one node** (`npu.rocket-stack/enabled=true`, on `tom-7110`, 32 GB)
    to keep the benchmark consistent; a privileged pod + `/dev/accel` hostPath
    needs the `lab` namespace to opt into the `privileged` PodSecurity level.

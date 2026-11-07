@@ -57,6 +57,7 @@ spec:
               status=0
               for spec in \
                 "Qwen3-Embedding-0.6B-f16.gguf|https://huggingface.co/Qwen/Qwen3-Embedding-0.6B-GGUF/resolve/main/Qwen3-Embedding-0.6B-f16.gguf" \
+                "Qwen3-Embedding-4B-f16.gguf|https://huggingface.co/Qwen/Qwen3-Embedding-4B-GGUF/resolve/main/Qwen3-Embedding-4B-f16.gguf" \
                 "embeddinggemma-300M-Q8_0.gguf|https://huggingface.co/ggml-org/embeddinggemma-300M-GGUF/resolve/main/embeddinggemma-300M-Q8_0.gguf" \
                 "mxbai-embed-large-v1_fp16.gguf|https://huggingface.co/ChristianAzinn/mxbai-embed-large-v1-gguf/resolve/main/mxbai-embed-large-v1_fp16.gguf" \
                 "bge-m3-F16.gguf|https://huggingface.co/lm-kit/bge-m3-gguf/resolve/main/bge-m3-F16.gguf"; do
