@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: llm-lab-bench
+  namespace: flux-system
+spec:
+  targetNamespace: lab
+  dependsOn:
+    # The models PVC lives in the embed lab; both Jobs share it.
+    - name: embed-lab
+  path: ./cluster/apps/lab/llm/bench
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: network
+  # No wait: the Job is never "Ready" until it completes.
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
