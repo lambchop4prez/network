@@ -15,9 +15,16 @@ the benchmark only — no litellm/Honcho wiring. Owner: opencode.
    (`MUL_MAT` M>=32, `FLASH_ATTN_EXT`, `MUL_MAT_ID`); decode stays on CPU. An
    embedding pass is a single batched forward pass with no decode, so it is
    pure prefill — the exact shape `ggml-rocket` offloads.
-3. **Runtime = `ghcr.io/eburgueno/chat-rk1/rocket-runtime`** (stock llama.cpp
-   built `GGML_BACKEND_DL` + `libggml-rocket.so`). `GGML_BACKEND_PATH` set =>
-   NPU; unset => CPU baseline on the same image. This is the A/B.
+3. **Runtime = our own `rocket-runtime` image** (stock llama.cpp built
+   `GGML_BACKEND_DL` + `libggml-rocket.so`). `GGML_BACKEND_PATH` set => NPU;
+   unset => CPU baseline on the same image. This is the A/B.
+   Originally this pointed at `ghcr.io/eburgueno/chat-rk1/rocket-runtime:v0.1.0`,
+   but that package is **not anonymously pullable** (401 from the GHCR token
+   endpoint; no matching tag or publish-workflow run) — so the build is vendored
+   at `containers/rocket-runtime/` and published by
+   `.github/workflows/rocket-runtime.yaml` to
+   `ghcr.io/lambchop4prez/rocket-runtime`. Make the package public on first
+   publish, then pin the digest in the manifests.
 4. **First sweep** (all ungated Q8_0 GGUFs): Qwen3-Embedding-0.6B,
    embeddinggemma-300M, mxbai-embed-large-v1, bge-m3.
 5. **Pinned to one node** (`npu.rocket-stack/enabled=true`, on `tom-7110`, 32 GB)

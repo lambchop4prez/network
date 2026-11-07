@@ -1,0 +1,53 @@
+---
+# Builds and publishes containers/rocket-runtime (llama.cpp + the ggml-rocket
+# RK3588 NPU backend). Replaces the dependency on
+# ghcr.io/eburgueno/chat-rk1/rocket-runtime, which is not anonymously pullable.
+#
+# Trigger: a `rocket-runtime-v*.*.*` tag, or workflow_dispatch.
+# Runs on GitHub's native arm64 runner (free on public repos) — the image is
+# linux/arm64, so no QEMU emulation is needed.
+name: rocket-runtime
+on:
+  push:
+    tags:
+      - "rocket-runtime-v*.*.*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Image version tag to publish (e.g. v0.1.0)"
+        required: false
+        default: "v0.1.0"
+
+permissions: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      packages: write
+    env:
+      IMAGE: ghcr.io/${{ github.repository_owner }}/rocket-runtime
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Build and push
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+          GHCR_ACTOR: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # workflow_dispatch -> its input; tag push -> the tag minus the prefix.
+          version="${INPUT_VERSION:-${GITHUB_REF_NAME#rocket-runtime-}}"
+          [ -n "$version" ] || { echo "could not resolve an image version" >&2; exit 1; }
+          echo "building ${IMAGE}:${version}"
+          docker build --tag "${IMAGE}:${version}" containers/rocket-runtime
+          printf '%s' "$GHCR_TOKEN" | docker login ghcr.io --username "$GHCR_ACTOR" --password-stdin
+          docker push "${IMAGE}:${version}"
+          echo "published ${IMAGE}:${version}"
+          echo "If this is the first publish, make the ghcr.io package public:"
+          echo "  GitHub profile -> Packages -> rocket-runtime -> Package settings -> Change visibility."
