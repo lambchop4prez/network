@@ -22,6 +22,10 @@
 #
 # No --repack/--no-repack: this llama-bench rejects it with
 # "invalid parameter for argument: --repack".
+#
+# -ub 2048: encoder architectures (bert / xlm-r / gemma-embedding) assert
+# "encoder requires n_ubatch >= n_tokens" and abort at pp2048 with the default
+# ubatch, so the micro-batch is raised to match.
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -67,12 +71,12 @@ spec:
                 fi
                 echo "########## $file : NPU ##########"
                 if ! GGML_BACKEND_PATH=/opt/rocket/libggml-rocket.so \
-                     llama-bench -m "$f" -p 512,2048 -n 0 -r 3; then
+                     llama-bench -m "$f" -p 512,2048 -n 0 -r 3 -ub 2048; then
                   echo "llama-bench (NPU) failed for $file"; status=1
                 fi
                 echo "########## $file : CPU ##########"
                 if ! env -u GGML_BACKEND_PATH \
-                     llama-bench -m "$f" -p 512,2048 -n 0 -r 3; then
+                     llama-bench -m "$f" -p 512,2048 -n 0 -r 3 -ub 2048; then
                   echo "llama-bench (CPU) failed for $file"; status=1
                 fi
               done
