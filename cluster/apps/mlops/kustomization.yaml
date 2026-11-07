@@ -6,5 +6,6 @@ resources:
   - ./namespace.yaml
   - ./hermes/ks.yaml
   - ./hindsight/ks.yaml
+  - ./honcho/ks.yaml
   - ./litellm/operator/ks.yaml
   - ./litellm/ks.yaml
