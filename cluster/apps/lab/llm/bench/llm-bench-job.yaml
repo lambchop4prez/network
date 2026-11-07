@@ -1,0 +1,91 @@
+---
+# RK1 "light tier" sweep — can this board host Honcho's background generation
+# roles (deriver / summary / dream)?
+#
+# The question is decode-bound: the RK3588 NPU accelerates prefill only, so it
+# moves time-to-first-token, not tokens/s out. llama-bench reports both.
+#
+#   kubectl -n lab logs -f job/llm-lab-bench
+#
+# Arms:
+#   NPU = GGML_BACKEND_PATH set AND LLAMA_ARG_REPACK=0 (llama-server exposes
+#         -nr/--no-repack; llama-bench has no such flag but honours the env var
+#         that the arg registration reads). This is the config you would
+#         actually deploy for NPU prefill on a quantized model.
+#   CPU = the same image, backend unset, default repack.
+#
+# Q4_K_M: it is the point of the exercise — F16 decode on this board is ~3 t/s,
+# far too slow for generation. Q4 decode is ~10 t/s.
+#
+# Reads -n 128 (decode) as well as -p 512 (prefill); decode should be a tie
+# between arms because it never leaves the CPU.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: llm-lab-bench
+  labels:
+    app.kubernetes.io/name: llm-lab-bench
+  annotations:
+    # Shell loop vars; keep Flux from blanking them.
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 10800
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: llm-lab-bench
+    spec:
+      restartPolicy: Never
+      nodeSelector:
+        npu.rocket-stack/enabled: "true"
+      containers:
+        - name: bench
+          image: ghcr.io/lambchop4prez/rocket-runtime:v0.1.0
+          command: ["bash", "-c"]
+          args:
+            - |
+              set -uo pipefail
+              status=0
+              for spec in \
+                "Qwen3-4B-Q4_K_M.gguf|https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf" \
+                "Phi-4-mini-instruct-Q4_K_M.gguf|https://huggingface.co/unsloth/Phi-4-mini-instruct-GGUF/resolve/main/Phi-4-mini-instruct-Q4_K_M.gguf" \
+                "Llama-3.2-3B-Instruct-Q4_K_M.gguf|https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf"; do
+                file="${spec%%|*}"; url="${spec##*|}"
+                f="/models/$file"
+                if [ ! -s "$f" ]; then
+                  echo "downloading $url"
+                  if ! curl -fL --retry 5 --retry-all-errors -C - -o "$f.part" "$url"; then
+                    echo "SKIP $file (download failed)"; status=1; continue
+                  fi
+                  mv "$f.part" "$f"
+                fi
+                echo "########## $file : NPU (-nr prefill offload) ##########"
+                if ! LLAMA_ARG_REPACK=0 GGML_BACKEND_PATH=/opt/rocket/libggml-rocket.so \
+                     llama-bench -m "$f" -p 512 -n 128 -r 3 -ub 2048; then
+                  echo "llama-bench (NPU) failed for $file"; status=1
+                fi
+                echo "########## $file : CPU (default repack) ##########"
+                if ! env -u GGML_BACKEND_PATH \
+                     llama-bench -m "$f" -p 512 -n 128 -r 3 -ub 2048; then
+                  echo "llama-bench (CPU) failed for $file"; status=1
+                fi
+              done
+              echo "LLM BENCH DONE (status=$status)"
+              exit "$status"
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: models
+              mountPath: /models
+            - name: dev-accel
+              mountPath: /dev/accel
+      volumes:
+        - name: models
+          persistentVolumeClaim:
+            # Shared with the embed lab — one PVC, one model cache per node.
+            claimName: embed-lab-models
+        - name: dev-accel
+          hostPath:
+            path: /dev/accel
+            type: Directory

@@ -6,3 +6,4 @@ resources:
   - ./namespace.yaml
   - ./embed/ks.yaml
   - ./embed/bench-ks.yaml
+  - ./llm/bench-ks.yaml
