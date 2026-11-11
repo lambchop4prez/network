@@ -47,7 +47,7 @@ spec:
         # extraction). reasoning_effort=none drops the thinking block.
         HINDSIGHT_API_LLM_PROVIDER: openai
         HINDSIGHT_API_LLM_BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
-        HINDSIGHT_API_LLM_MODEL: macbook-gpt-oss-20b
+        HINDSIGHT_API_LLM_MODEL: macbook-qwen38-flash-next
         HINDSIGHT_API_LLM_REASONING_EFFORT: "none"
         HINDSIGHT_API_LLM_TIMEOUT: 600 # allow slow local generation
         HINDSIGHT_API_LLM_MAX_RETRIES: 2 # fail faster locally — retries rarely help a slow box
