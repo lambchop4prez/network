@@ -48,7 +48,7 @@ spec:
         HINDSIGHT_API_LLM_PROVIDER: openai
         HINDSIGHT_API_LLM_BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
         HINDSIGHT_API_LLM_MODEL: cloud-deepseek-v4-flash-openrouter
-        HINDSIGHT_API_LLM_REASONING_EFFORT: "none"
+        # HINDSIGHT_API_LLM_REASONING_EFFORT: "none"
         HINDSIGHT_API_LLM_TIMEOUT: 600 # allow slow local generation
         # HINDSIGHT_API_LLM_MAX_RETRIES: 2 # fail faster locally — retries rarely help a slow box
         # HINDSIGHT_API_LLM_MAX_CONCURRENT: 1
