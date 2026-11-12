@@ -1,0 +1,27 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: cloud-deepseek-v4-flash-openrouter
+spec:
+  modelName: cloud-deepseek-v4-flash-openrouter
+  params:
+    model: openrouter/deepseek/deepseek-v4.1-flash
+    apiKeyRef:
+      name: litellm-secrets
+      key: LITELLM_OPENROUTER_API_KEY
+    additional:
+      allowed_openai_params: [reasoning_effort]
+      extra_body:
+        provider:
+          zdr: true
+          require_parameters: true
+  info:
+    mode: chat
+    maxInputTokens: 1048576
+    supportsFunctionCalling: true
+    supportsPromptCaching: true
+    supportsVision: true
+    extra:
+      input_cost_per_token: 3.0e-07
+      output_cost_per_token: 1.2e-06
