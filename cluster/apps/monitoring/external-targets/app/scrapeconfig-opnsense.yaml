@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: opnsense
+spec:
+  jobName: opnsense
+  metricsPath: /metrics
+  relabelings:
+    - targetLabel: instance
+      replacement: crow
+  scheme: HTTP
+  staticConfigs:
+    - targets:
+        - crow.lan:9100 # node_exporter on the OPNsense router

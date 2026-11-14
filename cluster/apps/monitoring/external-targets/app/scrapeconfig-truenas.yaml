@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: truenas-snmp
+spec:
+  honorLabels: true
+  jobName: snmp
+  metricsPath: /snmp
+  params:
+    auth:
+      - public_v2
+    module:
+      - if_mib
+  relabelings:
+    - sourceLabels:
+        - __address__
+      targetLabel: __param_target
+    - sourceLabels:
+        - __param_target
+      targetLabel: instance
+    - targetLabel: __address__
+      replacement: snmp-exporter:9116 # in-cluster snmp_exporter proxies the SNMP query
+  staticConfigs:
+    - targets:
+        - nas.lan:161 # TrueNAS SNMP service (v2c)
