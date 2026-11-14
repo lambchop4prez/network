@@ -1,0 +1,35 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app honcho
+  namespace: flux-system
+spec:
+  targetNamespace: mlops
+  dependsOn:
+    - name: cloudnative-pg
+    - name: external-secrets-manifests
+    # The LiteLLMVirtualKey `honcho` (and its honcho-litellm-key secret) is
+    # declared in the litellm Kustomization — it must exist before the app.
+    - name: litellm
+    # Dragonfly operator, so the <APP>-dragonfly CR below reconciles.
+    - name: dragonfly
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    # Redis-compatible cache as "honcho-dragonfly" (postBuild APP=honcho).
+    - ../../../../components/dragonfly
+  postBuild:
+    substitute:
+      APP: *app
+  path: ./cluster/apps/mlops/honcho/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: network
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
