@@ -1,0 +1,148 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app honcho
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: *app
+  interval: 30m
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      api:
+        containers:
+          app:
+            # Multi-arch (amd64+arm64) — the cluster is all-arm64. The image
+            # CMD is `fastapi run …`; docker/entrypoint.sh first runs the
+            # alembic migrations (scripts/provision_db.py), then serves.
+            image:
+              repository: ghcr.io/plastic-labs/honcho
+              tag: v3.5.0@sha256:23ff96bf62ab2ca14928e6766db1a30a7729f5b7c9e2285af0cd4a179c0d393d
+            command:
+              - sh
+              - docker/entrypoint.sh
+            env: &honchoEnv
+              TZ: America/Detroit
+              LOG_LEVEL: INFO
+              # Auth off: LAN-only behind envoy-internal (decision 2026-11-03).
+              AUTH_USE_AUTH: "false"
+              VECTOR_STORE_TYPE: pgvector
+              # Dragonfly (Redis-compatible) from components/dragonfly as
+              # "<APP>-dragonfly" — see ks.yaml postBuild APP=honcho.
+              CACHE_ENABLED: "true"
+              CACHE_URL: redis://honcho-dragonfly.mlops.svc.servonet.lan:6379/0?suppress=true
+              # Every LLM role routes through the in-cluster litellm proxy
+              # (same pattern as hindsight/karakeep). Honcho has no global base
+              # URL, so each module carries its own MODEL_CONFIG override.
+              LLM_OPENAI_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: honcho-litellm-key
+                    key: OPENAI_API_KEY
+              DERIVER_MODEL_CONFIG__MODEL: macbook-gpt-oss-20b
+              DERIVER_MODEL_CONFIG__OVERRIDES__BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
+              DIALECTIC_LEVELS__minimal__MODEL_CONFIG__MODEL: macbook-gpt-oss-20b
+              DIALECTIC_LEVELS__minimal__MODEL_CONFIG__OVERRIDES__BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
+              DIALECTIC_LEVELS__low__MODEL_CONFIG__MODEL: macbook-gpt-oss-20b
+              DIALECTIC_LEVELS__low__MODEL_CONFIG__OVERRIDES__BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
+              DIALECTIC_LEVELS__medium__MODEL_CONFIG__MODEL: macbook-gpt-oss-20b
+              DIALECTIC_LEVELS__medium__MODEL_CONFIG__OVERRIDES__BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
+              DIALECTIC_LEVELS__high__MODEL_CONFIG__MODEL: macbook-gpt-oss-20b
+              DIALECTIC_LEVELS__high__MODEL_CONFIG__OVERRIDES__BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
+              DIALECTIC_LEVELS__max__MODEL_CONFIG__MODEL: macbook-gpt-oss-20b
+              DIALECTIC_LEVELS__max__MODEL_CONFIG__OVERRIDES__BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
+              SUMMARY_MODEL_CONFIG__MODEL: macbook-gpt-oss-20b
+              SUMMARY_MODEL_CONFIG__OVERRIDES__BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
+              DREAM_DEDUCTION_MODEL_CONFIG__MODEL: macbook-gpt-oss-20b
+              DREAM_DEDUCTION_MODEL_CONFIG__OVERRIDES__BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
+              DREAM_INDUCTION_MODEL_CONFIG__MODEL: macbook-gpt-oss-20b
+              DREAM_INDUCTION_MODEL_CONFIG__OVERRIDES__BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
+              # Embeddings point at litellm too, but the proxy has no embedding
+              # model registered yet (model stays the default
+              # text-embedding-3-small) — vector search needs one added there.
+              EMBEDDING_MODEL_CONFIG__OVERRIDES__BASE_URL: http://litellm.mlops.svc.servonet.lan:4000/v1
+            envFrom:
+              # DB_CONNECTION_URI (plus username/password) from the ExternalSecret.
+              - secretRef:
+                  name: honcho-pg-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 8000
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8000
+                  # First start runs alembic migrations before serving.
+                  failureThreshold: 60
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+      deriver:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/plastic-labs/honcho
+              tag: v3.5.0@sha256:23ff96bf62ab2ca14928e6766db1a30a7729f5b7c9e2285af0cd4a179c0d393d
+            # Background worker — consumes the reasoning queue, no HTTP server.
+            command:
+              - /app/.venv/bin/python
+              - -m
+              - src.deriver
+            env: *honchoEnv
+            envFrom:
+              - secretRef:
+                  name: honcho-pg-secret
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    service:
+      api:
+        controller: api
+        ports:
+          http:
+            port: *port
+    route:
+      api:
+        hostnames:
+          - honcho.servonet.lan
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+        rules:
+          - backendRefs:
+              - identifier: api
+                port: *port
