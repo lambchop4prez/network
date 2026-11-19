@@ -55,11 +55,23 @@ spec:
       config:
         existingClaim: jellyfin
       movies:
-        existingClaim: nas-movies
+        type: nfs
+        server: nas.lan
+        path: /mnt/storage/media/movies
+        globalMounts:
+          - path: /media/movies
       tv:
-        existingClaim: nas-tv
+        type: nfs
+        server: nas.lan
+        path: /mnt/storage/media/tv
+        globalMounts:
+          - path: /media/tv
       music:
-        existingClaim: nas-music
+        type: nfs
+        server: nas.lan
+        path: /mnt/storage/media/music
+        globalMounts:
+          - path: /media/music
       cache:
         enabled: true
         type: emptyDir

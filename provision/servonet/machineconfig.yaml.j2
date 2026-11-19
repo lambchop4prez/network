@@ -72,6 +72,15 @@ machine:
         [plugins."io.containerd.cri.v1.runtime"]
           cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
           device_ownership_from_security_context = true
+
+    - op: overwrite
+      path: /etc/nfs.conf
+      permissions: 0o644
+      content: |
+        [nfsrahead]
+        nfs4=16384
+        default=128
+
     - op: overwrite
       path: /etc/nfsmount.conf
       permissions: 0o644
