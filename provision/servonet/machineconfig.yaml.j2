@@ -72,26 +72,6 @@ machine:
         [plugins."io.containerd.cri.v1.runtime"]
           cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
           device_ownership_from_security_context = true
-
-    - op: overwrite
-      path: /etc/nfs.conf
-      permissions: 0o644
-      content: |
-        [nfsrahead]
-        nfs4=16384
-        default=128
-
-    - op: overwrite
-      path: /etc/nfsmount.conf
-      permissions: 0o644
-      content: |
-        [ NFSMount_Global_Options ]
-        nfsvers=4.2
-        hard=True
-        nconnect=8
-        noatime=True
-        rsize=1048576
-        wsize=1048576
   sysctls:
     fs.inotify.max_user_instances: "8192"
     fs.inotify.max_user_watches: "1048576"
@@ -235,3 +215,25 @@ kind: LinkAliasConfig
 name: ethSel0
 selector:
   match: glob("{{ mac }}", mac(link.hardware_addr))
+---
+apiVersion: v1alpha1
+kind: EtcFileConfig
+name: nfs.conf
+mode: 0o644
+contents: |
+  [nfsrahead]
+  nfs4=16384
+  default=128
+---
+apiVersion: v1alpha1
+kind: EtcFileConfig
+name: nfsmount.conf
+mode: 0o644
+contents: |
+  [ NFSMount_Global_Options ]
+  nfsvers=4.2
+  hard=True
+  nconnect=8
+  noatime=True
+  rsize=1048576
+  wsize=1048576
