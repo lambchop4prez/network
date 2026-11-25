@@ -34,3 +34,13 @@ spec:
   keyAlias: Hindsight
   secretName: hindsight-litellm-key
   secretKey: OPENAI_API_KEY
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMVirtualKey
+metadata:
+  name: honcho
+spec:
+  proxyRef: litellm
+  keyAlias: Honcho
+  secretName: honcho-litellm-key
+  secretKey: OPENAI_API_KEY
