@@ -5,6 +5,7 @@ resources:
   - namespace.yaml
   - external-targets/ks.yaml
   - grafana-operator/ks.yaml
+  - headlamp/ks.yaml
   - kube-prometheus-stack/ks.yaml
   - smartctl-exporter/ks.yaml
   - snmp-exporter/ks.yaml
